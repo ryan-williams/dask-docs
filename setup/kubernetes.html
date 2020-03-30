@@ -1,0 +1,407 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Kubernetes &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Kubernetes and Helm" href="kubernetes-helm.html" />
+    <link rel="prev" title="High Performance Computers" href="hpc.html" />
+    <link rel="shortcut icon" href="../_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="../_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Install Dask</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../setup.html">Setup</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="single-machine.html">Single-Machine Scheduler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="single-distributed.html">Single Machine: dask.distributed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html">Command Line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssh.html">SSH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hpc.html">High Performance Computers</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Kubernetes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="kubernetes-helm.html">Helm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kubernetes-native.html">Native</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference external" href="https://yarn.dask.org/en/latest/">YARN / Hadoop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python-advanced.html">Python API (advanced)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud.html">Cloud Deployments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adaptive.html">Adaptive Deployments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docker.html">Docker Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom-startup.html">Custom Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prometheus.html">Prometheus Monitoring</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../array.html">Array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bag.html">Bag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dataframe.html">DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphs.html">Task Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gpu.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../setup.html">Setup</a> &raquo;</li>
+        
+      <li>Kubernetes</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/setup/kubernetes.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="kubernetes">
+<h1>Kubernetes<a class="headerlink" href="#kubernetes" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<p><a class="reference external" href="https://kubernetes.io/">Kubernetes</a> is a popular system for deploying distributed applications on clusters,
+particularly in the cloud.  You can use Kubernetes to launch Dask workers in the
+following two ways:</p>
+<ol class="arabic">
+<li><p><strong>Helm</strong>:
+You can launch a Dask scheduler, several workers, and an optional Jupyter Notebook server
+on a Kubernetes easily using <a class="reference external" href="https://helm.sh/">Helm</a></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>helm repo add dask https://helm.dask.org/    <span class="c1"># add the Dask Helm chart repository</span>
+helm repo update                             <span class="c1"># get latest Helm charts</span>
+helm install dask/dask                     <span class="c1"># deploy standard Dask chart</span>
+</pre></div>
+</div>
+<p>This is a good choice if you want to do the following:</p>
+<ol class="arabic simple">
+<li><p>Run a managed Dask cluster for a long period of time</p></li>
+<li><p>Also deploy a Jupyter server from which to run code</p></li>
+<li><p>Share the same Dask cluster between many automated services</p></li>
+<li><p>Try out Dask for the first time on a cloud-based system
+like Amazon, Google, or Microsoft Azure
+(see also our <a class="reference internal" href="cloud.html"><span class="doc">Cloud documentation</span></a>)</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For more information, see <a class="reference internal" href="kubernetes-helm.html"><span class="doc">Dask and Helm documentation</span></a>.</p>
+</div>
+</li>
+<li><p><strong>Native</strong>:
+You can quickly deploy Dask workers on Kubernetes
+from within a Python script or interactive session using <a class="reference external" href="https://kubernetes.dask.org/">Dask-Kubernetes</a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dask_kubernetes</span> <span class="kn">import</span> <span class="n">KubeCluster</span>
+<span class="n">cluster</span> <span class="o">=</span> <span class="n">KubeCluster</span><span class="o">.</span><span class="n">from_yaml</span><span class="p">(</span><span class="s1">&#39;worker-template.yaml&#39;</span><span class="p">)</span>
+<span class="n">cluster</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>  <span class="c1"># add 20 workers</span>
+<span class="n">cluster</span><span class="o">.</span><span class="n">adapt</span><span class="p">()</span>    <span class="c1"># or create and destroy workers dynamically based on workload</span>
+
+<span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">cluster</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is a good choice if you want to do the following:</p>
+<ol class="arabic simple">
+<li><p>Dynamically create a personal and ephemeral deployment for interactive use</p></li>
+<li><p>Allow many individuals the ability to launch their own custom dask deployments,
+rather than depend on a centralized system</p></li>
+<li><p>Quickly adapt Dask cluster size to the current workload</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For more information, see <a class="reference external" href="https://kubernetes.dask.org/">Dask-Kubernetes</a> documentation.</p>
+</div>
+</li>
+</ol>
+<p>You may also want to see the documentation on using
+<a class="reference internal" href="docker.html"><span class="doc">Dask with Docker containers</span></a>
+to help you manage your software environments on Kubernetes.</p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="kubernetes-helm.html" class="btn btn-neutral float-right" title="Kubernetes and Helm" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="hpc.html" class="btn btn-neutral float-left" title="High Performance Computers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

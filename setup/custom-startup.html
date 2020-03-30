@@ -1,0 +1,478 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Custom Initialization &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Prometheus Monitoring" href="prometheus.html" />
+    <link rel="prev" title="Docker Images" href="docker.html" />
+    <link rel="shortcut icon" href="../_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="../_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Install Dask</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../setup.html">Setup</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="single-machine.html">Single-Machine Scheduler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="single-distributed.html">Single Machine: dask.distributed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html">Command Line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssh.html">SSH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hpc.html">High Performance Computers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kubernetes.html">Kubernetes</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://yarn.dask.org/en/latest/">YARN / Hadoop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python-advanced.html">Python API (advanced)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud.html">Cloud Deployments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adaptive.html">Adaptive Deployments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docker.html">Docker Images</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Custom Initialization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#preload-scripts">Preload Scripts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#worker-lifecycle-plugins">Worker Lifecycle Plugins</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="prometheus.html">Prometheus Monitoring</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../array.html">Array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bag.html">Bag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dataframe.html">DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphs.html">Task Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gpu.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../setup.html">Setup</a> &raquo;</li>
+        
+      <li>Custom Initialization</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/setup/custom-startup.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="custom-initialization">
+<h1>Custom Initialization<a class="headerlink" href="#custom-initialization" title="Permalink to this headline">¶</a></h1>
+<p>Often we want to run custom code when we start up or tear down a scheduler or
+worker.  We might do this manually with functions like <code class="docutils literal notranslate"><span class="pre">Client.run</span></code> or
+<code class="docutils literal notranslate"><span class="pre">Client.run_on_scheduler</span></code>, but this is error prone and difficult to automate.</p>
+<p>To resolve this, Dask includes a few mechanisms to run arbitrary code around
+the lifecycle of a Scheduler or Worker.</p>
+<div class="section" id="preload-scripts">
+<h2>Preload Scripts<a class="headerlink" href="#preload-scripts" title="Permalink to this headline">¶</a></h2>
+<p>Both <code class="docutils literal notranslate"><span class="pre">dask-scheduler</span></code> and <code class="docutils literal notranslate"><span class="pre">dask-worker</span></code> support a <code class="docutils literal notranslate"><span class="pre">--preload</span></code> option that
+allows custom initialization of each scheduler/worker respectively. A module or
+Python file passed as a <code class="docutils literal notranslate"><span class="pre">--preload</span></code> value is guaranteed to be imported before
+establishing any connection. A <code class="docutils literal notranslate"><span class="pre">dask_setup(service)</span></code> function is called if
+found, with a <code class="docutils literal notranslate"><span class="pre">Scheduler</span></code> or <code class="docutils literal notranslate"><span class="pre">Worker</span></code> instance as the argument. As the
+service stops, <code class="docutils literal notranslate"><span class="pre">dask_teardown(service)</span></code> is called if present.</p>
+<p>To support additional configuration, a single <code class="docutils literal notranslate"><span class="pre">--preload</span></code> module may register
+additional command-line arguments by exposing <code class="docutils literal notranslate"><span class="pre">dask_setup</span></code> as a  <a class="reference external" href="http://click.pocoo.org/">Click</a>
+command.  This command will be used to parse additional arguments provided to
+<code class="docutils literal notranslate"><span class="pre">dask-worker</span></code> or <code class="docutils literal notranslate"><span class="pre">dask-scheduler</span></code> and will be called before service
+initialization.</p>
+<p>As an example, consider the following file that creates a
+<a class="reference external" href="https://distributed.dask.org/en/latest/plugins.html">scheduler plugin</a>
+and registers it with the scheduler</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># scheduler-setup.py</span>
+<span class="kn">import</span> <span class="nn">click</span>
+
+<span class="kn">from</span> <span class="nn">distributed.diagnostics.plugin</span> <span class="kn">import</span> <span class="n">SchedulerPlugin</span>
+
+<span class="k">class</span> <span class="nc">MyPlugin</span><span class="p">(</span><span class="n">SchedulerPlugin</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">print_count</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">print_count</span> <span class="o">=</span> <span class="n">print_count</span>
+      <span class="n">SchedulerPlugin</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">add_worker</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scheduler</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">worker</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Added a new worker at:&quot;</span><span class="p">,</span> <span class="n">worker</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">print_count</span> <span class="ow">and</span> <span class="n">scheduler</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Total workers:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">scheduler</span><span class="o">.</span><span class="n">workers</span><span class="p">))</span>
+
+<span class="nd">@click</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;--print-count/--no-print-count&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">dask_setup</span><span class="p">(</span><span class="n">scheduler</span><span class="p">,</span> <span class="n">print_count</span><span class="p">):</span>
+    <span class="n">plugin</span> <span class="o">=</span> <span class="n">MyPlugin</span><span class="p">(</span><span class="n">print_count</span><span class="p">)</span>
+    <span class="n">scheduler</span><span class="o">.</span><span class="n">add_plugin</span><span class="p">(</span><span class="n">plugin</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can then run this preload script by referring to its filename (or module name
+if it is on the path) when we start the scheduler:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dask</span><span class="o">-</span><span class="n">scheduler</span> <span class="o">--</span><span class="n">preload</span> <span class="n">scheduler</span><span class="o">-</span><span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="nb">print</span><span class="o">-</span><span class="n">count</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="worker-lifecycle-plugins">
+<h2>Worker Lifecycle Plugins<a class="headerlink" href="#worker-lifecycle-plugins" title="Permalink to this headline">¶</a></h2>
+<p>You can also create a class with <code class="docutils literal notranslate"><span class="pre">setup</span></code>, <code class="docutils literal notranslate"><span class="pre">teardown</span></code>, and <code class="docutils literal notranslate"><span class="pre">transition</span></code> methods,
+and register that class with the scheduler to give to every worker using the
+<code class="docutils literal notranslate"><span class="pre">Client.register_worker_plugin</span></code> method.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../futures.html#distributed.Client.register_worker_plugin" title="distributed.Client.register_worker_plugin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Client.register_worker_plugin</span></code></a>([plugin, name])</p></td>
+<td><p>Registers a lifecycle worker plugin for all current and future workers.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt>
+<code class="sig-prename descclassname">Client.</code><code class="sig-name descname">register_worker_plugin</code><span class="sig-paren">(</span><em class="sig-param">plugin=None</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span></dt>
+<dd><p>Registers a lifecycle worker plugin for all current and future workers.</p>
+<p>This registers a new object to handle setup, task state transitions and
+teardown for workers in this cluster. The plugin will instantiate itself
+on all currently connected workers. It will also be run on any worker
+that connects in the future.</p>
+<p>The plugin may include methods <code class="docutils literal notranslate"><span class="pre">setup</span></code>, <code class="docutils literal notranslate"><span class="pre">teardown</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">transition</span></code>.  See the <code class="docutils literal notranslate"><span class="pre">dask.distributed.WorkerPlugin</span></code> class or the
+examples below for the interface and docstrings.  It must be
+serializable with the pickle or cloudpickle modules.</p>
+<p>If the plugin has a <code class="docutils literal notranslate"><span class="pre">name</span></code> attribute, or if the <code class="docutils literal notranslate"><span class="pre">name=</span></code> keyword is
+used then that will control idempotency.  A a plugin with that name has
+already registered then any future plugins will not run.</p>
+<p>For alternatives to plugins, you may also wish to look into preload
+scripts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>plugin: WorkerPlugin</strong></dt><dd><p>The plugin object to pass to the workers</p>
+</dd>
+<dt><strong>name: str, optional</strong></dt><dd><p>A name for the plugin.
+Registering a plugin with the same name will have no effect.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-obj docutils literal notranslate"><span class="pre">distributed.WorkerPlugin</span></code></p>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MyPlugin</span><span class="p">(</span><span class="n">WorkerPlugin</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">pass</span>  <span class="c1"># the constructor is up to you</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worker</span><span class="p">:</span> <span class="n">dask</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">Worker</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">pass</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">teardown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worker</span><span class="p">:</span> <span class="n">dask</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">Worker</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">pass</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">transition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">finish</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">pass</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plugin</span> <span class="o">=</span> <span class="n">MyPlugin</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">register_worker_plugin</span><span class="p">(</span><span class="n">plugin</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can get access to the plugin with the <code class="docutils literal notranslate"><span class="pre">get_worker</span></code> function</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">register_worker_plugin</span><span class="p">(</span><span class="n">other_plugin</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;my-plugin&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">():</span>
+<span class="gp">... </span>   <span class="n">worker</span> <span class="o">=</span> <span class="n">get_worker</span><span class="p">()</span>
+<span class="gp">... </span>   <span class="n">plugin</span> <span class="o">=</span> <span class="n">worker</span><span class="o">.</span><span class="n">plugins</span><span class="p">[</span><span class="s1">&#39;my-plugin&#39;</span><span class="p">]</span>
+<span class="gp">... </span>   <span class="k">return</span> <span class="n">plugin</span><span class="o">.</span><span class="n">my_state</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">future</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="prometheus.html" class="btn btn-neutral float-right" title="Prometheus Monitoring" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="docker.html" class="btn btn-neutral float-left" title="Docker Images" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

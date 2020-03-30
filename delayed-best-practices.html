@@ -1,0 +1,791 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Best Practices &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Futures" href="futures.html" />
+    <link rel="prev" title="Working with Collections" href="delayed-collections.html" />
+    <link rel="shortcut icon" href="_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="array.html">Array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bag.html">Bag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataframe.html">DataFrame</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="delayed.html">Delayed</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="delayed-api.html">API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="delayed-collections.html">Working with Collections</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Best Practices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#call-delayed-on-the-function-not-the-result">Call delayed on the function, not the result</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compute-on-lots-of-computation-at-once">Compute on lots of computation at once</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#don-t-mutate-inputs">Don’t mutate inputs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#avoid-global-state">Avoid global state</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#don-t-rely-on-side-effects">Don’t rely on side effects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#break-up-computations-into-many-pieces">Break up computations into many pieces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#avoid-too-many-tasks">Avoid too many tasks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#avoid-calling-delayed-within-delayed-functions">Avoid calling delayed within delayed functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#don-t-call-dask-delayed-on-other-dask-collections">Don’t call dask.delayed on other Dask collections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#avoid-repeatedly-putting-large-inputs-into-delayed-calls">Avoid repeatedly putting large inputs into delayed calls</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="delayed.html#example">Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="delayed.html#decorator">Decorator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="delayed.html#real-time">Real time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="delayed.html#best-practices">Best Practices</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">Task Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="delayed.html">Delayed</a> &raquo;</li>
+        
+      <li>Best Practices</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/delayed-best-practices.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="best-practices">
+<h1>Best Practices<a class="headerlink" href="#best-practices" title="Permalink to this headline">¶</a></h1>
+<p>It is easy to get started with Dask delayed, but using it <em>well</em> does require
+some experience.  This page contains suggestions for best practices, and
+includes solutions to common problems.</p>
+<div class="section" id="call-delayed-on-the-function-not-the-result">
+<h2>Call delayed on the function, not the result<a class="headerlink" href="#call-delayed-on-the-function-not-the-result" title="Permalink to this headline">¶</a></h2>
+<p>Dask delayed operates on functions like <code class="docutils literal notranslate"><span class="pre">dask.delayed(f)(x,</span> <span class="pre">y)</span></code>, not on their results like <code class="docutils literal notranslate"><span class="pre">dask.delayed(f(x,</span> <span class="pre">y))</span></code>.  When you do the latter, Python first calculates <code class="docutils literal notranslate"><span class="pre">f(x,</span> <span class="pre">y)</span></code> before Dask has a chance to step in.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 44%" />
+<col style="width: 56%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Don’t</strong></p></td>
+<td><p><strong>Do</strong></p></td>
+</tr>
+<tr class="row-even"><td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># This executes immediately</span>
+
+<span class="n">dask</span><span class="o">.</span><span class="n">delayed</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+</pre></div>
+</div>
+</td>
+<td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># This makes a delayed function, acting lazily</span>
+
+<span class="n">dask</span><span class="o">.</span><span class="n">delayed</span><span class="p">(</span><span class="n">f</span><span class="p">)(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="compute-on-lots-of-computation-at-once">
+<h2>Compute on lots of computation at once<a class="headerlink" href="#compute-on-lots-of-computation-at-once" title="Permalink to this headline">¶</a></h2>
+<p>To improve parallelism, you want to include lots of computation in each compute call.
+Ideally, you want to make many <code class="docutils literal notranslate"><span class="pre">dask.delayed</span></code> calls to define your computation and
+then call <code class="docutils literal notranslate"><span class="pre">dask.compute</span></code> only at the end.  It is ok to call <code class="docutils literal notranslate"><span class="pre">dask.compute</span></code>
+in the middle of your computation as well, but everything will stop there as
+Dask computes those results before moving forward with your code.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 57%" />
+<col style="width: 43%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Don’t</strong></p></td>
+<td><p><strong>Do</strong></p></td>
+</tr>
+<tr class="row-even"><td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Avoid calling compute repeatedly</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">L</span><span class="p">:</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">dask</span><span class="o">.</span><span class="n">delayed</span><span class="p">(</span><span class="n">f</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">compute</span><span class="p">())</span>
+
+<span class="n">results</span>
+</pre></div>
+</div>
+</td>
+<td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Collect many calls for one compute</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">L</span><span class="p">:</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">dask</span><span class="o">.</span><span class="n">delayed</span><span class="p">(</span><span class="n">f</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">dask</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="o">*</span><span class="n">results</span><span class="p">)</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Calling <cite>y.compute()</cite> within the loop would await the result of the computation every time, and
+so inhibit parallelism.</p>
+</div>
+<div class="section" id="don-t-mutate-inputs">
+<h2>Don’t mutate inputs<a class="headerlink" href="#don-t-mutate-inputs" title="Permalink to this headline">¶</a></h2>
+<p>Your functions should not change the inputs directly.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 52%" />
+<col style="width: 48%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Don’t</strong></p></td>
+<td><p><strong>Do</strong></p></td>
+</tr>
+<tr class="row-even"><td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Mutate inputs in functions</span>
+
+<span class="nd">@dask</span><span class="o">.</span><span class="n">delayed</span>
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">x</span>
+</pre></div>
+</div>
+</td>
+<td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Return new values or copies</span>
+
+<span class="nd">@dask</span><span class="o">.</span><span class="n">delayed</span>
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">x</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If you need to use a mutable operation, then make a copy within your function first:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@dask</span><span class="o">.</span><span class="n">delayed</span>
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="avoid-global-state">
+<h2>Avoid global state<a class="headerlink" href="#avoid-global-state" title="Permalink to this headline">¶</a></h2>
+<p>Ideally, your operations shouldn’t rely on global state.  Using global state
+<em>might</em> work if you only use threads, but when you move to multiprocessing or
+distributed computing then you will likely encounter confusing errors.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Don’t</strong></p></td>
+</tr>
+<tr class="row-even"><td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">L</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># This references global variable L</span>
+
+<span class="nd">@dask</span><span class="o">.</span><span class="n">delayed</span>
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">L</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="don-t-rely-on-side-effects">
+<h2>Don’t rely on side effects<a class="headerlink" href="#don-t-rely-on-side-effects" title="Permalink to this headline">¶</a></h2>
+<p>Delayed functions only do something if they are computed.  You will always need
+to pass the output to something that eventually calls compute.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 44%" />
+<col style="width: 56%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Don’t</strong></p></td>
+<td><p><strong>Do</strong></p></td>
+</tr>
+<tr class="row-even"><td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Forget to call compute</span>
+
+<span class="n">dask</span><span class="o">.</span><span class="n">delayed</span><span class="p">(</span><span class="n">f</span><span class="p">)(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="o">...</span>
+</pre></div>
+</div>
+</td>
+<td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Ensure delayed tasks are computed</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">dask</span><span class="o">.</span><span class="n">delayed</span><span class="p">(</span><span class="n">f</span><span class="p">)(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="n">dask</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>In the first case here, nothing happens, because <code class="docutils literal notranslate"><span class="pre">compute()</span></code> is never called.</p>
+</div>
+<div class="section" id="break-up-computations-into-many-pieces">
+<h2>Break up computations into many pieces<a class="headerlink" href="#break-up-computations-into-many-pieces" title="Permalink to this headline">¶</a></h2>
+<p>Every <code class="docutils literal notranslate"><span class="pre">dask.delayed</span></code> function call is a single operation from Dask’s perspective.
+You achieve parallelism by having many delayed calls, not by using only a
+single one: Dask will not look inside a function decorated with <code class="docutils literal notranslate"><span class="pre">&#64;dask.delayed</span></code>
+and parallelize that code internally.  To accomplish that, it needs your help to
+find good places to break up a computation.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 49%" />
+<col style="width: 51%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Don’t</strong></p></td>
+<td><p><strong>Do</strong></p></td>
+</tr>
+<tr class="row-even"><td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># One giant task</span>
+
+
+<span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="o">...</span>
+
+
+<span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="o">...</span>
+
+
+<span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="o">...</span>
+
+<span class="nd">@dask</span><span class="o">.</span><span class="n">delayed</span>
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">filenames</span><span class="p">):</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">process</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">save</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">results</span>
+
+<span class="n">dask</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">filenames</span><span class="p">))</span>
+</pre></div>
+</div>
+</td>
+<td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Break up into many tasks</span>
+
+<span class="nd">@dask</span><span class="o">.</span><span class="n">delayed</span>
+<span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="o">...</span>
+
+<span class="nd">@dask</span><span class="o">.</span><span class="n">delayed</span>
+<span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="o">...</span>
+
+<span class="nd">@dask</span><span class="o">.</span><span class="n">delayed</span>
+<span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="o">...</span>
+
+
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">filenames</span><span class="p">):</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">process</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">save</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">results</span>
+
+<span class="n">dask</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">filenames</span><span class="p">))</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The first version only has one delayed task, and so cannot parallelize.</p>
+</div>
+<div class="section" id="avoid-too-many-tasks">
+<h2>Avoid too many tasks<a class="headerlink" href="#avoid-too-many-tasks" title="Permalink to this headline">¶</a></h2>
+<p>Every delayed task has an overhead of a few hundred microseconds.  Usually this
+is ok, but it can become a problem if you apply <code class="docutils literal notranslate"><span class="pre">dask.delayed</span></code> too finely.  In
+this case, it’s often best to break up your many tasks into batches or use one
+of the Dask collections to help you.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 37%" />
+<col style="width: 63%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Don’t</strong></p></td>
+<td><p><strong>Do</strong></p></td>
+</tr>
+<tr class="row-even"><td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Too many tasks</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10000000</span><span class="p">):</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">dask</span><span class="o">.</span><span class="n">delayed</span><span class="p">(</span><span class="n">f</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</td>
+<td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use collections</span>
+
+<span class="kn">import</span> <span class="nn">dask.bag</span> <span class="k">as</span> <span class="nn">db</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">from_sequence</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10000000</span><span class="p">),</span> <span class="n">npartitions</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Here we use <code class="docutils literal notranslate"><span class="pre">dask.bag</span></code> to automatically batch applying our function. We could also have constructed
+our own batching as follows</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">batch</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
+    <span class="n">sub_results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">:</span>
+        <span class="n">sub_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">sub_results</span>
+
+ <span class="n">batches</span> <span class="o">=</span> <span class="p">[]</span>
+ <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10000000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">):</span>
+     <span class="n">result_batch</span> <span class="o">=</span> <span class="n">dask</span><span class="o">.</span><span class="n">delayed</span><span class="p">(</span><span class="n">batch</span><span class="p">)(</span><span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">10000</span><span class="p">))</span>
+     <span class="n">batches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result_batch</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here we construct batches where each delayed function call computes for many data points from
+the original input.</p>
+</div>
+<div class="section" id="avoid-calling-delayed-within-delayed-functions">
+<h2>Avoid calling delayed within delayed functions<a class="headerlink" href="#avoid-calling-delayed-within-delayed-functions" title="Permalink to this headline">¶</a></h2>
+<p>Often, if you are new to using Dask delayed, you place <code class="docutils literal notranslate"><span class="pre">dask.delayed</span></code> calls
+everywhere and hope for the best.  While this may actually work, it’s usually
+slow and results in hard-to-understand solutions.</p>
+<p>Usually you never call <code class="docutils literal notranslate"><span class="pre">dask.delayed</span></code> within <code class="docutils literal notranslate"><span class="pre">dask.delayed</span></code> functions.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 51%" />
+<col style="width: 49%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Don’t</strong></p></td>
+<td><p><strong>Do</strong></p></td>
+</tr>
+<tr class="row-even"><td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Delayed function calls delayed</span>
+
+<span class="nd">@dask</span><span class="o">.</span><span class="n">delayed</span>
+<span class="k">def</span> <span class="nf">process_all</span><span class="p">(</span><span class="n">L</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">L</span><span class="p">:</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">dask</span><span class="o">.</span><span class="n">delayed</span><span class="p">(</span><span class="n">f</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+</div>
+</td>
+<td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Normal function calls delayed</span>
+
+
+<span class="k">def</span> <span class="nf">process_all</span><span class="p">(</span><span class="n">L</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">L</span><span class="p">:</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">dask</span><span class="o">.</span><span class="n">delayed</span><span class="p">(</span><span class="n">f</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Because the normal function only does delayed work it is very fast and so
+there is no reason to delay it.</p>
+</div>
+<div class="section" id="don-t-call-dask-delayed-on-other-dask-collections">
+<h2>Don’t call dask.delayed on other Dask collections<a class="headerlink" href="#don-t-call-dask-delayed-on-other-dask-collections" title="Permalink to this headline">¶</a></h2>
+<p>When you place a Dask array or Dask DataFrame into a delayed call, that function
+will receive the NumPy or Pandas equivalent.  Beware that if your array is
+large, then this might crash your workers.</p>
+<p>Instead, it’s more common to use methods like <code class="docutils literal notranslate"><span class="pre">da.map_blocks</span></code></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 53%" />
+<col style="width: 47%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Don’t</strong></p></td>
+<td><p><strong>Do</strong></p></td>
+</tr>
+<tr class="row-even"><td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Call delayed functions on Dask collections</span>
+
+<span class="kn">import</span> <span class="nn">dask.dataframe</span> <span class="k">as</span> <span class="nn">dd</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;/path/to/*.csv&#39;</span><span class="p">)</span>
+
+<span class="n">dask</span><span class="o">.</span><span class="n">delayed</span><span class="p">(</span><span class="n">train</span><span class="p">)(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</td>
+<td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use mapping methods if applicable</span>
+
+<span class="kn">import</span> <span class="nn">dask.dataframe</span> <span class="k">as</span> <span class="nn">dd</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;/path/to/*.csv&#39;</span><span class="p">)</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">map_partitions</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Alternatively, if the procedure doesn’t fit into a mapping, you can always
+turn your arrays or dataframes into <em>many</em> delayed
+objects, for example</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">partitions</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">to_delayed</span><span class="p">()</span>
+<span class="n">delayed_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">dask</span><span class="o">.</span><span class="n">delayed</span><span class="p">(</span><span class="n">train</span><span class="p">)(</span><span class="n">part</span><span class="p">)</span>
+                  <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">partitions</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>However, if you don’t mind turning your Dask array/DataFrame into a single
+chunk, then this is ok.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dask</span><span class="o">.</span><span class="n">delayed</span><span class="p">(</span><span class="n">train</span><span class="p">)(</span><span class="o">...</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="avoid-repeatedly-putting-large-inputs-into-delayed-calls">
+<h2>Avoid repeatedly putting large inputs into delayed calls<a class="headerlink" href="#avoid-repeatedly-putting-large-inputs-into-delayed-calls" title="Permalink to this headline">¶</a></h2>
+<p>Every time you pass a concrete result (anything that isn’t delayed) Dask will
+hash it by default to give it a name.  This is fairly fast (around 500 MB/s)
+but can be slow if you do it over and over again.  Instead, it is better to
+delay your data as well.</p>
+<p>This is especially important when using a distributed cluster to avoid sending
+your data separately for each function call.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 42%" />
+<col style="width: 58%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Don’t</strong></p></td>
+<td><p><strong>Do</strong></p></td>
+</tr>
+<tr class="row-even"><td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>  <span class="c1"># some large array</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">dask</span><span class="o">.</span><span class="n">delayed</span><span class="p">(</span><span class="n">train</span><span class="p">)(</span><span class="n">x</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+           <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">)]</span>
+</pre></div>
+</div>
+</td>
+<td><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>    <span class="c1"># some large array</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">dask</span><span class="o">.</span><span class="n">delayed</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1"># delay the data once</span>
+<span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">dask</span><span class="o">.</span><span class="n">delayed</span><span class="p">(</span><span class="n">train</span><span class="p">)(</span><span class="n">x</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+           <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">)]</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Every call to <code class="docutils literal notranslate"><span class="pre">dask.delayed(train)(x,</span> <span class="pre">...)</span></code> has to hash the NumPy array <code class="docutils literal notranslate"><span class="pre">x</span></code>, which slows things down.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="futures.html" class="btn btn-neutral float-right" title="Futures" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="delayed-collections.html" class="btn btn-neutral float-left" title="Working with Collections" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

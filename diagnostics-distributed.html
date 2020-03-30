@@ -1,0 +1,592 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Diagnostics (distributed) &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Debugging" href="debugging.html" />
+    <link rel="prev" title="Diagnostics (local)" href="diagnostics-local.html" />
+    <link rel="shortcut icon" href="_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="array.html">Array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bag.html">Bag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataframe.html">DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Diagnostics (distributed)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dashboard">Dashboard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#capture-diagnostics">Capture diagnostics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#progress-bar">Progress bar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#connecting-to-the-dashboard">Connecting to the Dashboard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#specify-an-accessible-port">Specify an accessible port</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#port-forwarding">Port Forwarding</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">Task Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Diagnostics (distributed)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/diagnostics-distributed.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="diagnostics-distributed">
+<h1>Diagnostics (distributed)<a class="headerlink" href="#diagnostics-distributed" title="Permalink to this headline">¶</a></h1>
+<p>The <a class="reference internal" href="scheduling.html"><span class="doc">Dask distributed scheduler</span></a> provides live feedback in two
+forms:</p>
+<ol class="arabic simple">
+<li><p>An interactive dashboard containing many plots and tables with live
+information</p></li>
+<li><p>A progress bar suitable for interactive use in consoles or notebooks</p></li>
+</ol>
+<div class="section" id="dashboard">
+<h2>Dashboard<a class="headerlink" href="#dashboard" title="Permalink to this headline">¶</a></h2>
+<iframe width="560"
+        height="315"
+        src="https://www.youtube.com/embed/N_GqzcuGLCY"
+        frameborder="0"
+        allow="autoplay; encrypted-media"
+        allowfullscreen>
+</iframe><p>If <a class="reference external" href="https://bokeh.pydata.org/en/latest/">Bokeh</a> is installed
+then the dashboard will start up automatically whenever the scheduler is created.
+For local use this happens when you create a client with no arguments:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>  <span class="c1"># start distributed scheduler locally.  Launch dashboard</span>
+</pre></div>
+</div>
+<p>It is typically served at <a class="reference external" href="http://localhost:8787/status">http://localhost:8787/status</a> ,
+but may be served elsewhere if this port is taken.
+The address of the dashboard will be displayed if you are in a Jupyter Notebook,
+or can be queried from <code class="docutils literal notranslate"><span class="pre">client.scheduler_info()['services']</span></code>.</p>
+<p>There are numerous pages with information about task runtimes, communication,
+statistical profiling, load balancing, memory use, and much more.
+For more information we recommend the video guide above.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Client</span></code>([address, loop, timeout, …])</p></td>
+<td><p>Connect to and submit computation to a Dask cluster</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="capture-diagnostics">
+<h2>Capture diagnostics<a class="headerlink" href="#capture-diagnostics" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.distributed.get_task_stream" title="dask.distributed.get_task_stream"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_task_stream</span></code></a>([client, plot, filename])</p></td>
+<td><p>Collect task stream within a context block</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Client.profile</span></code>([key, start, stop, workers, …])</p></td>
+<td><p>Collect statistical profiling information about recent work</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">performance_report</span></code>([filename])</p></td>
+<td><p>Gather performance report</p></td>
+</tr>
+</tbody>
+</table>
+<p>You can capture some of the same information that the dashboard presents for
+offline processing using the <code class="docutils literal notranslate"><span class="pre">get_task_stream</span></code> and <code class="docutils literal notranslate"><span class="pre">Client.profile</span></code>
+functions.  These capture the start and stop time of every task and transfer,
+as well as the results of a statistical profiler.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">get_task_stream</span><span class="p">(</span><span class="n">plot</span><span class="o">=</span><span class="s1">&#39;save&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;task-stream.html&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ts</span><span class="p">:</span>
+    <span class="n">x</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+
+<span class="n">client</span><span class="o">.</span><span class="n">profile</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;dask-profile.html&quot;</span><span class="p">)</span>
+
+<span class="n">history</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">data</span>
+</pre></div>
+</div>
+<p>Additionally, Dask can save many diagnostics dashboards at once including the
+task stream, worker profiles, bandwidths, etc. with the <code class="docutils literal notranslate"><span class="pre">performance_report</span></code>
+context manager:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">performance_report</span>
+
+<span class="k">with</span> <span class="n">performance_report</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;dask-report.html&quot;</span><span class="p">):</span>
+    <span class="c1">## some dask computation</span>
+</pre></div>
+</div>
+<p>The following video demonstrates the <code class="docutils literal notranslate"><span class="pre">performance_report</span></code> context manager in greater
+detail:</p>
+<iframe width="560"
+        height="315"
+        src="https://www.youtube.com/embed/nTMGbkS761Q"
+        frameborder="0"
+        allow="autoplay; encrypted-media"
+        allowfullscreen>
+</iframe></div>
+<div class="section" id="progress-bar">
+<h2>Progress bar<a class="headerlink" href="#progress-bar" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.distributed.progress" title="dask.distributed.progress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">progress</span></code></a>(*futures[, notebook, multi, complete])</p></td>
+<td><p>Track progress of futures</p></td>
+</tr>
+</tbody>
+</table>
+<p>The <code class="docutils literal notranslate"><span class="pre">dask.distributed</span></code> progress bar differs from the <code class="docutils literal notranslate"><span class="pre">ProgressBar</span></code> used for
+<a class="reference internal" href="diagnostics-local.html"><span class="doc">local diagnostics</span></a>.
+The <code class="docutils literal notranslate"><span class="pre">progress</span></code> function takes a Dask object that is executing in the background:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Single machine progress bar</span>
+<span class="kn">from</span> <span class="nn">dask.diagnostics</span> <span class="kn">import</span> <span class="n">ProgressBar</span>
+
+<span class="k">with</span> <span class="n">ProgressBar</span><span class="p">():</span>
+    <span class="n">x</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+
+<span class="c1"># Distributed scheduler ProgressBar</span>
+
+<span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">progress</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>  <span class="c1"># use dask.distributed by default</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">persist</span><span class="p">()</span>  <span class="c1"># start computation in the background</span>
+<span class="n">progress</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>      <span class="c1"># watch progress</span>
+
+<span class="n">x</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>      <span class="c1"># convert to final result when done if desired</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="connecting-to-the-dashboard">
+<h2>Connecting to the Dashboard<a class="headerlink" href="#connecting-to-the-dashboard" title="Permalink to this headline">¶</a></h2>
+<p>Some computer networks may restrict access to certain ports or only allow
+access from certain machines.  If you are unable to access the dashboard then
+you may want to contact your IT administrator.</p>
+<p>Some common problems and solutions follow:</p>
+<div class="section" id="specify-an-accessible-port">
+<h3>Specify an accessible port<a class="headerlink" href="#specify-an-accessible-port" title="Permalink to this headline">¶</a></h3>
+<p>Some clusters restrict the ports that are visible to the outside world.  These
+ports may include the default port for the web interface, <code class="docutils literal notranslate"><span class="pre">8787</span></code>.  There are
+a few ways to handle this:</p>
+<ol class="arabic simple">
+<li><p>Open port <code class="docutils literal notranslate"><span class="pre">8787</span></code> to the outside world.  Often this involves asking your
+cluster administrator.</p></li>
+<li><p>Use a different port that is publicly accessible using the
+<code class="docutils literal notranslate"><span class="pre">--dashboard-address</span> <span class="pre">:8787</span></code> option on the <code class="docutils literal notranslate"><span class="pre">dask-scheduler</span></code> command.</p></li>
+<li><p>Use fancier techniques, like <a class="reference internal" href="#port-forwarding">Port Forwarding</a></p></li>
+</ol>
+</div>
+<div class="section" id="port-forwarding">
+<h3>Port Forwarding<a class="headerlink" href="#port-forwarding" title="Permalink to this headline">¶</a></h3>
+<p>If you have SSH access then one way to gain access to a blocked port is through
+SSH port forwarding. A typical use case looks like the following:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>local$ ssh -L <span class="m">8000</span>:localhost:8787 user@remote
+remote$ dask-scheduler  <span class="c1"># now, the web UI is visible at localhost:8000</span>
+remote$ <span class="c1"># continue to set up dask if needed -- add workers, etc</span>
+</pre></div>
+</div>
+<p>It is then possible to go to <code class="docutils literal notranslate"><span class="pre">localhost:8000</span></code> and see Dask Web UI. This same approach is
+not specific to dask.distributed, but can be used by any service that operates over a
+network, such as Jupyter notebooks. For example, if we chose to do this we could
+forward port 8888 (the default Jupyter port) to port 8001 with
+<code class="docutils literal notranslate"><span class="pre">ssh</span> <span class="pre">-L</span> <span class="pre">8001:localhost:8888</span> <span class="pre">user&#64;remote</span></code>.</p>
+</div>
+</div>
+<div class="section" id="api">
+<h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="dask.distributed.progress">
+<code class="sig-prename descclassname">dask.distributed.</code><code class="sig-name descname">progress</code><span class="sig-paren">(</span><em class="sig-param">*futures</em>, <em class="sig-param">notebook=None</em>, <em class="sig-param">multi=True</em>, <em class="sig-param">complete=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.distributed.progress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Track progress of futures</p>
+<p>This operates differently in the notebook and the console</p>
+<ul class="simple">
+<li><p>Notebook:  This returns immediately, leaving an IPython widget on screen</p></li>
+<li><p>Console:  This blocks until the computation completes</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>futures: Futures</strong></dt><dd><p>A list of futures or keys to track</p>
+</dd>
+<dt><strong>notebook: bool (optional)</strong></dt><dd><p>Running in the notebook or not (defaults to guess)</p>
+</dd>
+<dt><strong>multi: bool (optional)</strong></dt><dd><p>Track different functions independently (defaults to True)</p>
+</dd>
+<dt><strong>complete: bool (optional)</strong></dt><dd><p>Track all keys (True) or only keys that have not yet run (False)
+(defaults to True)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>In the notebook, the output of <cite>progress</cite> must be the last statement
+in the cell. Typically, this means calling <cite>progress</cite> at the end of a
+cell.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">progress</span><span class="p">(</span><span class="n">futures</span><span class="p">)</span>  
+<span class="go">[########################################] | 100% Completed |  1.7s</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="dask.distributed.get_task_stream">
+<code class="sig-prename descclassname">dask.distributed.</code><code class="sig-name descname">get_task_stream</code><span class="sig-paren">(</span><em class="sig-param">client=None</em>, <em class="sig-param">plot=False</em>, <em class="sig-param">filename='task-stream.html'</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.distributed.get_task_stream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collect task stream within a context block</p>
+<p>This provides diagnostic information about every task that was run during
+the time when this block was active.</p>
+<p>This must be used as a context manager.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>plot: boolean, str</strong></dt><dd><p>If true then also return a Bokeh figure
+If plot == ‘save’ then save the figure to a file</p>
+</dd>
+<dt><strong>filename: str (optional)</strong></dt><dd><p>The filename to save to if you set <code class="docutils literal notranslate"><span class="pre">plot='save'</span></code></p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Client.get_task_stream</span></code></dt><dd><p>Function version of this context manager</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">get_task_stream</span><span class="p">()</span> <span class="k">as</span> <span class="n">ts</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">x</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span><span class="o">.</span><span class="n">data</span>
+<span class="go">[...]</span>
+</pre></div>
+</div>
+<p>Get back a Bokeh figure and optionally save to a file</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">get_task_stream</span><span class="p">(</span><span class="n">plot</span><span class="o">=</span><span class="s1">&#39;save&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;task-stream.html&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ts</span><span class="p">:</span>
+<span class="gp">... </span>   <span class="n">x</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span><span class="o">.</span><span class="n">figure</span>
+<span class="go">&lt;Bokeh Figure&gt;</span>
+</pre></div>
+</div>
+<p>To share this file with others you may wish to upload and serve it online.
+A common way to do this is to upload the file as a gist, and then serve it
+on <a class="reference external" href="https://raw.githack.com">https://raw.githack.com</a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python -m pip install gist
+$ gist task-stream.html
+https://gist.github.com/8a5b3c74b10b413f612bb5e250856ceb
+</pre></div>
+</div>
+<p>You can then navigate to that site, click the “Raw” button to the right of
+the <code class="docutils literal notranslate"><span class="pre">task-stream.html</span></code> file, and then provide that URL to
+<a class="reference external" href="https://raw.githack.com">https://raw.githack.com</a> .  This process should provide a sharable link that
+others can use to see your task stream plot.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="debugging.html" class="btn btn-neutral float-right" title="Debugging" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="diagnostics-local.html" class="btn btn-neutral float-left" title="Diagnostics (local)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

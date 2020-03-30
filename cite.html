@@ -1,0 +1,369 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Citations &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Funding" href="funding.html" />
+    <link rel="prev" title="GPUs" href="gpu.html" />
+    <link rel="shortcut icon" href="_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="array.html">Array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bag.html">Bag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataframe.html">DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">Task Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu.html">GPUs</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Citations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#papers-about-parts-of-dask">Papers about parts of Dask</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Citations</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/cite.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="citations">
+<h1>Citations<a class="headerlink" href="#citations" title="Permalink to this headline">¶</a></h1>
+<p>Dask is developed by many people from many institutions.  Some of these
+developers are academics who depend on academic citations to justify their
+efforts.  Unfortunately, no single citation can do all of these developers (and
+the developers to come) sufficient justice.  Instead, we choose to use a single
+blanket citation for all developers past and present.</p>
+<p>To cite Dask in publications, please use the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Dask</span> <span class="n">Development</span> <span class="n">Team</span> <span class="p">(</span><span class="mi">2016</span><span class="p">)</span><span class="o">.</span> <span class="n">Dask</span><span class="p">:</span> <span class="n">Library</span> <span class="k">for</span> <span class="n">dynamic</span> <span class="n">task</span> <span class="n">scheduling</span>
+<span class="n">URL</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">dask</span><span class="o">.</span><span class="n">org</span>
+</pre></div>
+</div>
+<p>A BibTeX entry for LaTeX users follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@Manual</span><span class="p">{,</span>
+  <span class="n">title</span> <span class="o">=</span> <span class="p">{</span><span class="n">Dask</span><span class="p">:</span> <span class="n">Library</span> <span class="k">for</span> <span class="n">dynamic</span> <span class="n">task</span> <span class="n">scheduling</span><span class="p">},</span>
+  <span class="n">author</span> <span class="o">=</span> <span class="p">{{</span><span class="n">Dask</span> <span class="n">Development</span> <span class="n">Team</span><span class="p">}},</span>
+  <span class="n">year</span> <span class="o">=</span> <span class="p">{</span><span class="mi">2016</span><span class="p">},</span>
+  <span class="n">url</span> <span class="o">=</span> <span class="p">{</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">dask</span><span class="o">.</span><span class="n">org</span><span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The full author list is available using <code class="docutils literal notranslate"><span class="pre">git</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">shortlog</span> <span class="pre">-ns</span></code>).</p>
+<div class="section" id="papers-about-parts-of-dask">
+<h2>Papers about parts of Dask<a class="headerlink" href="#papers-about-parts-of-dask" title="Permalink to this headline">¶</a></h2>
+<p>Rocklin, Matthew. “Dask: Parallel Computation with Blocked algorithms and Task
+Scheduling.” (2015).
+<a class="reference external" href="https://conference.scipy.org/proceedings/scipy2015/pdfs/matthew_rocklin.pdf">PDF</a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@InProceedings</span><span class="p">{</span> <span class="n">matthew_rocklin</span><span class="o">-</span><span class="n">proc</span><span class="o">-</span><span class="n">scipy</span><span class="o">-</span><span class="mi">2015</span><span class="p">,</span>
+  <span class="n">author</span>    <span class="o">=</span> <span class="p">{</span> <span class="n">Matthew</span> <span class="n">Rocklin</span> <span class="p">},</span>
+  <span class="n">title</span>     <span class="o">=</span> <span class="p">{</span> <span class="n">Dask</span><span class="p">:</span> <span class="n">Parallel</span> <span class="n">Computation</span> <span class="k">with</span> <span class="n">Blocked</span> <span class="n">algorithms</span> <span class="ow">and</span> <span class="n">Task</span> <span class="n">Scheduling</span> <span class="p">},</span>
+  <span class="n">booktitle</span> <span class="o">=</span> <span class="p">{</span> <span class="n">Proceedings</span> <span class="n">of</span> <span class="n">the</span> <span class="mi">14</span><span class="n">th</span> <span class="n">Python</span> <span class="ow">in</span> <span class="n">Science</span> <span class="n">Conference</span> <span class="p">},</span>
+  <span class="n">pages</span>     <span class="o">=</span> <span class="p">{</span> <span class="mi">130</span> <span class="o">-</span> <span class="mi">136</span> <span class="p">},</span>
+  <span class="n">year</span>      <span class="o">=</span> <span class="p">{</span> <span class="mi">2015</span> <span class="p">},</span>
+  <span class="n">editor</span>    <span class="o">=</span> <span class="p">{</span> <span class="n">Kathryn</span> <span class="n">Huff</span> <span class="ow">and</span> <span class="n">James</span> <span class="n">Bergstra</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="funding.html" class="btn btn-neutral float-right" title="Funding" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="gpu.html" class="btn btn-neutral float-left" title="GPUs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

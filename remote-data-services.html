@@ -1,0 +1,756 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Remote Data &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="GPUs" href="gpu.html" />
+    <link rel="prev" title="High Level Graphs" href="high-level-graphs.html" />
+    <link rel="shortcut icon" href="_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="array.html">Array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bag.html">Bag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataframe.html">DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">Task Graphs</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Remote Data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#optional-parameters">Optional Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#local-file-system">Local File System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hadoop-file-system">Hadoop File System</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#extra-configuration-for-pyarrow">Extra Configuration for PyArrow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#amazon-s3">Amazon S3</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#using-other-s3-compatible-services">Using Other S3-Compatible Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#google-cloud-storage">Google Cloud Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#azure">Azure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#http-s">HTTP(S)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#developer-api">Developer API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#internals">Internals</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#delimiters">Delimiters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compression">Compression</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#api">API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gpu.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Remote Data</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/remote-data-services.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="remote-data">
+<h1>Remote Data<a class="headerlink" href="#remote-data" title="Permalink to this headline">¶</a></h1>
+<p>Dask can read data from a variety of data stores including local file systems,
+network file systems, cloud object stores, and Hadoop.  Typically this is done
+by prepending a protocol like <code class="docutils literal notranslate"><span class="pre">&quot;s3://&quot;</span></code> to paths used in common data access
+functions like <code class="docutils literal notranslate"><span class="pre">dd.read_csv</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dask.dataframe</span> <span class="k">as</span> <span class="nn">dd</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;s3://bucket/path/to/data-*.csv&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s1">&#39;gcs://bucket/path/to/data-*.parq&#39;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">dask.bag</span> <span class="k">as</span> <span class="nn">db</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="s1">&#39;hdfs://path/to/*.json&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Dask uses <a class="reference external" href="https://filesystem-spec.readthedocs.io/">fsspec</a> for local, cluster and remote data IO. Other file interaction, such
+as loading of configuration, is done using ordinary python method.</p>
+<p>The following remote services are well supported and tested against the main
+codebase:</p>
+<ul class="simple">
+<li><p><strong>Local or Network File System</strong>: <code class="docutils literal notranslate"><span class="pre">file://</span></code> - the local file system, default in the absence of any protocol</p></li>
+<li><p><strong>Hadoop File System</strong>: <code class="docutils literal notranslate"><span class="pre">hdfs://</span></code> - Hadoop Distributed File System, for resilient, replicated
+files within a cluster. This uses <a class="reference external" href="https://arrow.apache.org/docs/python/">PyArrow</a> as the backend.</p></li>
+<li><p><strong>Amazon S3</strong>: <code class="docutils literal notranslate"><span class="pre">s3://</span></code> - Amazon S3 remote binary store, often used with Amazon EC2,
+using the library <a class="reference external" href="https://s3fs.readthedocs.io/">s3fs</a></p></li>
+<li><p><strong>Google Cloud Storage</strong>: <code class="docutils literal notranslate"><span class="pre">gcs://</span></code> or <code class="docutils literal notranslate"><span class="pre">gs:</span></code> - Google Cloud Storage, typically used with Google Compute
+resource using <a class="reference external" href="https://github.com/dask/gcsfs/">gcsfs</a> (in development)</p></li>
+<li><p><strong>HTTP(s)</strong>: <code class="docutils literal notranslate"><span class="pre">http://</span></code> or <code class="docutils literal notranslate"><span class="pre">https://</span></code> for reading data directly from HTTP web servers</p></li>
+<li><p><strong>Azure Datalake Storage</strong>: <code class="docutils literal notranslate"><span class="pre">adl://</span></code>, for use with the Microsoft
+Azure platform, using <a class="reference external" href="https://github.com/Azure/azure-data-lake-store-python">azure-data-lake-store-python</a>, is unavailable in the current release of
+<code class="docutils literal notranslate"><span class="pre">fsspec</span></code>, but a new version using Microsoft’s “protocol 2” should come soon.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">fsspec</span></code> also provides other file systems that may be of interest to Dask users, such as
+ssh, ftp and webhdfs. See the documentation for more information.</p>
+<p>When specifying a storage location, a URL should be provided using the general
+form <code class="docutils literal notranslate"><span class="pre">protocol://path/to/data</span></code>.  If no protocol is provided, the local
+file system is assumed (same as <code class="docutils literal notranslate"><span class="pre">file://</span></code>).</p>
+<p>Lower-level details on how Dask handles remote data is described is described
+below in the Internals section</p>
+<div class="section" id="optional-parameters">
+<h2>Optional Parameters<a class="headerlink" href="#optional-parameters" title="Permalink to this headline">¶</a></h2>
+<p>Two methods exist for passing parameters to the backend file system driver:
+extending the URL to include username, password, server, port, etc.; and
+providing <code class="docutils literal notranslate"><span class="pre">storage_options</span></code>, a dictionary of parameters to pass on. The
+second form is more general, as any number of file system-specific options
+can be passed.</p>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;hdfs://user@server:port/path/*.csv&#39;</span><span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s1">&#39;s3://bucket/path&#39;</span><span class="p">,</span>
+                     <span class="n">storage_options</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;anon&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;use_ssl&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>Details on how to provide configuration for the main back-ends
+are listed next, but further details can be found in the documentation pages of the
+relevant back-end.</p>
+<p>Each back-end has additional installation requirements and may not be available
+at runtime. The dictionary <code class="docutils literal notranslate"><span class="pre">fsspec.registry</span></code> contains the
+currently imported file systems. To see which backends <code class="docutils literal notranslate"><span class="pre">fsspec</span></code> knows how
+to import, you can do</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fsspec.registry</span> <span class="kn">import</span> <span class="n">known_implementations</span>
+<span class="n">known_implementations</span>
+</pre></div>
+</div>
+<p>Note that some backends appear twice, if they can be referenced with multiple
+protocol strings, like “http” and “https”.</p>
+</div>
+<div class="section" id="local-file-system">
+<h2>Local File System<a class="headerlink" href="#local-file-system" title="Permalink to this headline">¶</a></h2>
+<p>Local files are always accessible, and all parameters passed as part of the URL
+(beyond the path itself) or with the <code class="docutils literal notranslate"><span class="pre">storage_options</span></code>
+dictionary will be ignored.</p>
+<p>This is the default back-end, and the one used if no protocol is passed at all.</p>
+<p>We assume here that each worker has access to the same file system - either
+the workers are co-located on the same machine, or a network file system
+is mounted and referenced at the same path location for every worker node.</p>
+<p>Locations specified relative to the current working directory will, in
+general, be respected (as they would be with the built-in python <code class="docutils literal notranslate"><span class="pre">open</span></code>),
+but this may fail in the case that the client and worker processes do not
+necessarily have the same working directory.</p>
+</div>
+<div class="section" id="hadoop-file-system">
+<h2>Hadoop File System<a class="headerlink" href="#hadoop-file-system" title="Permalink to this headline">¶</a></h2>
+<p>The Hadoop File System (HDFS) is a widely deployed, distributed, data-local file
+system written in Java. This file system backs many clusters running Hadoop and
+Spark. HDFS support can be provided by <a class="reference external" href="https://arrow.apache.org/docs/python/">PyArrow</a>.</p>
+<p>By default, the back-end attempts to read the default server and port from
+local Hadoop configuration files on each node, so it may be that no
+configuration is required. However, the server, port, and user can be passed as
+part of the url: <code class="docutils literal notranslate"><span class="pre">hdfs://user:pass&#64;server:port/path/to/data</span></code>, or using the
+<code class="docutils literal notranslate"><span class="pre">storage_options=</span></code> kwarg.</p>
+<div class="section" id="extra-configuration-for-pyarrow">
+<h3>Extra Configuration for PyArrow<a class="headerlink" href="#extra-configuration-for-pyarrow" title="Permalink to this headline">¶</a></h3>
+<p>The following additional options may be passed to the <code class="docutils literal notranslate"><span class="pre">PyArrow</span></code> driver via
+<code class="docutils literal notranslate"><span class="pre">storage_options</span></code>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">host</span></code>, <code class="docutils literal notranslate"><span class="pre">port</span></code>, <code class="docutils literal notranslate"><span class="pre">user</span></code>: Basic authentication</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">kerb_ticket</span></code>: Path to kerberos ticket cache</p></li>
+</ul>
+</div></blockquote>
+<p>PyArrow’s <code class="docutils literal notranslate"><span class="pre">libhdfs</span></code> driver can also be affected by a few environment
+variables. For more information on these, see the <a class="reference external" href="https://arrow.apache.org/docs/python/filesystems.html#hadoop-file-system-hdfs">PyArrow documentation</a>.</p>
+</div>
+</div>
+<div class="section" id="amazon-s3">
+<h2>Amazon S3<a class="headerlink" href="#amazon-s3" title="Permalink to this headline">¶</a></h2>
+<p>Amazon S3 (Simple Storage Service) is a web service offered by Amazon Web
+Services.</p>
+<p>The S3 back-end available to Dask is s3fs, and is importable when Dask is
+imported.</p>
+<p>Authentication for S3 is provided by the underlying library boto3. As described
+in the <a class="reference external" href="https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html">auth docs</a>, this could be achieved by placing credentials files in one
+of several locations on each node: <code class="docutils literal notranslate"><span class="pre">~/.aws/credentials</span></code>, <code class="docutils literal notranslate"><span class="pre">~/.aws/config</span></code>,
+<code class="docutils literal notranslate"><span class="pre">/etc/boto.cfg</span></code>, and <code class="docutils literal notranslate"><span class="pre">~/.boto</span></code>. Alternatively, for nodes located
+within Amazon EC2, IAM roles can be set up for each node, and then no further
+configuration is required. The final authentication option for user
+credentials can be passed directly in the URL
+(<code class="docutils literal notranslate"><span class="pre">s3://keyID:keySecret/bucket/key/name</span></code>) or using <code class="docutils literal notranslate"><span class="pre">storage_options</span></code>. In
+this case, however, the key/secret will be passed to all workers in-the-clear,
+so this method is only recommended on well-secured networks.</p>
+<p>The following parameters may be passed to s3fs using <code class="docutils literal notranslate"><span class="pre">storage_options</span></code>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>anon: Whether access should be anonymous (default False)</p></li>
+<li><p>key, secret: For user authentication</p></li>
+<li><p>token: If authentication has been done with some other S3 client</p></li>
+<li><p>use_ssl: Whether connections are encrypted and secure (default True)</p></li>
+<li><p>client_kwargs: Dict passed to the <a class="reference external" href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/core/session.html#boto3.session.Session.client">boto3 client</a>, with keys such
+as <cite>region_name</cite> or <cite>endpoint_url</cite>. Notice: do not pass the <cite>config</cite>
+option here, please pass it’s content to <cite>config_kwargs</cite> instead.</p></li>
+<li><p>config_kwargs: Dict passed to the <a class="reference external" href="https://s3fs.readthedocs.io/en/latest/api.html#s3fs.core.S3FileSystem">s3fs.S3FileSystem</a>, which passes it to
+the <a class="reference external" href="https://botocore.amazonaws.com/v1/documentation/api/latest/reference/config.html">boto3 client’s config</a> option.</p></li>
+<li><p>requester_pays: Set True if the authenticated user will assume transfer
+costs, which is required by some providers of bulk data</p></li>
+<li><p>default_block_size, default_fill_cache: These are not of particular
+interest to Dask users, as they concern the behaviour of the buffer
+between successive reads</p></li>
+<li><p>kwargs: Other parameters are passed to the <a class="reference external" href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/core/session.html">boto3 Session</a> object,
+such as <cite>profile_name</cite>, to pick one of the authentication sections from
+the configuration files referred to above (see <a class="reference external" href="https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html#shared-credentials-file">here</a>)</p></li>
+</ul>
+</div></blockquote>
+<div class="section" id="using-other-s3-compatible-services">
+<h3>Using Other S3-Compatible Services<a class="headerlink" href="#using-other-s3-compatible-services" title="Permalink to this headline">¶</a></h3>
+<p>By using the <cite>endpoint_url</cite> option, you may use other s3-compatible services,
+for example, using <cite>AlibabaCloud OSS</cite>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dask_function</span><span class="p">(</span><span class="o">...</span><span class="p">,</span>
+    <span class="n">storage_options</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="o">...</span><span class="p">,</span>
+        <span class="s2">&quot;secret&quot;</span><span class="p">:</span> <span class="o">...</span><span class="p">,</span>
+        <span class="s2">&quot;client_kwargs&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;endpoint_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://some-region.some-s3-compatible.com&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="c1"># this dict goes to boto3 client&#39;s `config`</span>
+        <span class="c1">#   `addressing_style` is required by AlibabaCloud, other services may not</span>
+        <span class="s2">&quot;config_kwargs&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;s3&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;addressing_style&quot;</span><span class="p">:</span> <span class="s2">&quot;virtual&quot;</span><span class="p">}},</span>
+    <span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="google-cloud-storage">
+<h2>Google Cloud Storage<a class="headerlink" href="#google-cloud-storage" title="Permalink to this headline">¶</a></h2>
+<p>Google Cloud Storage is a RESTful online file storage web service for storing
+and accessing data on Google’s infrastructure.</p>
+<p>The GCS back-end is identified by the
+protocol identifiers <code class="docutils literal notranslate"><span class="pre">gcs</span></code> and <code class="docutils literal notranslate"><span class="pre">gs</span></code>, which are identical in their effect.</p>
+<p>Multiple modes of authentication are supported. These options should be
+included in the <code class="docutils literal notranslate"><span class="pre">storage_options</span></code> dictionary as <code class="docutils literal notranslate"><span class="pre">{'token':</span> <span class="pre">..}</span></code> submitted with your call
+to a storage-based Dask function/method. See the <a class="reference external" href="https://github.com/dask/gcsfs/">gcsfs</a> documentation for further
+details.</p>
+<p>General recommendations for distributed clusters, in order:</p>
+<ul class="simple">
+<li><p>use <code class="docutils literal notranslate"><span class="pre">anon</span></code> for public data</p></li>
+<li><p>use <code class="docutils literal notranslate"><span class="pre">cloud</span></code> if this is available</p></li>
+<li><p>use <a class="reference external" href="https://cloud.google.com/sdk/docs/">gcloud</a> to generate a JSON file, and distribute this to all workers, and
+supply the path to the file</p></li>
+<li><p>use gcsfs directly with the <code class="docutils literal notranslate"><span class="pre">browser</span></code> method to generate a token cache file
+(<code class="docutils literal notranslate"><span class="pre">~/.gcs_tokens</span></code>) and distribute this to all workers, thereafter using method <code class="docutils literal notranslate"><span class="pre">cache</span></code></p></li>
+</ul>
+<p>A final suggestion is shown below, which may be the fastest and simplest for authenticated access (as
+opposed to anonymous), since it will not require re-authentication. However, this method
+is not secure since credentials will be passed directly around the cluster. This is fine if
+you are certain that the cluster is itself secured. You need to create a <code class="docutils literal notranslate"><span class="pre">GCSFileSystem</span></code> object
+using any method that works for you and then pass its credentials directly:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gcs</span> <span class="o">=</span> <span class="n">GCSFileSystem</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">dask_function</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">storage_options</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;token&#39;</span><span class="p">:</span> <span class="n">gcs</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">credentials</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="azure">
+<h2>Azure<a class="headerlink" href="#azure" title="Permalink to this headline">¶</a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Support for <a class="reference external" href="https://azure-datalake-store.readthedocs.io/en/latest/api.html#azure.datalake.store.core.AzureDLFileSystem">AzureDLFileSystem</a> (ADL) is not currently offered. We hope to provide both
+datalake and blob support using Protocol 2 soon.</p>
+</div>
+<p>authentication in <code class="docutils literal notranslate"><span class="pre">storage_options=</span></code>,
+and all other parameters will be passed on to the <a class="reference external" href="https://azure-datalake-store.readthedocs.io/en/latest/api.html#azure.datalake.store.core.AzureDLFileSystem">AzureDLFileSystem</a> constructor
+(follow the link for further information). The auth parameters are passed directly to
+workers, so this should only be used within a secure cluster.</p>
+</div>
+<div class="section" id="http-s">
+<h2>HTTP(S)<a class="headerlink" href="#http-s" title="Permalink to this headline">¶</a></h2>
+<p>Direct file-like access to arbitrary URLs is available over HTTP and HTTPS. However,
+there is no such thing as <code class="docutils literal notranslate"><span class="pre">glob</span></code> functionality over HTTP, so only explicit lists
+of files can be used.</p>
+<p>Server implementations differ in the information they provide - they may or may
+not specify the size of a file via a HEAD request or at the start of a download -
+and some servers may not respect byte range requests. The HTTPFileSystem therefore
+offers best-effort behaviour: the download is streamed but, if more data is seen
+than the configured block-size, an error will be raised. To be able to access such
+data you must read the whole file in one shot (and it must fit in memory).</p>
+<p>Using a block size of 0 will return normal <code class="docutils literal notranslate"><span class="pre">requests</span></code> streaming file-like objects,
+which are stable, but provide no random access.</p>
+</div>
+<div class="section" id="developer-api">
+<h2>Developer API<a class="headerlink" href="#developer-api" title="Permalink to this headline">¶</a></h2>
+<p>The prototype for any file system back-end can be found in
+<code class="docutils literal notranslate"><span class="pre">fsspec.spec.AbstractFileSystem</span></code>. Any new implementation should provide the
+same API, or directly subclass, and make itself available as a protocol to Dask. For example, the
+following would register the protocol “myproto”, described by the implementation
+class <code class="docutils literal notranslate"><span class="pre">MyProtoFileSystem</span></code>. URLs of the form <code class="docutils literal notranslate"><span class="pre">myproto://</span></code> would thereafter
+be dispatched to the methods of this class:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fsspec</span><span class="o">.</span><span class="n">registry</span><span class="p">[</span><span class="s1">&#39;myproto&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MyProtoFileSystem</span>
+</pre></div>
+</div>
+<p>However, it would be better to submit a PR to <code class="docutils literal notranslate"><span class="pre">fsspec</span></code> to include the class in
+the <code class="docutils literal notranslate"><span class="pre">known_implementations</span></code>.</p>
+</div>
+<div class="section" id="internals">
+<h2>Internals<a class="headerlink" href="#internals" title="Permalink to this headline">¶</a></h2>
+<p>Dask contains internal tools for extensible data ingestion in the
+<code class="docutils literal notranslate"><span class="pre">dask.bytes</span></code> package and using <a class="reference external" href="https://filesystem-spec.readthedocs.io/">fsspec</a>.
+.  <em>These functions are developer-focused rather than for
+direct consumption by users.  These functions power user facing functions like</em>
+<code class="docutils literal notranslate"><span class="pre">dd.read_csv</span></code> <em>and</em> <code class="docutils literal notranslate"><span class="pre">db.read_text</span></code> <em>which are probably more useful for most
+users.</em></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.bytes.read_bytes" title="dask.bytes.read_bytes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_bytes</span></code></a>(urlpath[, delimiter, not_zero, …])</p></td>
+<td><p>Given a path or paths, return delayed objects that read from those paths.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dask.bytes.open_files" title="dask.bytes.open_files"><code class="xref py py-obj docutils literal notranslate"><span class="pre">open_files</span></code></a>(urlpath[, mode, compression, …])</p></td>
+<td><p>Given a path or paths, return a list of <code class="docutils literal notranslate"><span class="pre">OpenFile</span></code> objects.</p></td>
+</tr>
+</tbody>
+</table>
+<p>These functions are extensible in their output formats (bytes, file objects),
+their input locations (file system, S3, HDFS), line delimiters, and compression
+formats.</p>
+<p>Both functions are <em>lazy</em>, returning either
+point to blocks of bytes (<code class="docutils literal notranslate"><span class="pre">read_bytes</span></code>) or open file objects
+(<code class="docutils literal notranslate"><span class="pre">open_files</span></code>).  They can handle different storage backends by prepending
+protocols like <code class="docutils literal notranslate"><span class="pre">s3://</span></code> or <code class="docutils literal notranslate"><span class="pre">hdfs://</span></code> (see below). They handle compression formats
+listed in <code class="docutils literal notranslate"><span class="pre">fsspec.compression</span></code>, some of which may require additional packages
+to be installed.</p>
+<p>These functions are not used for all data sources.  Some data sources like HDF5
+are quite particular and receive custom treatment.</p>
+<div class="section" id="delimiters">
+<h3>Delimiters<a class="headerlink" href="#delimiters" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">read_bytes</span></code> function takes a path (or globstring of paths) and produces
+a sample of the first file and a list of delayed objects for each of the other
+files.  If passed a delimiter such as <code class="docutils literal notranslate"><span class="pre">delimiter=b'\n'</span></code>, it will ensure that
+the blocks of bytes start directly after a delimiter and end directly before a
+delimiter.  This allows other functions, like <code class="docutils literal notranslate"><span class="pre">pd.read_csv</span></code>, to operate on
+these delayed values with expected behavior.</p>
+<p>These delimiters are useful both for typical line-based formats (log files,
+CSV, JSON) as well as other delimited formats like Avro, which may separate
+logical chunks by a complex sentinel string. Note that the delimiter finding
+algorithm is simple, and will not account for characters that are escaped,
+part of a UTF-8 code sequence or within the quote marks of a string.</p>
+</div>
+<div class="section" id="compression">
+<h3>Compression<a class="headerlink" href="#compression" title="Permalink to this headline">¶</a></h3>
+<p>These functions support widely available compression technologies like <code class="docutils literal notranslate"><span class="pre">gzip</span></code>,
+<code class="docutils literal notranslate"><span class="pre">bz2</span></code>, <code class="docutils literal notranslate"><span class="pre">xz</span></code>, <code class="docutils literal notranslate"><span class="pre">snappy</span></code>, and <code class="docutils literal notranslate"><span class="pre">lz4</span></code>.  More compressions can be easily
+added by inserting functions into dictionaries available in the
+<code class="docutils literal notranslate"><span class="pre">fsspec.compression</span></code> module.  This can be done at runtime and need not be
+added directly to the codebase.</p>
+<p>However, most compression technologies like <code class="docutils literal notranslate"><span class="pre">gzip</span></code> do not support efficient
+random access, and so are useful for streaming <code class="docutils literal notranslate"><span class="pre">open_files</span></code> but not useful for
+<code class="docutils literal notranslate"><span class="pre">read_bytes</span></code> which splits files at various points.</p>
+</div>
+<div class="section" id="api">
+<h3>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="dask.bytes.read_bytes">
+<code class="sig-prename descclassname">dask.bytes.</code><code class="sig-name descname">read_bytes</code><span class="sig-paren">(</span><em class="sig-param">urlpath</em>, <em class="sig-param">delimiter=None</em>, <em class="sig-param">not_zero=False</em>, <em class="sig-param">blocksize='128 MiB'</em>, <em class="sig-param">sample='10 kiB'</em>, <em class="sig-param">compression=None</em>, <em class="sig-param">include_path=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bytes.read_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a path or paths, return delayed objects that read from those paths.</p>
+<p>The path may be a filename like <code class="docutils literal notranslate"><span class="pre">'2015-01-01.csv'</span></code> or a globstring
+like <code class="docutils literal notranslate"><span class="pre">'2015-*-*.csv'</span></code>.</p>
+<p>The path may be preceded by a protocol, like <code class="docutils literal notranslate"><span class="pre">s3://</span></code> or <code class="docutils literal notranslate"><span class="pre">hdfs://</span></code> if
+those libraries are installed.</p>
+<p>This cleanly breaks data by a delimiter if given, so that block boundaries
+start directly after a delimiter and end on the delimiter.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>urlpath</strong><span class="classifier">string or list</span></dt><dd><p>Absolute or relative filepath(s). Prefix with a protocol like <code class="docutils literal notranslate"><span class="pre">s3://</span></code>
+to read from alternative filesystems. To read from multiple files you
+can pass a globstring or a list of paths, with the caveat that they
+must all have the same protocol.</p>
+</dd>
+<dt><strong>delimiter</strong><span class="classifier">bytes</span></dt><dd><p>An optional delimiter, like <code class="docutils literal notranslate"><span class="pre">b'\n'</span></code> on which to split blocks of
+bytes.</p>
+</dd>
+<dt><strong>not_zero</strong><span class="classifier">bool</span></dt><dd><p>Force seek of start-of-file delimiter, discarding header.</p>
+</dd>
+<dt><strong>blocksize</strong><span class="classifier">int, str</span></dt><dd><p>Chunk size in bytes, defaults to “128 MiB”</p>
+</dd>
+<dt><strong>compression</strong><span class="classifier">string or None</span></dt><dd><p>String like ‘gzip’ or ‘xz’.  Must support efficient random access.</p>
+</dd>
+<dt><strong>sample</strong><span class="classifier">int, string, or boolean</span></dt><dd><p>Whether or not to return a header sample.
+Values can be <code class="docutils literal notranslate"><span class="pre">False</span></code> for “no sample requested”
+Or an integer or string value like <code class="docutils literal notranslate"><span class="pre">2**20</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;1</span> <span class="pre">MiB&quot;</span></code></p>
+</dd>
+<dt><strong>include_path</strong><span class="classifier">bool</span></dt><dd><p>Whether or not to include the path with the bytes representing a particular file.
+Default is False.</p>
+</dd>
+<dt><strong>**kwargs</strong><span class="classifier">dict</span></dt><dd><p>Extra options that make sense to a particular storage connection, e.g.
+host, port, username, password, etc.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl>
+<dt><strong>sample</strong><span class="classifier">bytes</span></dt><dd><p>The sample header</p>
+</dd>
+<dt><strong>blocks</strong><span class="classifier">list of lists of <code class="docutils literal notranslate"><span class="pre">dask.Delayed</span></code></span></dt><dd><p>Each list corresponds to a file, and each delayed object computes to a
+block of bytes from that file.</p>
+</dd>
+<dt><strong>paths</strong><span class="classifier">list of strings, only included if include_path is True</span></dt><dd><p>List of same length as blocks, where each item is the path to the file
+represented in the corresponding block.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sample</span><span class="p">,</span> <span class="n">blocks</span> <span class="o">=</span> <span class="n">read_bytes</span><span class="p">(</span><span class="s1">&#39;2015-*-*.csv&#39;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sample</span><span class="p">,</span> <span class="n">blocks</span> <span class="o">=</span> <span class="n">read_bytes</span><span class="p">(</span><span class="s1">&#39;s3://bucket/2015-*-*.csv&#39;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sample</span><span class="p">,</span> <span class="n">paths</span><span class="p">,</span> <span class="n">blocks</span> <span class="o">=</span> <span class="n">read_bytes</span><span class="p">(</span><span class="s1">&#39;2015-*-*.csv&#39;</span><span class="p">,</span> <span class="n">include_path</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="dask.bytes.open_files">
+<code class="sig-prename descclassname">dask.bytes.</code><code class="sig-name descname">open_files</code><span class="sig-paren">(</span><em class="sig-param">urlpath</em>, <em class="sig-param">mode='rb'</em>, <em class="sig-param">compression=None</em>, <em class="sig-param">encoding='utf8'</em>, <em class="sig-param">errors=None</em>, <em class="sig-param">name_function=None</em>, <em class="sig-param">num=1</em>, <em class="sig-param">protocol=None</em>, <em class="sig-param">newline=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bytes.open_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a path or paths, return a list of <code class="docutils literal notranslate"><span class="pre">OpenFile</span></code> objects.</p>
+<p>For writing, a str path must contain the “*” character, which will be filled
+in by increasing numbers, e.g., “part*” -&gt;  “part1”, “part2” if num=2.</p>
+<p>For either reading or writing, can instead provide explicit list of paths.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>urlpath: string or list</strong></dt><dd><p>Absolute or relative filepath(s). Prefix with a protocol like <code class="docutils literal notranslate"><span class="pre">s3://</span></code>
+to read from alternative filesystems. To read from multiple files you
+can pass a globstring or a list of paths, with the caveat that they
+must all have the same protocol.</p>
+</dd>
+<dt><strong>mode: ‘rb’, ‘wt’, etc.</strong></dt><dd></dd>
+<dt><strong>compression: string</strong></dt><dd><p>Compression to use.  See <code class="docutils literal notranslate"><span class="pre">dask.bytes.compression.files</span></code> for options.</p>
+</dd>
+<dt><strong>encoding: str</strong></dt><dd><p>For text mode only</p>
+</dd>
+<dt><strong>errors: None or str</strong></dt><dd><p>Passed to TextIOWrapper in text mode</p>
+</dd>
+<dt><strong>name_function: function or None</strong></dt><dd><p>if opening a set of files for writing, those files do not yet exist,
+so we need to generate their names by formatting the urlpath for
+each sequence number</p>
+</dd>
+<dt><strong>num: int [1]</strong></dt><dd><p>if writing mode, number of files we expect to create (passed to
+name+function)</p>
+</dd>
+<dt><strong>protocol: str or None</strong></dt><dd><p>If given, overrides the protocol found in the URL.</p>
+</dd>
+<dt><strong>newline: bytes or None</strong></dt><dd><p>Used for line terminator in text mode. If None, uses system default;
+if blank, uses no translation.</p>
+</dd>
+<dt><strong>**kwargs: dict</strong></dt><dd><p>Extra options that make sense to a particular storage connection, e.g.
+host, port, username, password, etc.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>List of ``OpenFile`` objects.</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">files</span> <span class="o">=</span> <span class="n">open_files</span><span class="p">(</span><span class="s1">&#39;2015-*-*.csv&#39;</span><span class="p">)</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">files</span> <span class="o">=</span> <span class="n">open_files</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;s3://bucket/2015-*-*.csv.gz&#39;</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s1">&#39;gzip&#39;</span>
+<span class="gp">... </span><span class="p">)</span>  
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="gpu.html" class="btn btn-neutral float-right" title="GPUs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="high-level-graphs.html" class="btn btn-neutral float-left" title="High Level Graphs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,469 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Indexing into Dask DataFrames &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Categoricals" href="dataframe-categoricals.html" />
+    <link rel="prev" title="Joins" href="dataframe-joins.html" />
+    <link rel="shortcut icon" href="_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="array.html">Array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bag.html">Bag</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="dataframe.html">DataFrame</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dataframe-api.html">API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-create.html">Create and Store Dask DataFrames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-best-practices.html">Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-design.html">Internal Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-groupby.html">Shuffling for GroupBy and Join</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-groupby.html#aggregate">Aggregate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-joins.html">Joins</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Indexing into Dask DataFrames</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#label-based-indexing">Label-based Indexing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#positional-indexing">Positional Indexing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-categoricals.html">Categoricals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-extend.html">Extending DataFrames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html#design">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html#dask-dataframe-copies-the-pandas-api">Dask DataFrame copies the Pandas API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html#common-uses-and-anti-uses">Common Uses and Anti-Uses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html#scope">Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html#execution">Execution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">Task Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="dataframe.html">DataFrame</a> &raquo;</li>
+        
+      <li>Indexing into Dask DataFrames</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/dataframe-indexing.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="indexing-into-dask-dataframes">
+<span id="dataframe-indexing"></span><h1>Indexing into Dask DataFrames<a class="headerlink" href="#indexing-into-dask-dataframes" title="Permalink to this headline">¶</a></h1>
+<p>Dask DataFrame supports some of Pandas’ indexing behavior.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="dataframe-api.html#dask.dataframe.DataFrame.iloc" title="dask.dataframe.DataFrame.iloc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataFrame.iloc</span></code></a></p></td>
+<td><p>Purely integer-location based indexing for selection by position.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="dataframe-api.html#dask.dataframe.DataFrame.loc" title="dask.dataframe.DataFrame.loc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataFrame.loc</span></code></a></p></td>
+<td><p>Purely label-location based indexer for selection by label.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="label-based-indexing">
+<h2>Label-based Indexing<a class="headerlink" href="#label-based-indexing" title="Permalink to this headline">¶</a></h2>
+<p>Just like Pandas, Dask DataFrame supports label-based indexing with the <code class="docutils literal notranslate"><span class="pre">.loc</span></code>
+accessor for selecting rows or columns, and <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> (square brackets)
+for selecting just columns.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To select rows, the DataFrame’s divisions must be known (see
+<a class="reference internal" href="dataframe-design.html#dataframe-design"><span class="std std-ref">Internal Design</span></a> and <a class="reference internal" href="dataframe-best-practices.html#dataframe-performance"><span class="std std-ref">Best Practices</span></a> for more information.)</p>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask.dataframe</span> <span class="k">as</span> <span class="nn">dd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]},</span>
+<span class="gp">... </span>                  <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ddf</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">npartitions</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ddf</span>
+<span class="go">Dask DataFrame Structure:</span>
+<span class="go">                   A      B</span>
+<span class="go">npartitions=1</span>
+<span class="go">a              int64  int64</span>
+<span class="go">c                ...    ...</span>
+<span class="go">Dask Name: from_pandas, 1 tasks</span>
+</pre></div>
+</div>
+<p>Selecting columns:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ddf</span><span class="p">[[</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">]]</span>
+<span class="go">Dask DataFrame Structure:</span>
+<span class="go">                   B      A</span>
+<span class="go">npartitions=1</span>
+<span class="go">a              int64  int64</span>
+<span class="go">c                ...    ...</span>
+<span class="go">Dask Name: getitem, 2 tasks</span>
+</pre></div>
+</div>
+<p>Selecting a single column reduces to a Dask Series:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ddf</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span>
+<span class="go">Dask Series Structure:</span>
+<span class="go">npartitions=1</span>
+<span class="go">a    int64</span>
+<span class="go">c      ...</span>
+<span class="go">Name: A, dtype: int64</span>
+<span class="go">Dask Name: getitem, 2 tasks</span>
+</pre></div>
+</div>
+<p>Slicing rows and (optionally) columns with <code class="docutils literal notranslate"><span class="pre">.loc</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ddf</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]]</span>
+<span class="go">Dask DataFrame Structure:</span>
+<span class="go">                   A</span>
+<span class="go">npartitions=1</span>
+<span class="go">b              int64</span>
+<span class="go">c                ...</span>
+<span class="go">Dask Name: loc, 2 tasks</span>
+</pre></div>
+</div>
+<p>Dask DataFrame supports Pandas’ <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/timeseries.html#partial-string-indexing">partial-string indexing</a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">demo</span><span class="o">.</span><span class="n">make_timeseries</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span>
+<span class="go">Dask DataFrame Structure:</span>
+<span class="go">                   id    name        x        y</span>
+<span class="go">npartitions=11</span>
+<span class="go">2000-01-31      int64  object  float64  float64</span>
+<span class="go">2000-02-29        ...     ...      ...      ...</span>
+<span class="gp">... </span>              <span class="o">...</span>     <span class="o">...</span>      <span class="o">...</span>      <span class="o">...</span>
+<span class="go">2000-11-30        ...     ...      ...      ...</span>
+<span class="go">2000-12-31        ...     ...      ...      ...</span>
+<span class="go">Dask Name: make-timeseries, 11 tasks</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;2000-02-12&#39;</span><span class="p">]</span>
+<span class="go">Dask DataFrame Structure:</span>
+<span class="go">                                  id    name        x        y</span>
+<span class="go">npartitions=1</span>
+<span class="go">2000-02-12 00:00:00.000000000  int64  object  float64  float64</span>
+<span class="go">2000-02-12 23:59:59.999999999    ...     ...      ...      ...</span>
+<span class="go">Dask Name: loc, 12 tasks</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="positional-indexing">
+<h2>Positional Indexing<a class="headerlink" href="#positional-indexing" title="Permalink to this headline">¶</a></h2>
+<p>Dask DataFrame does not track the length of partitions, making positional
+indexing with <code class="docutils literal notranslate"><span class="pre">.iloc</span></code> inefficient for selecting rows. <a class="reference internal" href="dataframe-api.html#dask.dataframe.DataFrame.iloc" title="dask.dataframe.DataFrame.iloc"><code class="xref py py-meth docutils literal notranslate"><span class="pre">DataFrame.iloc()</span></code></a>
+only supports indexers where the row indexer is <code class="docutils literal notranslate"><span class="pre">slice(None)</span></code> (which <code class="docutils literal notranslate"><span class="pre">:</span></code> is
+a shorthand for.)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ddf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
+<span class="go">Dask DataFrame Structure:</span>
+<span class="go">                   B      A</span>
+<span class="go">npartitions=1</span>
+<span class="go">a              int64  int64</span>
+<span class="go">c                ...    ...</span>
+<span class="go">Dask Name: iloc, 2 tasks</span>
+</pre></div>
+</div>
+<p>Trying to select specific rows with <code class="docutils literal notranslate"><span class="pre">iloc</span></code> will raise an exception:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ddf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+<span class="go">Traceback (most recent call last)</span>
+<span class="go">  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span>
+<span class="go">ValueError: &#39;DataFrame.iloc&#39; does not support slicing rows. The indexer must be a 2-tuple whose first item is &#39;slice(None)&#39;.</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="dataframe-categoricals.html" class="btn btn-neutral float-right" title="Categoricals" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dataframe-joins.html" class="btn btn-neutral float-left" title="Joins" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

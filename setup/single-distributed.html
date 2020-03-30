@@ -1,0 +1,479 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Single Machine: dask.distributed &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Command Line" href="cli.html" />
+    <link rel="prev" title="Single-Machine Scheduler" href="single-machine.html" />
+    <link rel="shortcut icon" href="../_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="../_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Install Dask</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../setup.html">Setup</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="single-machine.html">Single-Machine Scheduler</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Single Machine: dask.distributed</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#client">Client</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#localcluster">LocalCluster</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html">Command Line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssh.html">SSH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hpc.html">High Performance Computers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kubernetes.html">Kubernetes</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://yarn.dask.org/en/latest/">YARN / Hadoop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python-advanced.html">Python API (advanced)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud.html">Cloud Deployments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adaptive.html">Adaptive Deployments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docker.html">Docker Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom-startup.html">Custom Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prometheus.html">Prometheus Monitoring</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../array.html">Array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bag.html">Bag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dataframe.html">DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphs.html">Task Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gpu.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../setup.html">Setup</a> &raquo;</li>
+        
+      <li>Single Machine: dask.distributed</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/setup/single-distributed.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="single-machine-dask-distributed">
+<h1>Single Machine: dask.distributed<a class="headerlink" href="#single-machine-dask-distributed" title="Permalink to this headline">¶</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">dask.distributed</span></code> scheduler works well on a single machine.  It is sometimes
+preferred over the default scheduler for the following reasons:</p>
+<ol class="arabic simple">
+<li><p>It provides access to asynchronous API, notably <a class="reference internal" href="../futures.html"><span class="doc">Futures</span></a></p></li>
+<li><p>It provides a diagnostic dashboard that can provide valuable insight on
+performance and progress</p></li>
+<li><p>It handles data locality with more sophistication, and so can be more
+efficient than the multiprocessing scheduler on workloads that require
+multiple processes</p></li>
+</ol>
+<p>You can create a <code class="docutils literal notranslate"><span class="pre">dask.distributed</span></code> scheduler by importing and creating a
+<code class="docutils literal notranslate"><span class="pre">Client</span></code> with no arguments.  This overrides whatever default was previously
+set.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You can navigate to <a class="reference external" href="http://localhost:8787/status">http://localhost:8787/status</a> to see the diagnostic
+dashboard if you have Bokeh installed.</p>
+<div class="section" id="client">
+<h2>Client<a class="headerlink" href="#client" title="Permalink to this headline">¶</a></h2>
+<p>You can trivially set up a local cluster on your machine by instantiating a Dask
+Client with no arguments</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This sets up a scheduler in your local process and several processes running
+single-threaded Workers.</p>
+<p>If you want to run workers in your same process, you can pass the
+<code class="docutils literal notranslate"><span class="pre">processes=False</span></code> keyword argument.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">processes</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is sometimes preferable if you want to avoid inter-worker communication
+and your computations release the GIL.  This is common when primarily using
+NumPy or Dask Array.</p>
+</div>
+<div class="section" id="localcluster">
+<h2>LocalCluster<a class="headerlink" href="#localcluster" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">Client()</span></code> call described above is shorthand for creating a LocalCluster
+and then passing that to your client.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">LocalCluster</span>
+<span class="n">cluster</span> <span class="o">=</span> <span class="n">LocalCluster</span><span class="p">()</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">cluster</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is equivalent, but somewhat more explicit.  You may want to look at the
+keyword arguments available on <code class="docutils literal notranslate"><span class="pre">LocalCluster</span></code> to understand the options available
+to you on handling the mixture of threads and processes, like specifying explicit
+ports, and so on.</p>
+<dl class="class">
+<dt id="distributed.deploy.local.LocalCluster">
+<em class="property">class </em><code class="sig-prename descclassname">distributed.deploy.local.</code><code class="sig-name descname">LocalCluster</code><span class="sig-paren">(</span><em class="sig-param">n_workers=None</em>, <em class="sig-param">threads_per_worker=None</em>, <em class="sig-param">processes=True</em>, <em class="sig-param">loop=None</em>, <em class="sig-param">start=None</em>, <em class="sig-param">host=None</em>, <em class="sig-param">ip=None</em>, <em class="sig-param">scheduler_port=0</em>, <em class="sig-param">silence_logs=30</em>, <em class="sig-param">dashboard_address=':8787'</em>, <em class="sig-param">worker_dashboard_address=None</em>, <em class="sig-param">diagnostics_port=None</em>, <em class="sig-param">services=None</em>, <em class="sig-param">worker_services=None</em>, <em class="sig-param">service_kwargs=None</em>, <em class="sig-param">asynchronous=False</em>, <em class="sig-param">security=None</em>, <em class="sig-param">protocol=None</em>, <em class="sig-param">blocked_handlers=None</em>, <em class="sig-param">interface=None</em>, <em class="sig-param">worker_class=None</em>, <em class="sig-param">**worker_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.deploy.local.LocalCluster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create local Scheduler and Workers</p>
+<p>This creates a “cluster” of a scheduler and workers running on the local
+machine.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>n_workers: int</strong></dt><dd><p>Number of workers to start</p>
+</dd>
+<dt><strong>processes: bool</strong></dt><dd><p>Whether to use processes (True) or threads (False).  Defaults to True</p>
+</dd>
+<dt><strong>threads_per_worker: int</strong></dt><dd><p>Number of threads per each worker</p>
+</dd>
+<dt><strong>scheduler_port: int</strong></dt><dd><p>Port of the scheduler.  8786 by default, use 0 to choose a random port</p>
+</dd>
+<dt><strong>silence_logs: logging level</strong></dt><dd><p>Level of logs to print out to stdout.  <code class="docutils literal notranslate"><span class="pre">logging.WARN</span></code> by default.
+Use a falsey value like False or None for no change.</p>
+</dd>
+<dt><strong>host: string</strong></dt><dd><p>Host address on which the scheduler will listen, defaults to only localhost</p>
+</dd>
+<dt><strong>ip: string</strong></dt><dd><p>Deprecated.  See <code class="docutils literal notranslate"><span class="pre">host</span></code> above.</p>
+</dd>
+<dt><strong>dashboard_address: str</strong></dt><dd><p>Address on which to listen for the Bokeh diagnostics server like
+‘localhost:8787’ or ‘0.0.0.0:8787’.  Defaults to ‘:8787’.
+Set to <code class="docutils literal notranslate"><span class="pre">None</span></code> to disable the dashboard.
+Use ‘:0’ for a random port.</p>
+</dd>
+<dt><strong>diagnostics_port: int</strong></dt><dd><p>Deprecated.  See dashboard_address.</p>
+</dd>
+<dt><strong>asynchronous: bool (False by default)</strong></dt><dd><p>Set to True if using this cluster within async/await functions or within
+Tornado gen.coroutines.  This should remain False for normal use.</p>
+</dd>
+<dt><strong>blocked_handlers: List[str]</strong></dt><dd><p>A list of strings specifying a blacklist of handlers to disallow on the Scheduler,
+like <code class="docutils literal notranslate"><span class="pre">['feed',</span> <span class="pre">'run_function']</span></code></p>
+</dd>
+<dt><strong>service_kwargs: Dict[str, Dict]</strong></dt><dd><p>Extra keywords to hand to the running services</p>
+</dd>
+<dt><strong>security</strong><span class="classifier">Security or bool, optional</span></dt><dd><p>Configures communication security in this cluster. Can be a security
+object, or True. If True, temporary self-signed credentials will
+be created automatically.</p>
+</dd>
+<dt><strong>protocol: str (optional)</strong></dt><dd><p>Protocol to use like <code class="docutils literal notranslate"><span class="pre">tcp://</span></code>, <code class="docutils literal notranslate"><span class="pre">tls://</span></code>, <code class="docutils literal notranslate"><span class="pre">inproc://</span></code>
+This defaults to sensible choice given other keyword arguments like
+<code class="docutils literal notranslate"><span class="pre">processes</span></code> and <code class="docutils literal notranslate"><span class="pre">security</span></code></p>
+</dd>
+<dt><strong>interface: str (optional)</strong></dt><dd><p>Network interface to use.  Defaults to lo/localhost</p>
+</dd>
+<dt><strong>worker_class: Worker</strong></dt><dd><p>Worker class used to instantiate workers from.</p>
+</dd>
+<dt><strong>**worker_kwargs:</strong></dt><dd><p>Extra worker arguments. Any additional keyword arguments will be passed
+to the <code class="docutils literal notranslate"><span class="pre">Worker</span></code> class constructor.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cluster</span> <span class="o">=</span> <span class="n">LocalCluster</span><span class="p">()</span>  <span class="c1"># Create a local cluster with as many workers as cores  </span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cluster</span>  
+<span class="go">LocalCluster(&quot;127.0.0.1:8786&quot;, workers=8, threads=8)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">cluster</span><span class="p">)</span>  <span class="c1"># connect to local cluster  </span>
+</pre></div>
+</div>
+<p>Scale the cluster to three workers</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cluster</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>  
+</pre></div>
+</div>
+<p>Pass extra keyword arguments to Bokeh</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">LocalCluster</span><span class="p">(</span><span class="n">service_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;dashboard&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;prefix&#39;</span><span class="p">:</span> <span class="s1">&#39;/foo&#39;</span><span class="p">}})</span>  
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="cli.html" class="btn btn-neutral float-right" title="Command Line" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="single-machine.html" class="btn btn-neutral float-left" title="Single-Machine Scheduler" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

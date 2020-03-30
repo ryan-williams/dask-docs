@@ -1,0 +1,1842 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>API &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="DataFrame" href="dataframe.html" />
+    <link rel="prev" title="Create Dask Bags" href="bag-creation.html" />
+    <link rel="shortcut icon" href="_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="array.html">Array</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="bag.html">Bag</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="bag-creation.html">Create Dask Bags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bag-creation.html#store-dask-bags">Store Dask Bags</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#create-bags">Create Bags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#top-level-functions">Top-level functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#turn-bags-into-other-things">Turn Bags into other things</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bag-methods">Bag methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#other-functions">Other functions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="bag.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bag.html#design">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bag.html#common-uses">Common Uses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bag.html#execution">Execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bag.html#known-limitations">Known Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bag.html#name">Name</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dataframe.html">DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">Task Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="bag.html">Bag</a> &raquo;</li>
+        
+      <li>API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/bag-api.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="api">
+<h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
+<p>Top level user functions:</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.bag.Bag" title="dask.bag.Bag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag</span></code></a>(dsk, name, npartitions)</p></td>
+<td><p>Parallel collection of Python objects</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dask.bag.Bag.all" title="dask.bag.Bag.all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.all</span></code></a>([split_every])</p></td>
+<td><p>Are all elements truthy?</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.bag.Bag.any" title="dask.bag.Bag.any"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.any</span></code></a>([split_every])</p></td>
+<td><p>Are any of the elements truthy?</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.compute</span></code>(**kwargs)</p></td>
+<td><p>Compute this dask collection</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.bag.Bag.count" title="dask.bag.Bag.count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.count</span></code></a>([split_every])</p></td>
+<td><p>Count the number of elements.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dask.bag.Bag.distinct" title="dask.bag.Bag.distinct"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.distinct</span></code></a>([key])</p></td>
+<td><p>Distinct elements of collection</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.bag.Bag.filter" title="dask.bag.Bag.filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.filter</span></code></a>(predicate)</p></td>
+<td><p>Filter elements in collection by a predicate function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dask.bag.Bag.flatten" title="dask.bag.Bag.flatten"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.flatten</span></code></a>()</p></td>
+<td><p>Concatenate nested lists into one long list.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.bag.Bag.fold" title="dask.bag.Bag.fold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.fold</span></code></a>(binop[, combine, initial, …])</p></td>
+<td><p>Parallelizable reduction</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dask.bag.Bag.foldby" title="dask.bag.Bag.foldby"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.foldby</span></code></a>(key, binop[, initial, combine, …])</p></td>
+<td><p>Combined reduction and groupby.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.bag.Bag.frequencies" title="dask.bag.Bag.frequencies"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.frequencies</span></code></a>([split_every, sort])</p></td>
+<td><p>Count number of occurrences of each distinct element.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dask.bag.Bag.groupby" title="dask.bag.Bag.groupby"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.groupby</span></code></a>(grouper[, method, npartitions, …])</p></td>
+<td><p>Group collection by key function</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.bag.Bag.join" title="dask.bag.Bag.join"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.join</span></code></a>(other, on_self[, on_other])</p></td>
+<td><p>Joins collection with another collection.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dask.bag.Bag.map" title="dask.bag.Bag.map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.map</span></code></a>(func, *args, **kwargs)</p></td>
+<td><p>Apply a function elementwise across one or more bags.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.bag.Bag.map_partitions" title="dask.bag.Bag.map_partitions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.map_partitions</span></code></a>(func, *args, **kwargs)</p></td>
+<td><p>Apply a function to every partition across one or more bags.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dask.bag.Bag.max" title="dask.bag.Bag.max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.max</span></code></a>([split_every])</p></td>
+<td><p>Maximum element</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.bag.Bag.mean" title="dask.bag.Bag.mean"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.mean</span></code></a>()</p></td>
+<td><p>Arithmetic mean</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dask.bag.Bag.min" title="dask.bag.Bag.min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.min</span></code></a>([split_every])</p></td>
+<td><p>Minimum element</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.bag.Bag.pluck" title="dask.bag.Bag.pluck"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.pluck</span></code></a>(key[, default])</p></td>
+<td><p>Select item from all tuples/dicts in collection.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dask.bag.Bag.product" title="dask.bag.Bag.product"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.product</span></code></a>(other)</p></td>
+<td><p>Cartesian product between two bags.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.bag.Bag.reduction" title="dask.bag.Bag.reduction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.reduction</span></code></a>(perpartition, aggregate[, …])</p></td>
+<td><p>Reduce collection with reduction operators.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dask.bag.Bag.random_sample" title="dask.bag.Bag.random_sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.random_sample</span></code></a>(prob[, random_state])</p></td>
+<td><p>Return elements from bag with probability of <code class="docutils literal notranslate"><span class="pre">prob</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.bag.Bag.remove" title="dask.bag.Bag.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.remove</span></code></a>(predicate)</p></td>
+<td><p>Remove elements in collection that match predicate.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dask.bag.Bag.repartition" title="dask.bag.Bag.repartition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.repartition</span></code></a>(npartitions)</p></td>
+<td><p>Changes the number of partitions of the bag.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.bag.Bag.starmap" title="dask.bag.Bag.starmap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.starmap</span></code></a>(func, **kwargs)</p></td>
+<td><p>Apply a function using argument tuples from the given bag.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dask.bag.Bag.std" title="dask.bag.Bag.std"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.std</span></code></a>([ddof])</p></td>
+<td><p>Standard deviation</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.bag.Bag.sum" title="dask.bag.Bag.sum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.sum</span></code></a>([split_every])</p></td>
+<td><p>Sum all elements</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dask.bag.Bag.take" title="dask.bag.Bag.take"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.take</span></code></a>(k[, npartitions, compute, warn])</p></td>
+<td><p>Take the first k elements.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.bag.Bag.to_dataframe" title="dask.bag.Bag.to_dataframe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.to_dataframe</span></code></a>([meta, columns])</p></td>
+<td><p>Create Dask Dataframe from a Dask Bag.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dask.bag.Bag.to_delayed" title="dask.bag.Bag.to_delayed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.to_delayed</span></code></a>([optimize_graph])</p></td>
+<td><p>Convert into a list of <code class="docutils literal notranslate"><span class="pre">dask.delayed</span></code> objects, one per partition.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.bag.Bag.to_textfiles" title="dask.bag.Bag.to_textfiles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.to_textfiles</span></code></a>(path[, name_function, …])</p></td>
+<td><p>Write dask Bag to disk, one filename per partition, one line per element.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dask.bag.Bag.to_avro" title="dask.bag.Bag.to_avro"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.to_avro</span></code></a>(filename, schema[, …])</p></td>
+<td><p>Write bag to set of avro files</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.bag.Bag.topk" title="dask.bag.Bag.topk"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.topk</span></code></a>(k[, key, split_every])</p></td>
+<td><p>K largest elements in collection</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dask.bag.Bag.var" title="dask.bag.Bag.var"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.var</span></code></a>([ddof])</p></td>
+<td><p>Variance</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.visualize</span></code>([filename, format, optimize_graph])</p></td>
+<td><p>Render the computation of this object’s task graph using graphviz.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="create-bags">
+<h2>Create Bags<a class="headerlink" href="#create-bags" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.bag.from_sequence" title="dask.bag.from_sequence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_sequence</span></code></a>(seq[, partition_size, npartitions])</p></td>
+<td><p>Create a dask Bag from Python sequence.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dask.bag.from_delayed" title="dask.bag.from_delayed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_delayed</span></code></a>(values)</p></td>
+<td><p>Create bag from many dask Delayed objects.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.bag.read_text" title="dask.bag.read_text"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_text</span></code></a>(urlpath[, blocksize, compression, …])</p></td>
+<td><p>Read lines from text files</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dask.bag.from_url" title="dask.bag.from_url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_url</span></code></a>(urls)</p></td>
+<td><p>Create a dask Bag from a url.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.bag.read_avro" title="dask.bag.read_avro"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_avro</span></code></a>(urlpath[, blocksize, …])</p></td>
+<td><p>Read set of avro files</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dask.bag.range" title="dask.bag.range"><code class="xref py py-obj docutils literal notranslate"><span class="pre">range</span></code></a>(n, npartitions)</p></td>
+<td><p>Numbers from zero to n</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="top-level-functions">
+<h2>Top-level functions<a class="headerlink" href="#top-level-functions" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.bag.concat" title="dask.bag.concat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concat</span></code></a>(bags)</p></td>
+<td><p>Concatenate many bags together, unioning all elements.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dask.bag.map" title="dask.bag.map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">map</span></code></a>(func, *args, **kwargs)</p></td>
+<td><p>Apply a function elementwise across one or more bags.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.bag.map_partitions" title="dask.bag.map_partitions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">map_partitions</span></code></a>(func, *args, **kwargs)</p></td>
+<td><p>Apply a function to every partition across one or more bags.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dask.bag.zip" title="dask.bag.zip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zip</span></code></a>(*bags)</p></td>
+<td><p>Partition-wise bag zip</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="turn-bags-into-other-things">
+<h2>Turn Bags into other things<a class="headerlink" href="#turn-bags-into-other-things" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.bag.Bag.to_textfiles" title="dask.bag.Bag.to_textfiles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.to_textfiles</span></code></a>(path[, name_function, …])</p></td>
+<td><p>Write dask Bag to disk, one filename per partition, one line per element.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dask.bag.Bag.to_dataframe" title="dask.bag.Bag.to_dataframe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.to_dataframe</span></code></a>([meta, columns])</p></td>
+<td><p>Create Dask Dataframe from a Dask Bag.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.bag.Bag.to_delayed" title="dask.bag.Bag.to_delayed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.to_delayed</span></code></a>([optimize_graph])</p></td>
+<td><p>Convert into a list of <code class="docutils literal notranslate"><span class="pre">dask.delayed</span></code> objects, one per partition.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dask.bag.Bag.to_avro" title="dask.bag.Bag.to_avro"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.to_avro</span></code></a>(filename, schema[, …])</p></td>
+<td><p>Write bag to set of avro files</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="bag-methods">
+<h2>Bag methods<a class="headerlink" href="#bag-methods" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="dask.bag.Bag">
+<em class="property">class </em><code class="sig-prename descclassname">dask.bag.</code><code class="sig-name descname">Bag</code><span class="sig-paren">(</span><em class="sig-param">dsk</em>, <em class="sig-param">name</em>, <em class="sig-param">npartitions</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parallel collection of Python objects</p>
+<p class="rubric">Examples</p>
+<p>Create Bag from sequence</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask.bag</span> <span class="k">as</span> <span class="nn">db</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">from_sequence</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">10</span><span class="p">))</span>  
+<span class="go">[0, 20, 40]</span>
+</pre></div>
+</div>
+<p>Create Bag from filename or globstring of filenames</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="s1">&#39;/path/to/mydata.*.json.gz&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">)</span>  
+</pre></div>
+</div>
+<p>Create manually (expert use)</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dsk</span> <span class="o">=</span> <span class="p">{(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="p">(</span><span class="nb">range</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+<span class="gp">... </span>       <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="p">(</span><span class="nb">range</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+<span class="gp">... </span>       <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span> <span class="p">(</span><span class="nb">range</span><span class="p">,</span> <span class="mi">5</span><span class="p">)}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">Bag</span><span class="p">(</span><span class="n">dsk</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">npartitions</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">10</span><span class="p">))</span>  
+<span class="go">[0, 0, 0, 10, 10, 10, 20, 20, 20, 30, 30, 30, 40, 40, 40]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">int</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">))</span>  
+<span class="go">30</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="dask.bag.Bag.accumulate">
+<code class="sig-name descname">accumulate</code><span class="sig-paren">(</span><em class="sig-param">binop</em>, <em class="sig-param">initial='__no__default__'</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.accumulate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Repeatedly apply binary function to a sequence, accumulating results.</p>
+<p>This assumes that the bag is ordered.  While this is typically the case
+not all Dask.bag functions preserve this property.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">add</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">from_sequence</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">npartitions</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">accumulate</span><span class="p">(</span><span class="n">add</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>  
+<span class="go">[1, 3, 6, 10, 15]</span>
+</pre></div>
+</div>
+<p>Accumulate also takes an optional argument that will be used as the
+first value.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">accumulate</span><span class="p">(</span><span class="n">add</span><span class="p">,</span> <span class="n">initial</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  
+<span class="go">[-1, 0, 2, 5, 9, 14]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.all">
+<code class="sig-name descname">all</code><span class="sig-paren">(</span><em class="sig-param">split_every=None</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Are all elements truthy?</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.any">
+<code class="sig-name descname">any</code><span class="sig-paren">(</span><em class="sig-param">split_every=None</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.any" title="Permalink to this definition">¶</a></dt>
+<dd><p>Are any of the elements truthy?</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.count">
+<code class="sig-name descname">count</code><span class="sig-paren">(</span><em class="sig-param">split_every=None</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Count the number of elements.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.distinct">
+<code class="sig-name descname">distinct</code><span class="sig-paren">(</span><em class="sig-param">key=None</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.distinct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Distinct elements of collection</p>
+<p>Unordered without repeats.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>key: {callable,str}</strong></dt><dd><p>Defines uniqueness of items in bag by calling <code class="docutils literal notranslate"><span class="pre">key</span></code> on each item.
+If a string is passed <code class="docutils literal notranslate"><span class="pre">key</span></code> is considered to be <code class="docutils literal notranslate"><span class="pre">lambda</span> <span class="pre">x:</span> <span class="pre">x[key]</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">from_sequence</span><span class="p">([</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;Alice&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">distinct</span><span class="p">())</span>
+<span class="go">[&#39;Alice&#39;, &#39;Bob&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">from_sequence</span><span class="p">([{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Alice&#39;</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Bob&#39;</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Alice&#39;</span><span class="p">}])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">distinct</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="go">[{&#39;name&#39;: &#39;Alice&#39;}, {&#39;name&#39;: &#39;Bob&#39;}]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">distinct</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;name&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="go">[{&#39;name&#39;: &#39;Alice&#39;}, {&#39;name&#39;: &#39;Bob&#39;}]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.filter">
+<code class="sig-name descname">filter</code><span class="sig-paren">(</span><em class="sig-param">predicate</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter elements in collection by a predicate function.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">iseven</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask.bag</span> <span class="k">as</span> <span class="nn">db</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">from_sequence</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">iseven</span><span class="p">))</span>  
+<span class="go">[0, 2, 4]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.flatten">
+<code class="sig-name descname">flatten</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.flatten" title="Permalink to this definition">¶</a></dt>
+<dd><p>Concatenate nested lists into one long list.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">from_sequence</span><span class="p">([[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="go">[[1], [2, 3]]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+<span class="go">[1, 2, 3]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.fold">
+<code class="sig-name descname">fold</code><span class="sig-paren">(</span><em class="sig-param">binop</em>, <em class="sig-param">combine=None</em>, <em class="sig-param">initial='__no__default__'</em>, <em class="sig-param">split_every=None</em>, <em class="sig-param">out_type=&lt;class 'dask.bag.core.Item'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.fold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parallelizable reduction</p>
+<p>Fold is like the builtin function <code class="docutils literal notranslate"><span class="pre">reduce</span></code> except that it works in
+parallel.  Fold takes two binary operator functions, one to reduce each
+partition of our dataset and another to combine results between
+partitions</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">binop</span></code>: Binary operator to reduce within each partition</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">combine</span></code>:  Binary operator to combine results from binop</p></li>
+</ol>
+<p>Sequentially this would look like the following:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">intermediates</span> <span class="o">=</span> <span class="p">[</span><span class="n">reduce</span><span class="p">(</span><span class="n">binop</span><span class="p">,</span> <span class="n">part</span><span class="p">)</span> <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">partitions</span><span class="p">]</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">final</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="n">combine</span><span class="p">,</span> <span class="n">intermediates</span><span class="p">)</span>  
+</pre></div>
+</div>
+<p>If only one function is given then it is used for both functions
+<code class="docutils literal notranslate"><span class="pre">binop</span></code> and <code class="docutils literal notranslate"><span class="pre">combine</span></code> as in the following example to compute the
+sum:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">from_sequence</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">add</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>  
+<span class="go">10</span>
+</pre></div>
+</div>
+<p>In full form we provide both binary operators as well as their default
+arguments</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">binop</span><span class="o">=</span><span class="n">add</span><span class="p">,</span> <span class="n">combine</span><span class="o">=</span><span class="n">add</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>  
+<span class="go">10</span>
+</pre></div>
+</div>
+<p>More complex binary operators are also doable</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">add_to_set</span><span class="p">(</span><span class="n">acc</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="sd">&#39;&#39;&#39; Add new element x to set acc &#39;&#39;&#39;</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">acc</span> <span class="o">|</span> <span class="nb">set</span><span class="p">([</span><span class="n">x</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">add_to_set</span><span class="p">,</span> <span class="nb">set</span><span class="o">.</span><span class="n">union</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="nb">set</span><span class="p">())</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>  
+<span class="go">{1, 2, 3, 4, 5}</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#dask.bag.Bag.foldby" title="dask.bag.Bag.foldby"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.foldby</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.foldby">
+<code class="sig-name descname">foldby</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">binop</em>, <em class="sig-param">initial='__no__default__'</em>, <em class="sig-param">combine=None</em>, <em class="sig-param">combine_initial='__no__default__'</em>, <em class="sig-param">split_every=None</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.foldby" title="Permalink to this definition">¶</a></dt>
+<dd><p>Combined reduction and groupby.</p>
+<p>Foldby provides a combined groupby and reduce for efficient parallel
+split-apply-combine tasks.</p>
+<p>The computation</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">foldby</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">binop</span><span class="p">,</span> <span class="n">init</span><span class="p">)</span>                        
+</pre></div>
+</div>
+<p>is equivalent to the following:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">reduction</span><span class="p">(</span><span class="n">group</span><span class="p">):</span>                               
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">reduce</span><span class="p">(</span><span class="n">binop</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">init</span><span class="p">)</span>               
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">reduction</span><span class="p">(</span><span class="n">v</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>But uses minimal communication and so is <em>much</em> faster.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">from_sequence</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">iseven</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">add</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">dict</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">foldby</span><span class="p">(</span><span class="n">iseven</span><span class="p">,</span> <span class="n">add</span><span class="p">))</span>                         
+<span class="go">{True: 20, False: 25}</span>
+</pre></div>
+</div>
+<p><strong>Key Function</strong></p>
+<p>The key function determines how to group the elements in your bag.
+In the common case where your bag holds dictionaries then the key
+function often gets out one of those elements.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>This case is so common that it is special cased, and if you provide a
+key that is not a callable function then dask.bag will turn it into one
+automatically.  The following are equivalent:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">foldby</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="o">...</span><span class="p">)</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">foldby</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>  
+</pre></div>
+</div>
+<p><strong>Binops</strong></p>
+<p>It can be tricky to construct the right binary operators to perform
+analytic queries.  The <code class="docutils literal notranslate"><span class="pre">foldby</span></code> method accepts two binary operators,
+<code class="docutils literal notranslate"><span class="pre">binop</span></code> and <code class="docutils literal notranslate"><span class="pre">combine</span></code>.  Binary operators two inputs and output must
+have the same type.</p>
+<p>Binop takes a running total and a new element and produces a new total:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">binop</span><span class="p">(</span><span class="n">total</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">total</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;amount&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Combine takes two totals and combines them:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">combine</span><span class="p">(</span><span class="n">total1</span><span class="p">,</span> <span class="n">total2</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">total1</span> <span class="o">+</span> <span class="n">total2</span>
+</pre></div>
+</div>
+<p>Each of these binary operators may have a default first value for
+total, before any other value is seen.  For addition binary operators
+like above this is often <code class="docutils literal notranslate"><span class="pre">0</span></code> or the identity element for your
+operation.</p>
+<p><strong>split_every</strong></p>
+<p>Group partitions into groups of this size while performing reduction.
+Defaults to 8.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">foldby</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="n">binop</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">combine</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-obj docutils literal notranslate"><span class="pre">toolz.reduceby</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">pyspark.combineByKey</span></code></p>
+</div>
+<p class="rubric">Examples</p>
+<p>We can compute the maximum of some <code class="docutils literal notranslate"><span class="pre">(key,</span> <span class="pre">value)</span></code> pairs, grouped
+by the <code class="docutils literal notranslate"><span class="pre">key</span></code>. (You might be better off converting the <code class="docutils literal notranslate"><span class="pre">Bag</span></code> to
+a <code class="docutils literal notranslate"><span class="pre">dask.dataframe</span></code> and using its groupby).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">random</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask.bag</span> <span class="k">as</span> <span class="nn">db</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tokens</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="s1">&#39;abcdefg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">values</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="p">[(</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">tokens</span><span class="p">),</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">values</span><span class="p">))</span>
+<span class="gp">... </span>      <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>  
+<span class="go">[(&#39;g&#39;, 676), (&#39;a&#39;, 871)]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">from_sequence</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">binop</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="nb">max</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">foldby</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">binop</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>  
+<span class="go">[(&#39;g&#39;, (&#39;g&#39;, 984)),</span>
+<span class="go"> (&#39;a&#39;, (&#39;a&#39;, 871)),</span>
+<span class="go"> (&#39;b&#39;, (&#39;b&#39;, 999)),</span>
+<span class="go"> (&#39;c&#39;, (&#39;c&#39;, 765)),</span>
+<span class="go"> (&#39;f&#39;, (&#39;f&#39;, 955)),</span>
+<span class="go"> (&#39;e&#39;, (&#39;e&#39;, 991)),</span>
+<span class="go"> (&#39;d&#39;, (&#39;d&#39;, 854))]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.frequencies">
+<code class="sig-name descname">frequencies</code><span class="sig-paren">(</span><em class="sig-param">split_every=None</em>, <em class="sig-param">sort=False</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.frequencies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Count number of occurrences of each distinct element.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">from_sequence</span><span class="p">([</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;Alice&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">dict</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">frequencies</span><span class="p">())</span>  
+<span class="go">{&#39;Alice&#39;: 2, &#39;Bob&#39;, 1}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.groupby">
+<code class="sig-name descname">groupby</code><span class="sig-paren">(</span><em class="sig-param">grouper</em>, <em class="sig-param">method=None</em>, <em class="sig-param">npartitions=None</em>, <em class="sig-param">blocksize=1048576</em>, <em class="sig-param">max_branch=None</em>, <em class="sig-param">shuffle=None</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.groupby" title="Permalink to this definition">¶</a></dt>
+<dd><p>Group collection by key function</p>
+<p>This requires a full dataset read, serialization and shuffle.
+This is expensive.  If possible you should use <code class="docutils literal notranslate"><span class="pre">foldby</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>grouper: function</strong></dt><dd><p>Function on which to group elements</p>
+</dd>
+<dt><strong>shuffle: str</strong></dt><dd><p>Either ‘disk’ for an on-disk shuffle or ‘tasks’ to use the task
+scheduling framework.  Use ‘disk’ if you are on a single machine
+and ‘tasks’ if you are on a distributed cluster.</p>
+</dd>
+<dt><strong>npartitions: int</strong></dt><dd><p>If using the disk-based shuffle, the number of output partitions</p>
+</dd>
+<dt><strong>blocksize: int</strong></dt><dd><p>If using the disk-based shuffle, the size of shuffle blocks (bytes)</p>
+</dd>
+<dt><strong>max_branch: int</strong></dt><dd><p>If using the task-based shuffle, the amount of splitting each
+partition undergoes.  Increase this for fewer copies but more
+scheduler overhead.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#dask.bag.Bag.foldby" title="dask.bag.Bag.foldby"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bag.foldby</span></code></a></p>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">from_sequence</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">iseven</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">dict</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">iseven</span><span class="p">))</span>  
+<span class="go">{True: [0, 2, 4, 6, 8], False: [1, 3, 5, 7, 9]}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.join">
+<code class="sig-name descname">join</code><span class="sig-paren">(</span><em class="sig-param">other</em>, <em class="sig-param">on_self</em>, <em class="sig-param">on_other=None</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.join" title="Permalink to this definition">¶</a></dt>
+<dd><p>Joins collection with another collection.</p>
+<p>Other collection must be one of the following:</p>
+<ol class="arabic simple">
+<li><p>An iterable.  We recommend tuples over lists for internal
+performance reasons.</p></li>
+<li><p>A delayed object, pointing to a tuple.  This is recommended if the
+other collection is sizable and you’re using the distributed
+scheduler.  Dask is able to pass around data wrapped in delayed
+objects with greater sophistication.</p></li>
+<li><p>A Bag with a single partition</p></li>
+</ol>
+<p>You might also consider Dask Dataframe, whose join operations are much
+more heavily optimized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>other: Iterable, Delayed, Bag</strong></dt><dd><p>Other collection on which to join</p>
+</dd>
+<dt><strong>on_self: callable</strong></dt><dd><p>Function to call on elements in this collection to determine a
+match</p>
+</dd>
+<dt><strong>on_other: callable (defaults to on_self)</strong></dt><dd><p>Function to call on elements in the other collection to determine a
+match</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">people</span> <span class="o">=</span> <span class="n">from_sequence</span><span class="p">([</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;Charlie&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fruit</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Apple&#39;</span><span class="p">,</span> <span class="s1">&#39;Apricot&#39;</span><span class="p">,</span> <span class="s1">&#39;Banana&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">people</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fruit</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>  
+<span class="go">[(&#39;Apple&#39;, &#39;Alice&#39;), (&#39;Apricot&#39;, &#39;Alice&#39;), (&#39;Banana&#39;, &#39;Bob&#39;)]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.map">
+<code class="sig-name descname">map</code><span class="sig-paren">(</span><em class="sig-param">func</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply a function elementwise across one or more bags.</p>
+<p>Note that all <code class="docutils literal notranslate"><span class="pre">Bag</span></code> arguments must be partitioned identically.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>func</strong><span class="classifier">callable</span></dt><dd></dd>
+<dt><strong>*args, **kwargs</strong><span class="classifier">Bag, Item, or object</span></dt><dd><p>Extra arguments and keyword arguments to pass to <code class="docutils literal notranslate"><span class="pre">func</span></code> <em>after</em>
+the calling bag instance. Non-Bag args/kwargs are broadcasted
+across all calls to <code class="docutils literal notranslate"><span class="pre">func</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>For calls with multiple <cite>Bag</cite> arguments, corresponding partitions
+should have the same length; if they do not, the call will error at
+compute time.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask.bag</span> <span class="k">as</span> <span class="nn">db</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">from_sequence</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="n">npartitions</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b2</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">from_sequence</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">npartitions</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Apply a function to all elements in a bag:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="go">[1, 2, 3, 4, 5]</span>
+</pre></div>
+</div>
+<p>Apply a function with arguments from multiple bags:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">add</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">add</span><span class="p">,</span> <span class="n">b2</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="go">[5, 7, 9, 11, 13]</span>
+</pre></div>
+</div>
+<p>Non-bag arguments are broadcast across all calls to the mapped
+function:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">add</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="go">[1, 2, 3, 4, 5]</span>
+</pre></div>
+</div>
+<p>Keyword arguments are also supported, and have the same semantics as
+regular arguments:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">myadd</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">myadd</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">b2</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="go">[5, 7, 9, 11, 13]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">myadd</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="go">[1, 2, 3, 4, 5]</span>
+</pre></div>
+</div>
+<p>Both arguments and keyword arguments can also be instances of
+<code class="docutils literal notranslate"><span class="pre">dask.bag.Item</span></code>. Here we’ll add the max value in the bag to each
+element:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">myadd</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">max</span><span class="p">())</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="go">[4, 5, 6, 7, 8]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.map_partitions">
+<code class="sig-name descname">map_partitions</code><span class="sig-paren">(</span><em class="sig-param">func</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.map_partitions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply a function to every partition across one or more bags.</p>
+<p>Note that all <code class="docutils literal notranslate"><span class="pre">Bag</span></code> arguments must be partitioned identically.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>func</strong><span class="classifier">callable</span></dt><dd><p>The function to be called on every partition.
+This function should expect an <code class="docutils literal notranslate"><span class="pre">Iterator</span></code> or <code class="docutils literal notranslate"><span class="pre">Iterable</span></code> for
+every partition and should return an <code class="docutils literal notranslate"><span class="pre">Iterator</span></code> or <code class="docutils literal notranslate"><span class="pre">Iterable</span></code>
+in return.</p>
+</dd>
+<dt><strong>*args, **kwargs</strong><span class="classifier">Bag, Item, Delayed, or object</span></dt><dd><p>Arguments and keyword arguments to pass to <code class="docutils literal notranslate"><span class="pre">func</span></code>.
+Partitions from this bag will be the first argument, and these will
+be passed <em>after</em>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask.bag</span> <span class="k">as</span> <span class="nn">db</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">from_sequence</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">101</span><span class="p">),</span> <span class="n">npartitions</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">div</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">den</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="p">[</span><span class="n">num</span> <span class="o">/</span> <span class="n">den</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Using a python object:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">hi</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hi</span>
+<span class="go">100</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">map_partitions</span><span class="p">(</span><span class="n">div</span><span class="p">,</span> <span class="n">den</span><span class="o">=</span><span class="n">hi</span><span class="p">)</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">(0.01, 0.02, 0.03, 0.04, 0.05)</span>
+</pre></div>
+</div>
+<p>Using an <code class="docutils literal notranslate"><span class="pre">Item</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">map_partitions</span><span class="p">(</span><span class="n">div</span><span class="p">,</span> <span class="n">den</span><span class="o">=</span><span class="n">b</span><span class="o">.</span><span class="n">max</span><span class="p">())</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">(0.01, 0.02, 0.03, 0.04, 0.05)</span>
+</pre></div>
+</div>
+<p>Note that while both versions give the same output, the second forms a
+single graph, and then computes everything at once, and in some cases
+may be more efficient.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.max">
+<code class="sig-name descname">max</code><span class="sig-paren">(</span><em class="sig-param">split_every=None</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.max" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum element</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.mean">
+<code class="sig-name descname">mean</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.mean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Arithmetic mean</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.min">
+<code class="sig-name descname">min</code><span class="sig-paren">(</span><em class="sig-param">split_every=None</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.min" title="Permalink to this definition">¶</a></dt>
+<dd><p>Minimum element</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.pluck">
+<code class="sig-name descname">pluck</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">default='__no__default__'</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.pluck" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select item from all tuples/dicts in collection.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">from_sequence</span><span class="p">([{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;credits&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]},</span>
+<span class="gp">... </span>                   <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span>   <span class="s1">&#39;credits&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]}])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">pluck</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">))</span>  
+<span class="go">[&#39;Alice&#39;, &#39;Bob&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">pluck</span><span class="p">(</span><span class="s1">&#39;credits&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">pluck</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>  
+<span class="go">[1, 10]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.product">
+<code class="sig-name descname">product</code><span class="sig-paren">(</span><em class="sig-param">other</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.product" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cartesian product between two bags.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.random_sample">
+<code class="sig-name descname">random_sample</code><span class="sig-paren">(</span><em class="sig-param">prob</em>, <em class="sig-param">random_state=None</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.random_sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return elements from bag with probability of <code class="docutils literal notranslate"><span class="pre">prob</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>prob</strong><span class="classifier">float</span></dt><dd><p>A float between 0 and 1, representing the probability that each
+element will be returned.</p>
+</dd>
+<dt><strong>random_state</strong><span class="classifier">int or random.Random, optional</span></dt><dd><p>If an integer, will be used to seed a new <code class="docutils literal notranslate"><span class="pre">random.Random</span></code> object.
+If provided, results in deterministic sampling.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask.bag</span> <span class="k">as</span> <span class="nn">db</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">from_sequence</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">random_sample</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">43</span><span class="p">))</span>
+<span class="go">[0, 3, 4]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">random_sample</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">43</span><span class="p">))</span>
+<span class="go">[0, 3, 4]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.reduction">
+<code class="sig-name descname">reduction</code><span class="sig-paren">(</span><em class="sig-param">perpartition</em>, <em class="sig-param">aggregate</em>, <em class="sig-param">split_every=None</em>, <em class="sig-param">out_type=&lt;class 'dask.bag.core.Item'&gt;</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.reduction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reduce collection with reduction operators.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>perpartition: function</strong></dt><dd><p>reduction to apply to each partition</p>
+</dd>
+<dt><strong>aggregate: function</strong></dt><dd><p>reduction to apply to the results of all partitions</p>
+</dd>
+<dt><strong>split_every: int (optional)</strong></dt><dd><p>Group partitions into groups of this size while performing reduction
+Defaults to 8</p>
+</dd>
+<dt><strong>out_type: {Bag, Item}</strong></dt><dd><p>The out type of the result, Item if a single element, Bag if a list
+of elements.  Defaults to Item.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">from_sequence</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">reduction</span><span class="p">(</span><span class="nb">sum</span><span class="p">,</span> <span class="nb">sum</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="go">45</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.remove">
+<code class="sig-name descname">remove</code><span class="sig-paren">(</span><em class="sig-param">predicate</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove elements in collection that match predicate.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">iseven</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask.bag</span> <span class="k">as</span> <span class="nn">db</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">from_sequence</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">iseven</span><span class="p">))</span>  
+<span class="go">[1, 3]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.repartition">
+<code class="sig-name descname">repartition</code><span class="sig-paren">(</span><em class="sig-param">npartitions</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.repartition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changes the number of partitions of the bag.</p>
+<p>This can be used to reduce or increase the number of partitions
+of the bag.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">repartition</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>  <span class="c1"># set to have 5 partitions  </span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.starmap">
+<code class="sig-name descname">starmap</code><span class="sig-paren">(</span><em class="sig-param">func</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.starmap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply a function using argument tuples from the given bag.</p>
+<p>This is similar to <code class="docutils literal notranslate"><span class="pre">itertools.starmap</span></code>, except it also accepts
+keyword arguments. In pseudocode, this is could be written as:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">starmap</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">bag</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">for</span> <span class="n">args</span> <span class="ow">in</span> <span class="n">bag</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>func</strong><span class="classifier">callable</span></dt><dd></dd>
+<dt><strong>**kwargs</strong><span class="classifier">Item, Delayed, or object, optional</span></dt><dd><p>Extra keyword arguments to pass to <code class="docutils literal notranslate"><span class="pre">func</span></code>. These can either be
+normal objects, <code class="docutils literal notranslate"><span class="pre">dask.bag.Item</span></code>, or <code class="docutils literal notranslate"><span class="pre">dask.delayed.Delayed</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask.bag</span> <span class="k">as</span> <span class="nn">db</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">from_sequence</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">npartitions</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Apply a function to each argument tuple:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">add</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">starmap</span><span class="p">(</span><span class="n">add</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="go">[3, 7, 11, 15, 19]</span>
+</pre></div>
+</div>
+<p>Apply a function to each argument tuple, with additional keyword
+arguments:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">myadd</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">+</span> <span class="n">z</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">starmap</span><span class="p">(</span><span class="n">myadd</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="go">[13, 17, 21, 25, 29]</span>
+</pre></div>
+</div>
+<p>Keyword arguments can also be instances of <code class="docutils literal notranslate"><span class="pre">dask.bag.Item</span></code> or
+<code class="docutils literal notranslate"><span class="pre">dask.delayed.Delayed</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">max_second</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">pluck</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">max_second</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="go">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">starmap</span><span class="p">(</span><span class="n">myadd</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">max_second</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="go">[13, 17, 21, 25, 29]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.std">
+<code class="sig-name descname">std</code><span class="sig-paren">(</span><em class="sig-param">ddof=0</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.std" title="Permalink to this definition">¶</a></dt>
+<dd><p>Standard deviation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.str">
+<em class="property">property </em><code class="sig-name descname">str</code><a class="headerlink" href="#dask.bag.Bag.str" title="Permalink to this definition">¶</a></dt>
+<dd><p>String processing functions</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask.bag</span> <span class="k">as</span> <span class="nn">db</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">from_sequence</span><span class="p">([</span><span class="s1">&#39;Alice Smith&#39;</span><span class="p">,</span> <span class="s1">&#39;Bob Jones&#39;</span><span class="p">,</span> <span class="s1">&#39;Charlie Smith&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+<span class="go">[&#39;alice smith&#39;, &#39;bob jones&#39;, &#39;charlie smith&#39;]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;*Smith&#39;</span><span class="p">))</span>
+<span class="go">[&#39;Alice Smith&#39;, &#39;Charlie Smith&#39;]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">))</span>
+<span class="go">[[&#39;Alice&#39;, &#39;Smith&#39;], [&#39;Bob&#39;, &#39;Jones&#39;], [&#39;Charlie&#39;, &#39;Smith&#39;]]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.sum">
+<code class="sig-name descname">sum</code><span class="sig-paren">(</span><em class="sig-param">split_every=None</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.sum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sum all elements</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.take">
+<code class="sig-name descname">take</code><span class="sig-paren">(</span><em class="sig-param">k</em>, <em class="sig-param">npartitions=1</em>, <em class="sig-param">compute=True</em>, <em class="sig-param">warn=True</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.take" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take the first k elements.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>k</strong><span class="classifier">int</span></dt><dd><p>The number of elements to return</p>
+</dd>
+<dt><strong>npartitions</strong><span class="classifier">int, optional</span></dt><dd><p>Elements are only taken from the first <code class="docutils literal notranslate"><span class="pre">npartitions</span></code>, with a
+default of 1. If there are fewer than <code class="docutils literal notranslate"><span class="pre">k</span></code> rows in the first
+<code class="docutils literal notranslate"><span class="pre">npartitions</span></code> a warning will be raised and any found rows
+returned. Pass -1 to use all partitions.</p>
+</dd>
+<dt><strong>compute</strong><span class="classifier">bool, optional</span></dt><dd><p>Whether to compute the result, default is True.</p>
+</dd>
+<dt><strong>warn</strong><span class="classifier">bool, optional</span></dt><dd><p>Whether to warn if the number of elements returned is less than
+requested, default is True.</p>
+</dd>
+<dt><strong>&gt;&gt;&gt; b = from_sequence(range(10))</strong></dt><dd></dd>
+<dt><strong>&gt;&gt;&gt; b.take(3)  # doctest: +SKIP</strong></dt><dd></dd>
+<dt><strong>(0, 1, 2)</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.to_avro">
+<code class="sig-name descname">to_avro</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">schema</em>, <em class="sig-param">name_function=None</em>, <em class="sig-param">storage_options=None</em>, <em class="sig-param">codec='null'</em>, <em class="sig-param">sync_interval=16000</em>, <em class="sig-param">metadata=None</em>, <em class="sig-param">compute=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.to_avro" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write bag to set of avro files</p>
+<p>The schema is a complex dictionary describing the data, see
+<a class="reference external" href="https://avro.apache.org/docs/1.8.2/gettingstartedpython.html#Defining+a+schema">https://avro.apache.org/docs/1.8.2/gettingstartedpython.html#Defining+a+schema</a>
+and <a class="reference external" href="https://fastavro.readthedocs.io/en/latest/writer.html">https://fastavro.readthedocs.io/en/latest/writer.html</a> .
+It’s structure is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Test&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;namespace&#39;</span><span class="p">:</span> <span class="s1">&#39;Test&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;doc&#39;</span><span class="p">:</span> <span class="s1">&#39;Descriptive text&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;record&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;int&#39;</span><span class="p">},</span>
+ <span class="p">]}</span>
+</pre></div>
+</div>
+<p>where the “name” field is required, but “namespace” and “doc” are optional
+descriptors; “type” must always be “record”. The list of fields should
+have an entry for every key of the input records, and the types are
+like the primitive, complex or logical types of the Avro spec
+( <a class="reference external" href="https://avro.apache.org/docs/1.8.2/spec.html">https://avro.apache.org/docs/1.8.2/spec.html</a> ).</p>
+<p>Results in one avro file per input partition.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>b: dask.bag.Bag</strong></dt><dd></dd>
+<dt><strong>filename: list of str or str</strong></dt><dd><p>Filenames to write to. If a list, number must match the number of
+partitions. If a string, must include a glob character “*”, which will
+be expanded using name_function</p>
+</dd>
+<dt><strong>schema: dict</strong></dt><dd><p>Avro schema dictionary, see above</p>
+</dd>
+<dt><strong>name_function: None or callable</strong></dt><dd><p>Expands integers into strings, see
+<code class="docutils literal notranslate"><span class="pre">dask.bytes.utils.build_name_function</span></code></p>
+</dd>
+<dt><strong>storage_options: None or dict</strong></dt><dd><p>Extra key/value options to pass to the backend file-system</p>
+</dd>
+<dt><strong>codec: ‘null’, ‘deflate’, or ‘snappy’</strong></dt><dd><p>Compression algorithm</p>
+</dd>
+<dt><strong>sync_interval: int</strong></dt><dd><p>Number of records to include in each block within a file</p>
+</dd>
+<dt><strong>metadata: None or dict</strong></dt><dd><p>Included in the file header</p>
+</dd>
+<dt><strong>compute: bool</strong></dt><dd><p>If True, files are written immediately, and function blocks. If False,
+returns delayed objects, which can be computed by the user where
+convenient.</p>
+</dd>
+<dt><strong>kwargs: passed to compute(), if compute=True</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask.bag</span> <span class="k">as</span> <span class="nn">db</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">from_sequence</span><span class="p">([{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">},</span>
+<span class="gp">... </span>                      <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">}])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">schema</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;People&#39;</span><span class="p">,</span> <span class="s1">&#39;doc&#39;</span><span class="p">:</span> <span class="s2">&quot;Set of people&#39;s scores&quot;</span><span class="p">,</span>
+<span class="gp">... </span>          <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;record&#39;</span><span class="p">,</span>
+<span class="gp">... </span>          <span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="p">[</span>
+<span class="gp">... </span>              <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;string&#39;</span><span class="p">},</span>
+<span class="gp">... </span>              <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;int&#39;</span><span class="p">}]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">to_avro</span><span class="p">(</span><span class="s1">&#39;my-data.*.avro&#39;</span><span class="p">,</span> <span class="n">schema</span><span class="p">)</span>  
+<span class="go">[&#39;my-data.0.avro&#39;, &#39;my-data.1.avro&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.to_dataframe">
+<code class="sig-name descname">to_dataframe</code><span class="sig-paren">(</span><em class="sig-param">meta=None</em>, <em class="sig-param">columns=None</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.to_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create Dask Dataframe from a Dask Bag.</p>
+<p>Bag should contain tuples, dict records, or scalars.</p>
+<p>Index will not be particularly meaningful.  Use <code class="docutils literal notranslate"><span class="pre">reindex</span></code> afterwards
+if necessary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>meta</strong><span class="classifier">pd.DataFrame, dict, iterable, optional</span></dt><dd><p>An empty <code class="docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> that matches the dtypes and column names
+of the output. This metadata is necessary for many algorithms in
+dask dataframe to work.  For ease of use, some alternative inputs
+are also available. Instead of a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>, a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of
+<code class="docutils literal notranslate"><span class="pre">{name:</span> <span class="pre">dtype}</span></code> or iterable of <code class="docutils literal notranslate"><span class="pre">(name,</span> <span class="pre">dtype)</span></code> can be provided.
+If not provided or a list, a single element from the first
+partition will be computed, triggering a potentially expensive call
+to <code class="docutils literal notranslate"><span class="pre">compute</span></code>. This may lead to unexpected results, so providing
+<code class="docutils literal notranslate"><span class="pre">meta</span></code> is recommended. For more information, see
+<code class="docutils literal notranslate"><span class="pre">dask.dataframe.utils.make_meta</span></code>.</p>
+</dd>
+<dt><strong>columns</strong><span class="classifier">sequence, optional</span></dt><dd><p>Column names to use. If the passed data do not have names
+associated with them, this argument provides names for the columns.
+Otherwise this argument indicates the order of the columns in the
+result (any names not found in the data will become all-NA
+columns).  Note that if <code class="docutils literal notranslate"><span class="pre">meta</span></code> is provided, column names will be
+taken from there and this parameter is invalid.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask.bag</span> <span class="k">as</span> <span class="nn">db</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">from_sequence</span><span class="p">([{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span>   <span class="s1">&#39;balance&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">},</span>
+<span class="gp">... </span>                      <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span>     <span class="s1">&#39;balance&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">},</span>
+<span class="gp">... </span>                      <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Charlie&#39;</span><span class="p">,</span> <span class="s1">&#39;balance&#39;</span><span class="p">:</span> <span class="mi">300</span><span class="p">}],</span>
+<span class="gp">... </span>                     <span class="n">npartitions</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="go">      name  balance</span>
+<span class="go">0    Alice      100</span>
+<span class="go">1      Bob      200</span>
+<span class="go">0  Charlie      300</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.to_delayed">
+<code class="sig-name descname">to_delayed</code><span class="sig-paren">(</span><em class="sig-param">optimize_graph=True</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.to_delayed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert into a list of <code class="docutils literal notranslate"><span class="pre">dask.delayed</span></code> objects, one per partition.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>optimize_graph</strong><span class="classifier">bool, optional</span></dt><dd><p>If True [default], the graph is optimized before converting into
+<code class="docutils literal notranslate"><span class="pre">dask.delayed</span></code> objects.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#dask.bag.from_delayed" title="dask.bag.from_delayed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dask.bag.from_delayed</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.to_textfiles">
+<code class="sig-name descname">to_textfiles</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">name_function=None</em>, <em class="sig-param">compression='infer'</em>, <em class="sig-param">encoding='utf-8'</em>, <em class="sig-param">compute=True</em>, <em class="sig-param">storage_options=None</em>, <em class="sig-param">last_endline=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.to_textfiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write dask Bag to disk, one filename per partition, one line per element.</p>
+<p><strong>Paths</strong>: This will create one file for each partition in your bag. You
+can specify the filenames in a variety of ways.</p>
+<p>Use a globstring</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">to_textfiles</span><span class="p">(</span><span class="s1">&#39;/path/to/data/*.json.gz&#39;</span><span class="p">)</span>  
+</pre></div>
+</div>
+<p>The * will be replaced by the increasing sequence 1, 2, …</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="mf">0.</span><span class="n">json</span><span class="o">.</span><span class="n">gz</span>
+<span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="mf">1.</span><span class="n">json</span><span class="o">.</span><span class="n">gz</span>
+</pre></div>
+</div>
+<p>Use a globstring and a <code class="docutils literal notranslate"><span class="pre">name_function=</span></code> keyword argument.  The
+name_function function should expect an integer and produce a string.
+Strings produced by name_function must preserve the order of their
+respective partition indices.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">2015</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">name</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">&#39;2015-01-01&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span>
+<span class="go">&#39;2015-01-16&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">to_textfiles</span><span class="p">(</span><span class="s1">&#39;/path/to/data/*.json.gz&#39;</span><span class="p">,</span> <span class="n">name_function</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>  
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="mi">2015</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mf">01.</span><span class="n">json</span><span class="o">.</span><span class="n">gz</span>
+<span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="mi">2015</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mf">02.</span><span class="n">json</span><span class="o">.</span><span class="n">gz</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>You can also provide an explicit list of paths.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">paths</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/path/to/data/alice.json.gz&#39;</span><span class="p">,</span> <span class="s1">&#39;/path/to/data/bob.json.gz&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">to_textfiles</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span> 
+</pre></div>
+</div>
+<p><strong>Compression</strong>: Filenames with extensions corresponding to known
+compression algorithms (gz, bz2) will be compressed accordingly.</p>
+<p><strong>Bag Contents</strong>: The bag calling <code class="docutils literal notranslate"><span class="pre">to_textfiles</span></code> must be a bag of
+text strings. For example, a bag of dictionaries could be written to
+JSON text files by mapping <code class="docutils literal notranslate"><span class="pre">json.dumps</span></code> on to the bag first, and
+then calling <code class="docutils literal notranslate"><span class="pre">to_textfiles</span></code> :</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b_dict</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">)</span><span class="o">.</span><span class="n">to_textfiles</span><span class="p">(</span><span class="s2">&quot;/path/to/data/*.json&quot;</span><span class="p">)</span>  
+</pre></div>
+</div>
+<p><strong>Last endline</strong>: By default the last line does not end with a newline
+character. Pass <code class="docutils literal notranslate"><span class="pre">last_endline=True</span></code> to invert the default.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.topk">
+<code class="sig-name descname">topk</code><span class="sig-paren">(</span><em class="sig-param">k</em>, <em class="sig-param">key=None</em>, <em class="sig-param">split_every=None</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.topk" title="Permalink to this definition">¶</a></dt>
+<dd><p>K largest elements in collection</p>
+<p>Optionally ordered by some key function</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">from_sequence</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">topk</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>  
+<span class="go">[11, 10]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">topk</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">x</span><span class="p">))</span>  
+<span class="go">[3, 4]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.unzip">
+<code class="sig-name descname">unzip</code><span class="sig-paren">(</span><em class="sig-param">n</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.unzip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform a bag of tuples to <code class="docutils literal notranslate"><span class="pre">n</span></code> bags of their elements.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">from_sequence</span><span class="p">([(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">third</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">unzip</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">Bag</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="go">[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</span>
+</pre></div>
+</div>
+<p>Note that this is equivalent to:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">first</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">third</span> <span class="o">=</span> <span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">pluck</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="dask.bag.Bag.var">
+<code class="sig-name descname">var</code><span class="sig-paren">(</span><em class="sig-param">ddof=0</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.Bag.var" title="Permalink to this definition">¶</a></dt>
+<dd><p>Variance</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="other-functions">
+<h2>Other functions<a class="headerlink" href="#other-functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="dask.bag.from_sequence">
+<code class="sig-prename descclassname">dask.bag.</code><code class="sig-name descname">from_sequence</code><span class="sig-paren">(</span><em class="sig-param">seq</em>, <em class="sig-param">partition_size=None</em>, <em class="sig-param">npartitions=None</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.from_sequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dask Bag from Python sequence.</p>
+<p>This sequence should be relatively small in memory.  Dask Bag works
+best when it handles loading your data itself.  Commonly we load a
+sequence of filenames into a Bag and then use <code class="docutils literal notranslate"><span class="pre">.map</span></code> to open them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>seq: Iterable</strong></dt><dd><p>A sequence of elements to put into the dask</p>
+</dd>
+<dt><strong>partition_size: int (optional)</strong></dt><dd><p>The length of each partition</p>
+</dd>
+<dt><strong>npartitions: int (optional)</strong></dt><dd><p>The number of desired partitions</p>
+</dd>
+<dt><strong>It is best to provide either ``partition_size`` or ``npartitions``</strong></dt><dd></dd>
+<dt><strong>(though not both.)</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#dask.bag.read_text" title="dask.bag.read_text"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_text</span></code></a></dt><dd><p>Create bag from text files</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">from_sequence</span><span class="p">([</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;Chuck&#39;</span><span class="p">],</span> <span class="n">partition_size</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="dask.bag.from_delayed">
+<code class="sig-prename descclassname">dask.bag.</code><code class="sig-name descname">from_delayed</code><span class="sig-paren">(</span><em class="sig-param">values</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.from_delayed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create bag from many dask Delayed objects.</p>
+<p>These objects will become the partitions of the resulting Bag.  They should
+evaluate to a <code class="docutils literal notranslate"><span class="pre">list</span></code> or some other concrete sequence.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>values: list of delayed values</strong></dt><dd><p>An iterable of dask Delayed objects.  Each evaluating to a list.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>Bag</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dask.delayed</span></code></p>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="p">[</span><span class="n">delayed</span><span class="p">(</span><span class="n">load_sequence_from_file</span><span class="p">)(</span><span class="n">fn</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">]</span> 
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">from_delayed</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">])</span>  
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="dask.bag.read_text">
+<code class="sig-prename descclassname">dask.bag.</code><code class="sig-name descname">read_text</code><span class="sig-paren">(</span><em class="sig-param">urlpath</em>, <em class="sig-param">blocksize=None</em>, <em class="sig-param">compression='infer'</em>, <em class="sig-param">encoding='utf-8'</em>, <em class="sig-param">errors='strict'</em>, <em class="sig-param">linedelimiter='\n'</em>, <em class="sig-param">collection=True</em>, <em class="sig-param">storage_options=None</em>, <em class="sig-param">files_per_partition=None</em>, <em class="sig-param">include_path=False</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.read_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read lines from text files</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>urlpath</strong><span class="classifier">string or list</span></dt><dd><p>Absolute or relative filepath(s). Prefix with a protocol like <code class="docutils literal notranslate"><span class="pre">s3://</span></code>
+to read from alternative filesystems. To read from multiple files you
+can pass a globstring or a list of paths, with the caveat that they
+must all have the same protocol.</p>
+</dd>
+<dt><strong>blocksize: None, int, or str</strong></dt><dd><p>Size (in bytes) to cut up larger files.  Streams by default.
+Can be <code class="docutils literal notranslate"><span class="pre">None</span></code> for streaming, an integer number of bytes, or a string
+like “128MiB”</p>
+</dd>
+<dt><strong>compression: string</strong></dt><dd><p>Compression format like ‘gzip’ or ‘xz’.  Defaults to ‘infer’</p>
+</dd>
+<dt><strong>encoding: string</strong></dt><dd></dd>
+<dt><strong>errors: string</strong></dt><dd></dd>
+<dt><strong>linedelimiter: string</strong></dt><dd></dd>
+<dt><strong>collection: bool, optional</strong></dt><dd><p>Return dask.bag if True, or list of delayed values if false</p>
+</dd>
+<dt><strong>storage_options: dict</strong></dt><dd><p>Extra options that make sense to a particular storage connection, e.g.
+host, port, username, password, etc.</p>
+</dd>
+<dt><strong>files_per_partition: None or int</strong></dt><dd><p>If set, group input files into partitions of the requested size,
+instead of one partition per file. Mutually exclusive with blocksize.</p>
+</dd>
+<dt><strong>include_path: bool</strong></dt><dd><p>Whether or not to include the path in the bag.
+If true, elements are tuples of (line, path).
+Default is False.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>dask.bag.Bag or list</strong></dt><dd><p>dask.bag.Bag if collection is True or list of Delayed lists otherwise.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#dask.bag.from_sequence" title="dask.bag.from_sequence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_sequence</span></code></a></dt><dd><p>Build bag from Python sequence</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">read_text</span><span class="p">(</span><span class="s1">&#39;myfiles.1.txt&#39;</span><span class="p">)</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">read_text</span><span class="p">(</span><span class="s1">&#39;myfiles.*.txt&#39;</span><span class="p">)</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">read_text</span><span class="p">(</span><span class="s1">&#39;myfiles.*.txt.gz&#39;</span><span class="p">)</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">read_text</span><span class="p">(</span><span class="s1">&#39;s3://bucket/myfiles.*.txt&#39;</span><span class="p">)</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">read_text</span><span class="p">(</span><span class="s1">&#39;s3://key:secret@bucket/myfiles.*.txt&#39;</span><span class="p">)</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">read_text</span><span class="p">(</span><span class="s1">&#39;hdfs://namenode.example.com/myfiles.*.txt&#39;</span><span class="p">)</span>  
+</pre></div>
+</div>
+<p>Parallelize a large file by providing the number of uncompressed bytes to
+load into each partition.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">read_text</span><span class="p">(</span><span class="s1">&#39;largefile.txt&#39;</span><span class="p">,</span> <span class="n">blocksize</span><span class="o">=</span><span class="s1">&#39;10MB&#39;</span><span class="p">)</span>  
+</pre></div>
+</div>
+<p>Get file paths of the bag by setting include_path=True</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">read_text</span><span class="p">(</span><span class="s1">&#39;myfiles.*.txt&#39;</span><span class="p">,</span> <span class="n">include_path</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> 
+<span class="go">((&#39;first line of the first file&#39;, &#39;/home/dask/myfiles.0.txt&#39;),)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="dask.bag.from_url">
+<code class="sig-prename descclassname">dask.bag.</code><code class="sig-name descname">from_url</code><span class="sig-paren">(</span><em class="sig-param">urls</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.from_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dask Bag from a url.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">from_url</span><span class="p">(</span><span class="s1">&#39;http://raw.githubusercontent.com/dask/dask/master/README.rst&#39;</span><span class="p">)</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">npartitions</span>  
+<span class="go">1</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>  
+<span class="go">(b&#39;Dask\n&#39;,</span>
+<span class="go"> b&#39;====\n&#39;,</span>
+<span class="go"> b&#39;\n&#39;,</span>
+<span class="go"> b&#39;|Build Status| |Coverage| |Doc Status| |Gitter| |Version Status|\n&#39;,</span>
+<span class="go"> b&#39;\n&#39;,</span>
+<span class="go"> b&#39;Dask is a flexible parallel computing library for analytics.  See\n&#39;,</span>
+<span class="go"> b&#39;documentation_ for more information.\n&#39;,</span>
+<span class="go"> b&#39;\n&#39;)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">from_url</span><span class="p">([</span><span class="s1">&#39;http://github.com&#39;</span><span class="p">,</span> <span class="s1">&#39;http://google.com&#39;</span><span class="p">])</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">npartitions</span>  
+<span class="go">2</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="dask.bag.read_avro">
+<code class="sig-prename descclassname">dask.bag.</code><code class="sig-name descname">read_avro</code><span class="sig-paren">(</span><em class="sig-param">urlpath</em>, <em class="sig-param">blocksize=100000000</em>, <em class="sig-param">storage_options=None</em>, <em class="sig-param">compression=None</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.read_avro" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read set of avro files</p>
+<p>Use this with arbitrary nested avro schemas. Please refer to the
+fastavro documentation for its capabilities:
+<a class="reference external" href="https://github.com/fastavro/fastavro">https://github.com/fastavro/fastavro</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>urlpath: string or list</strong></dt><dd><p>Absolute or relative filepath, URL (may include protocols like
+<code class="docutils literal notranslate"><span class="pre">s3://</span></code>), or globstring pointing to data.</p>
+</dd>
+<dt><strong>blocksize: int or None</strong></dt><dd><p>Size of chunks in bytes. If None, there will be no chunking and each
+file will become one partition.</p>
+</dd>
+<dt><strong>storage_options: dict or None</strong></dt><dd><p>passed to backend file-system</p>
+</dd>
+<dt><strong>compression: str or None</strong></dt><dd><p>Compression format of the targe(s), like ‘gzip’. Should only be used
+with blocksize=None.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="dask.bag.range">
+<code class="sig-prename descclassname">dask.bag.</code><code class="sig-name descname">range</code><span class="sig-paren">(</span><em class="sig-param">n</em>, <em class="sig-param">npartitions</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Numbers from zero to n</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask.bag</span> <span class="k">as</span> <span class="nn">db</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">npartitions</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="go">[0, 1, 2, 3, 4]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="dask.bag.concat">
+<code class="sig-prename descclassname">dask.bag.</code><code class="sig-name descname">concat</code><span class="sig-paren">(</span><em class="sig-param">bags</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.concat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Concatenate many bags together, unioning all elements.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask.bag</span> <span class="k">as</span> <span class="nn">db</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">from_sequence</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">from_sequence</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="go">[1, 2, 3, 4, 5, 6]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="dask.bag.map_partitions">
+<code class="sig-prename descclassname">dask.bag.</code><code class="sig-name descname">map_partitions</code><span class="sig-paren">(</span><em class="sig-param">func</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.map_partitions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply a function to every partition across one or more bags.</p>
+<p>Note that all <code class="docutils literal notranslate"><span class="pre">Bag</span></code> arguments must be partitioned identically.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>func</strong><span class="classifier">callable</span></dt><dd></dd>
+<dt><strong>*args, **kwargs</strong><span class="classifier">Bag, Item, Delayed, or object</span></dt><dd><p>Arguments and keyword arguments to pass to <code class="docutils literal notranslate"><span class="pre">func</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask.bag</span> <span class="k">as</span> <span class="nn">db</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">from_sequence</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">101</span><span class="p">),</span> <span class="n">npartitions</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">div</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">den</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="p">[</span><span class="n">num</span> <span class="o">/</span> <span class="n">den</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Using a python object:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">hi</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hi</span>
+<span class="go">100</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">map_partitions</span><span class="p">(</span><span class="n">div</span><span class="p">,</span> <span class="n">den</span><span class="o">=</span><span class="n">hi</span><span class="p">)</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">(0.01, 0.02, 0.03, 0.04, 0.05)</span>
+</pre></div>
+</div>
+<p>Using an <code class="docutils literal notranslate"><span class="pre">Item</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">map_partitions</span><span class="p">(</span><span class="n">div</span><span class="p">,</span> <span class="n">den</span><span class="o">=</span><span class="n">b</span><span class="o">.</span><span class="n">max</span><span class="p">())</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">(0.01, 0.02, 0.03, 0.04, 0.05)</span>
+</pre></div>
+</div>
+<p>Note that while both versions give the same output, the second forms a
+single graph, and then computes everything at once, and in some cases
+may be more efficient.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="dask.bag.map">
+<code class="sig-prename descclassname">dask.bag.</code><code class="sig-name descname">map</code><span class="sig-paren">(</span><em class="sig-param">func</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply a function elementwise across one or more bags.</p>
+<p>Note that all <code class="docutils literal notranslate"><span class="pre">Bag</span></code> arguments must be partitioned identically.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>func</strong><span class="classifier">callable</span></dt><dd></dd>
+<dt><strong>*args, **kwargs</strong><span class="classifier">Bag, Item, Delayed, or object</span></dt><dd><p>Arguments and keyword arguments to pass to <code class="docutils literal notranslate"><span class="pre">func</span></code>. Non-Bag args/kwargs
+are broadcasted across all calls to <code class="docutils literal notranslate"><span class="pre">func</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>For calls with multiple <cite>Bag</cite> arguments, corresponding partitions should
+have the same length; if they do not, the call will error at compute time.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask.bag</span> <span class="k">as</span> <span class="nn">db</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">from_sequence</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="n">npartitions</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b2</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">from_sequence</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">npartitions</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Apply a function to all elements in a bag:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="go">[1, 2, 3, 4, 5]</span>
+</pre></div>
+</div>
+<p>Apply a function with arguments from multiple bags:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">add</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">add</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">b2</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="go">[5, 7, 9, 11, 13]</span>
+</pre></div>
+</div>
+<p>Non-bag arguments are broadcast across all calls to the mapped function:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">add</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="go">[1, 2, 3, 4, 5]</span>
+</pre></div>
+</div>
+<p>Keyword arguments are also supported, and have the same semantics as
+regular arguments:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">myadd</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">myadd</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">b2</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="go">[5, 7, 9, 11, 13]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">myadd</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="go">[1, 2, 3, 4, 5]</span>
+</pre></div>
+</div>
+<p>Both arguments and keyword arguments can also be instances of
+<code class="docutils literal notranslate"><span class="pre">dask.bag.Item</span></code> or <code class="docutils literal notranslate"><span class="pre">dask.delayed.Delayed</span></code>. Here we’ll add the max value
+in the bag to each element:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">myadd</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">max</span><span class="p">())</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="go">[4, 5, 6, 7, 8]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="dask.bag.zip">
+<code class="sig-prename descclassname">dask.bag.</code><code class="sig-name descname">zip</code><span class="sig-paren">(</span><em class="sig-param">*bags</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.zip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Partition-wise bag zip</p>
+<p>All passed bags must have the same number of partitions.</p>
+<p>NOTE: corresponding partitions should have the same length; if they do not,
+the “extra” elements from the longer partition(s) will be dropped.  If you
+have this case chances are that what you really need is a data alignment
+mechanism like pandas’s, and not a missing value filler like zip_longest.</p>
+<p class="rubric">Examples</p>
+<p>Correct usage:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask.bag</span> <span class="k">as</span> <span class="nn">db</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">evens</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">from_sequence</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">partition_size</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">odds</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">from_sequence</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">partition_size</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pairs</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">zip</span><span class="p">(</span><span class="n">evens</span><span class="p">,</span> <span class="n">odds</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">pairs</span><span class="p">)</span>
+<span class="go">[(0, 1), (2, 3), (4, 5), (6, 7), (8, 9)]</span>
+</pre></div>
+</div>
+<p>Incorrect usage:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">numbers</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> 
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fizz</span> <span class="o">=</span> <span class="n">numbers</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> 
+<span class="gp">&gt;&gt;&gt; </span><span class="n">buzz</span> <span class="o">=</span> <span class="n">numbers</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> 
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fizzbuzz</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">zip</span><span class="p">(</span><span class="n">fizz</span><span class="p">,</span> <span class="n">buzz</span><span class="p">)</span> 
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">fizzbuzzz</span><span class="p">)</span> 
+<span class="go">[(0, 0), (3, 5), (6, 10), (9, 15), (12, 20), (15, 25), (18, 30)]</span>
+</pre></div>
+</div>
+<p>When what you really wanted was more along the lines of the following:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">fizzbuzzz</span><span class="p">)</span> 
+<span class="go">[(0, 0), (3, None), (None, 5), (6, None), (None 10), (9, None),</span>
+<span class="go">(12, None), (15, 15), (18, None), (None, 20), (None, 25), (None, 30)]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="dataframe.html" class="btn btn-neutral float-right" title="DataFrame" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="bag-creation.html" class="btn btn-neutral float-left" title="Create Dask Bags" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

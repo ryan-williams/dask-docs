@@ -1,0 +1,575 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Comparison to Spark &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Opportunistic Caching" href="caching.html" />
+    <link rel="prev" title="Dask Cheat Sheet" href="cheatsheet.html" />
+    <link rel="shortcut icon" href="_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="array.html">Array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bag.html">Bag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataframe.html">DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Comparison to Spark</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#language">Language</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ecosystem">Ecosystem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#age-and-trust">Age and Trust</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scope">Scope</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#internal-design">Internal Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scale">Scale</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#apis">APIs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dataframes">DataFrames</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#machine-learning">Machine Learning</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#arrays">Arrays</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#streaming">Streaming</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#graphs-complex-networks">Graphs / complex networks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#custom-parallelism">Custom parallelism</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#reasons-you-might-choose-spark">Reasons you might choose Spark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reasons-you-might-choose-dask">Reasons you might choose Dask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reasons-to-choose-both">Reasons to choose both</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#developer-facing-differences">Developer-Facing Differences</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#graph-granularity">Graph Granularity</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">Task Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Comparison to Spark</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/spark.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="comparison-to-spark">
+<h1>Comparison to Spark<a class="headerlink" href="#comparison-to-spark" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://spark.apache.org/">Apache Spark</a> is a popular distributed computing
+tool for tabular datasets that is growing to become a dominant name in Big Data
+analysis today.  Dask has several elements that appear to intersect this space
+and we are often asked, “How does Dask compare with Spark?”</p>
+<p>Answering such comparison questions in an unbiased and informed way is hard,
+particularly when the differences can be somewhat technical.  This document
+tries to do this; we welcome any corrections.</p>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>Generally Dask is smaller and lighter weight than Spark.  This means that it
+has fewer features and, instead, is used in conjunction with other libraries,
+particularly those in the numeric Python ecosystem.  It couples with libraries
+like Pandas or Scikit-Learn to achieve high-level functionality.</p>
+<div class="section" id="language">
+<h3>Language<a class="headerlink" href="#language" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Spark is written in Scala with some support for Python and R.  It
+interoperates well with other JVM code.</p></li>
+<li><p>Dask is written in Python and only really supports Python.  It
+interoperates well with C/C++/Fortran/LLVM or other natively compiled
+code linked through Python.</p></li>
+</ul>
+</div>
+<div class="section" id="ecosystem">
+<h3>Ecosystem<a class="headerlink" href="#ecosystem" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Spark is an all-in-one project that has inspired its own ecosystem.  It
+integrates well with many other Apache projects.</p></li>
+<li><p>Dask is a component of the larger Python ecosystem.  It couples with and
+enhances other libraries like NumPy, Pandas, and Scikit-Learn.</p></li>
+</ul>
+</div>
+<div class="section" id="age-and-trust">
+<h3>Age and Trust<a class="headerlink" href="#age-and-trust" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Spark is older (since 2010) and has become a dominant and
+well-trusted tool in the Big Data enterprise world.</p></li>
+<li><p>Dask is younger (since 2014) and is an extension of the
+well trusted NumPy/Pandas/Scikit-learn/Jupyter stack.</p></li>
+</ul>
+</div>
+<div class="section" id="scope">
+<h3>Scope<a class="headerlink" href="#scope" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Spark is more focused on traditional business intelligence
+operations like SQL and lightweight machine learning.</p></li>
+<li><p>Dask is applied more generally both to business intelligence
+applications, as well as a number of scientific and custom situations.</p></li>
+</ul>
+</div>
+<div class="section" id="internal-design">
+<h3>Internal Design<a class="headerlink" href="#internal-design" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Spark’s internal model is higher level, providing good high level
+optimizations on uniformly applied computations, but lacking flexibility
+for more complex algorithms or ad-hoc systems.  It is fundamentally an
+extension of the Map-Shuffle-Reduce paradigm.</p></li>
+<li><p>Dask’s internal model is lower level, and so lacks high level
+optimizations, but is able to implement more sophisticated algorithms and
+build more complex bespoke systems.  It is fundamentally based on generic
+task scheduling.</p></li>
+</ul>
+</div>
+<div class="section" id="scale">
+<h3>Scale<a class="headerlink" href="#scale" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Spark scales from a single node to thousand-node clusters.</p></li>
+<li><p>Dask scales from a single node to thousand-node clusters.</p></li>
+</ul>
+</div>
+<div class="section" id="apis">
+<h3>APIs<a class="headerlink" href="#apis" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="dataframes">
+<h4>DataFrames<a class="headerlink" href="#dataframes" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Spark DataFrame has its own API and memory model.  It also
+implements a large subset of the SQL language.  Spark includes a
+high-level query optimizer for complex queries.</p></li>
+<li><p>Dask DataFrame reuses the Pandas API and memory model.  It implements
+neither SQL nor a query optimizer.  It is able to do random access,
+efficient time series operations, and other Pandas-style indexed
+operations.</p></li>
+</ul>
+</div>
+<div class="section" id="machine-learning">
+<h4>Machine Learning<a class="headerlink" href="#machine-learning" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Spark MLLib is a cohesive project with support for common operations
+that are easy to implement with Spark’s Map-Shuffle-Reduce style
+system.  People considering MLLib might also want to consider <em>other</em>
+JVM-based machine learning libraries like H2O, which may have better
+performance.</p></li>
+<li><p>Dask relies on and interoperates with existing libraries like
+Scikit-Learn and XGBoost.  These can be more familiar or higher
+performance, but generally results in a less-cohesive whole.  See the
+<a class="reference external" href="https://ml.dask.org">dask-ml</a> project for integrations.</p></li>
+</ul>
+</div>
+<div class="section" id="arrays">
+<h4>Arrays<a class="headerlink" href="#arrays" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Spark does not include support for multi-dimensional arrays natively
+(this would be challenging given their computation model), although
+some support for two-dimensional matrices may be found in MLLib.
+People may also want to look at the
+<a class="reference external" href="https://github.com/thunder-project/thunder">Thunder</a> project, which
+combines Apache Spark with NumPy arrays.</p></li>
+<li><p>Dask fully supports the NumPy model for
+<a class="reference internal" href="array.html"><span class="doc">scalable multi-dimensional arrays</span></a>.</p></li>
+</ul>
+</div>
+<div class="section" id="streaming">
+<h4>Streaming<a class="headerlink" href="#streaming" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Spark’s support for streaming data is first-class and integrates well
+into their other APIs.  It follows a mini-batch approach.  This
+provides decent performance on large uniform streaming operations.</p></li>
+<li><p>Dask provides a <a class="reference internal" href="futures.html"><span class="doc">real-time futures interface</span></a> that is
+lower-level than Spark streaming.  This enables more creative and
+complex use-cases, but requires more work than Spark streaming.</p></li>
+</ul>
+</div>
+<div class="section" id="graphs-complex-networks">
+<h4>Graphs / complex networks<a class="headerlink" href="#graphs-complex-networks" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Spark provides GraphX, a library for graph processing.</p></li>
+<li><p>Dask provides no such library.</p></li>
+</ul>
+</div>
+<div class="section" id="custom-parallelism">
+<h4>Custom parallelism<a class="headerlink" href="#custom-parallelism" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Spark generally expects users to compose computations out of their
+high-level primitives (map, reduce, groupby, join, …).  It is also
+possible to extend Spark through subclassing RDDs, although this is
+rarely done.</p></li>
+<li><p>Dask allows you to specify arbitrary task graphs for more complex and
+custom systems that are not part of the standard set of collections.</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="reasons-you-might-choose-spark">
+<h2>Reasons you might choose Spark<a class="headerlink" href="#reasons-you-might-choose-spark" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>You prefer Scala or the SQL language</p></li>
+<li><p>You have mostly JVM infrastructure and legacy systems</p></li>
+<li><p>You want an established and trusted solution for business</p></li>
+<li><p>You are mostly doing business analytics with some lightweight machine learning</p></li>
+<li><p>You want an all-in-one solution</p></li>
+</ul>
+</div>
+<div class="section" id="reasons-you-might-choose-dask">
+<h2>Reasons you might choose Dask<a class="headerlink" href="#reasons-you-might-choose-dask" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>You prefer Python or native code, or have large legacy code bases that you
+do not want to entirely rewrite</p></li>
+<li><p>Your use case is complex or does not cleanly fit the Spark computing model</p></li>
+<li><p>You want a lighter-weight transition from local computing to cluster
+computing</p></li>
+<li><p>You want to interoperate with other technologies and don’t mind installing
+multiple packages</p></li>
+</ul>
+</div>
+<div class="section" id="reasons-to-choose-both">
+<h2>Reasons to choose both<a class="headerlink" href="#reasons-to-choose-both" title="Permalink to this headline">¶</a></h2>
+<p>It is easy to use both Dask and Spark on the same data and on the same cluster.</p>
+<p>They can both read and write common formats, like CSV, JSON, ORC, and Parquet,
+making it easy to hand results off between Dask and Spark workflows.</p>
+<p>They can both deploy on the same clusters.
+Most clusters are designed to support many different distributed systems at the
+same time, using resource managers like Kubernetes and YARN.  If you already
+have a cluster on which you run Spark workloads, it’s likely easy to also run
+Dask workloads on your current infrastructure and vice versa.</p>
+<p>In particular, for users coming from traditional Hadoop/Spark clusters (such as
+those sold by Cloudera/Hortonworks) you are using the Yarn resource
+manager.  You can deploy Dask on these systems using the <a class="reference external" href="https://yarn.dask.org">Dask Yarn</a> project, as well as other projects, like <a class="reference external" href="https://jcrist.github.io/jupyterhub-on-hadoop/">JupyterHub
+on Hadoop</a>.</p>
+</div>
+<div class="section" id="developer-facing-differences">
+<h2>Developer-Facing Differences<a class="headerlink" href="#developer-facing-differences" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="graph-granularity">
+<h3>Graph Granularity<a class="headerlink" href="#graph-granularity" title="Permalink to this headline">¶</a></h3>
+<p>Both Spark and Dask represent computations with directed acyclic graphs.  These
+graphs however represent computations at very different granularities.</p>
+<p>One operation on a Spark RDD might add a node like <code class="docutils literal notranslate"><span class="pre">Map</span></code> and <code class="docutils literal notranslate"><span class="pre">Filter</span></code> to
+the graph.  These are high-level operations that convey meaning and will
+eventually be turned into many little tasks to execute on individual workers.
+This many-little-tasks state is only available internally to the Spark
+scheduler.</p>
+<p>Dask graphs skip this high-level representation and go directly to the
+many-little-tasks stage.  As such, one <code class="docutils literal notranslate"><span class="pre">map</span></code> operation on a Dask collection
+will immediately generate and add possibly thousands of tiny tasks to the Dask
+graph.</p>
+<p>This difference in the scale of the underlying graph has implications on the
+kinds of analysis and optimizations one can do and also on the generality that
+one exposes to users.  Dask is unable to perform some optimizations that Spark
+can because Dask schedulers do not have a top-down picture of the computation
+they were asked to perform.  However, Dask is able to easily represent far more
+<a class="reference external" href="http://matthewrocklin.com/blog/work/2015/06/26/Complex-Graphs">complex algorithms</a> and expose the creation of these algorithms to normal users.</p>
+</div>
+</div>
+<div class="section" id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Spark is mature and all-inclusive.  If you want a single project that does
+everything and you’re already on Big Data hardware, then Spark is a safe bet,
+especially if your use cases are typical ETL + SQL and you’re already using
+Scala.</p></li>
+<li><p>Dask is lighter weight and is easier to integrate into existing code and hardware.
+If your problems vary beyond typical ETL + SQL and you want to add flexible
+parallelism to existing solutions, then Dask may be a good fit, especially if
+you are already using Python and associated libraries like NumPy and Pandas.</p></li>
+</ul>
+<p>If you are looking to manage a terabyte or less of tabular CSV or JSON data,
+then you should forget both Spark and Dask and use <a class="reference external" href="https://www.postgresql.org/">Postgres</a> or <a class="reference external" href="https://www.mongodb.org/">MongoDB</a>.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="caching.html" class="btn btn-neutral float-right" title="Opportunistic Caching" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="cheatsheet.html" class="btn btn-neutral float-left" title="Dask Cheat Sheet" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

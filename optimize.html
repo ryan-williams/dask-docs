@@ -1,0 +1,907 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Optimization &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Custom Collections" href="custom-collections.html" />
+    <link rel="prev" title="Custom Graphs" href="custom-graphs.html" />
+    <link rel="shortcut icon" href="_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="array.html">Array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bag.html">Bag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataframe.html">DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="graphs.html">Task Graphs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="spec.html">Specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom-graphs.html">Custom Graphs</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Optimization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rewrite-rules">Rewrite Rules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#keyword-arguments">Keyword Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#customizing-optimization">Customizing Optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#api">API</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#definitions">Definitions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="custom-collections.html">Custom Collections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="high-level-graphs.html">High Level Graphs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graphs.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graphs.html#example">Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graphs.html#schedulers">Schedulers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graphs.html#task-expectations">Task Expectations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="graphs.html">Task Graphs</a> &raquo;</li>
+        
+      <li>Optimization</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/optimize.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="optimization">
+<h1>Optimization<a class="headerlink" href="#optimization" title="Permalink to this headline">¶</a></h1>
+<p>Performance can be significantly improved in different contexts by making
+small optimizations on the Dask graph before calling the scheduler.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">dask.optimization</span></code> module contains several functions to transform graphs
+in a variety of useful ways. In most cases, users won’t need to interact with
+these functions directly, as specialized subsets of these transforms are done
+automatically in the Dask collections (<code class="docutils literal notranslate"><span class="pre">dask.array</span></code>, <code class="docutils literal notranslate"><span class="pre">dask.bag</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">dask.dataframe</span></code>). However, users working with custom graphs or computations
+may find that applying these methods results in substantial speedups.</p>
+<p>In general, there are two goals when doing graph optimizations:</p>
+<ol class="arabic simple">
+<li><p>Simplify computation</p></li>
+<li><p>Improve parallelism</p></li>
+</ol>
+<p>Simplifying computation can be done on a graph level by removing unnecessary
+tasks (<code class="docutils literal notranslate"><span class="pre">cull</span></code>), or on a task level by replacing expensive operations with
+cheaper ones (<code class="docutils literal notranslate"><span class="pre">RewriteRule</span></code>).</p>
+<p>Parallelism can be improved by reducing
+inter-task communication, whether by fusing many tasks into one (<code class="docutils literal notranslate"><span class="pre">fuse</span></code>), or
+by inlining cheap operations (<code class="docutils literal notranslate"><span class="pre">inline</span></code>, <code class="docutils literal notranslate"><span class="pre">inline_functions</span></code>).</p>
+<p>Below, we show an example walking through the use of some of these to optimize
+a task graph.</p>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>Suppose you had a custom Dask graph for doing a word counting task:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">print_and_return</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">string</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">format_str</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">nwords</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;word list has </span><span class="si">{count}</span><span class="s1"> occurrences of &#39;</span>
+<span class="gp">... </span>            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{val}</span><span class="s1">, out of </span><span class="si">{nwords}</span><span class="s1"> words&#39;</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dsk</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;words&#39;</span><span class="p">:</span> <span class="s1">&#39;apple orange apple pear orange pear pear&#39;</span><span class="p">,</span>
+<span class="gp">... </span>       <span class="s1">&#39;nwords&#39;</span><span class="p">:</span> <span class="p">(</span><span class="nb">len</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">split</span><span class="p">,</span> <span class="s1">&#39;words&#39;</span><span class="p">)),</span>
+<span class="gp">... </span>       <span class="s1">&#39;val1&#39;</span><span class="p">:</span> <span class="s1">&#39;orange&#39;</span><span class="p">,</span>
+<span class="gp">... </span>       <span class="s1">&#39;val2&#39;</span><span class="p">:</span> <span class="s1">&#39;apple&#39;</span><span class="p">,</span>
+<span class="gp">... </span>       <span class="s1">&#39;val3&#39;</span><span class="p">:</span> <span class="s1">&#39;pear&#39;</span><span class="p">,</span>
+<span class="gp">... </span>       <span class="s1">&#39;count1&#39;</span><span class="p">:</span> <span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">count</span><span class="p">,</span> <span class="s1">&#39;words&#39;</span><span class="p">,</span> <span class="s1">&#39;val1&#39;</span><span class="p">),</span>
+<span class="gp">... </span>       <span class="s1">&#39;count2&#39;</span><span class="p">:</span> <span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">count</span><span class="p">,</span> <span class="s1">&#39;words&#39;</span><span class="p">,</span> <span class="s1">&#39;val2&#39;</span><span class="p">),</span>
+<span class="gp">... </span>       <span class="s1">&#39;count3&#39;</span><span class="p">:</span> <span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">count</span><span class="p">,</span> <span class="s1">&#39;words&#39;</span><span class="p">,</span> <span class="s1">&#39;val3&#39;</span><span class="p">),</span>
+<span class="gp">... </span>       <span class="s1">&#39;format1&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">format_str</span><span class="p">,</span> <span class="s1">&#39;count1&#39;</span><span class="p">,</span> <span class="s1">&#39;val1&#39;</span><span class="p">,</span> <span class="s1">&#39;nwords&#39;</span><span class="p">),</span>
+<span class="gp">... </span>       <span class="s1">&#39;format2&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">format_str</span><span class="p">,</span> <span class="s1">&#39;count2&#39;</span><span class="p">,</span> <span class="s1">&#39;val2&#39;</span><span class="p">,</span> <span class="s1">&#39;nwords&#39;</span><span class="p">),</span>
+<span class="gp">... </span>       <span class="s1">&#39;format3&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">format_str</span><span class="p">,</span> <span class="s1">&#39;count3&#39;</span><span class="p">,</span> <span class="s1">&#39;val3&#39;</span><span class="p">,</span> <span class="s1">&#39;nwords&#39;</span><span class="p">),</span>
+<span class="gp">... </span>       <span class="s1">&#39;print1&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">print_and_return</span><span class="p">,</span> <span class="s1">&#39;format1&#39;</span><span class="p">),</span>
+<span class="gp">... </span>       <span class="s1">&#39;print2&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">print_and_return</span><span class="p">,</span> <span class="s1">&#39;format2&#39;</span><span class="p">),</span>
+<span class="gp">... </span>       <span class="s1">&#39;print3&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">print_and_return</span><span class="p">,</span> <span class="s1">&#39;format3&#39;</span><span class="p">)}</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/optimize_dask1.png"><img alt="The original dask graph" src="_images/optimize_dask1.png" style="width: 65%;" /></a>
+<p>Here we are counting the occurrence of the words <code class="docutils literal notranslate"><span class="pre">'orange</span></code>, <code class="docutils literal notranslate"><span class="pre">'apple'</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">'pear'</span></code> in the list of words, formatting an output string reporting the
+results, printing the output, and then returning the output string.</p>
+<p>To perform the computation, we first remove unnecessary components from the
+graph using the <code class="docutils literal notranslate"><span class="pre">cull</span></code> function and then pass the Dask graph and the desired
+output keys to a scheduler <code class="docutils literal notranslate"><span class="pre">get</span></code> function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dask.threaded</span> <span class="kn">import</span> <span class="n">get</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dask.optimization</span> <span class="kn">import</span> <span class="n">cull</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">outputs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;print1&#39;</span><span class="p">,</span> <span class="s1">&#39;print2&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dsk1</span><span class="p">,</span> <span class="n">dependencies</span> <span class="o">=</span> <span class="n">cull</span><span class="p">(</span><span class="n">dsk</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span>  <span class="c1"># remove unnecessary tasks from the graph</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">dsk2</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span>
+<span class="go">word list has 2 occurrences of apple, out of 7 words</span>
+<span class="go">word list has 2 occurrences of orange, out of 7 words</span>
+</pre></div>
+</div>
+<p>As can be seen above, the scheduler computed only the requested outputs
+(<code class="docutils literal notranslate"><span class="pre">'print3'</span></code> was never computed). This is because we called the
+<code class="docutils literal notranslate"><span class="pre">dask.optimization.cull</span></code> function, which removes the unnecessary tasks from
+the graph.</p>
+<p>Culling is part of the default optimization pass of almost all collections.
+Often you want to call it somewhat early to reduce the amount of work done in
+later steps:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dask.optimization</span> <span class="kn">import</span> <span class="n">cull</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">outputs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;print1&#39;</span><span class="p">,</span> <span class="s1">&#39;print2&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dsk1</span><span class="p">,</span> <span class="n">dependencies</span> <span class="o">=</span> <span class="n">cull</span><span class="p">(</span><span class="n">dsk</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/optimize_dask2.png"><img alt="After culling" src="_images/optimize_dask2.png" style="width: 50%;" /></a>
+<p>Looking at the task graph above, there are multiple accesses to constants such
+as <code class="docutils literal notranslate"><span class="pre">'val1'</span></code> or <code class="docutils literal notranslate"><span class="pre">'val2'</span></code> in the Dask graph. These can be inlined into the
+tasks to improve efficiency using the <code class="docutils literal notranslate"><span class="pre">inline</span></code> function. For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dask.optimization</span> <span class="kn">import</span> <span class="n">inline</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dsk2</span> <span class="o">=</span> <span class="n">inline</span><span class="p">(</span><span class="n">dsk1</span><span class="p">,</span> <span class="n">dependencies</span><span class="o">=</span><span class="n">dependencies</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">dsk2</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span>
+<span class="go">word list has 2 occurrences of apple, out of 7 words</span>
+<span class="go">word list has 2 occurrences of orange, out of 7 words</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/optimize_dask3.png"><img alt="After inlining" src="_images/optimize_dask3.png" style="width: 40%;" /></a>
+<p>Now we have two sets of <em>almost</em> linear task chains. The only link between them
+is the word counting function. For cheap operations like this, the
+serialization cost may be larger than the actual computation, so it may be
+faster to do the computation more than once, rather than passing the results to
+all nodes. To perform this function inlining, the <code class="docutils literal notranslate"><span class="pre">inline_functions</span></code> function
+can be used:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dask.optimization</span> <span class="kn">import</span> <span class="n">inline_functions</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dsk3</span> <span class="o">=</span> <span class="n">inline_functions</span><span class="p">(</span><span class="n">dsk2</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="p">[</span><span class="nb">len</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">split</span><span class="p">],</span>
+<span class="gp">... </span>                        <span class="n">dependencies</span><span class="o">=</span><span class="n">dependencies</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">dsk3</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span>
+<span class="go">word list has 2 occurrences of apple, out of 7 words</span>
+<span class="go">word list has 2 occurrences of orange, out of 7 words</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/optimize_dask4.png"><img alt="After inlining functions" src="_images/optimize_dask4.png" style="width: 30%;" /></a>
+<p>Now we have a set of purely linear tasks. We’d like to have the scheduler run
+all of these on the same worker to reduce data serialization between workers.
+One option is just to merge these linear chains into one big task using the
+<code class="docutils literal notranslate"><span class="pre">fuse</span></code> function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dask.optimization</span> <span class="kn">import</span> <span class="n">fuse</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dsk4</span><span class="p">,</span> <span class="n">dependencies</span> <span class="o">=</span> <span class="n">fuse</span><span class="p">(</span><span class="n">dsk3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">dsk4</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span>
+<span class="go">word list has 2 occurrences of apple, out of 7 words</span>
+<span class="go">word list has 2 occurrences of orange, out of 7 words</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/optimize_dask5.png"><img alt="After fusing" src="_images/optimize_dask5.png" style="width: 30%;" /></a>
+<p>Putting it all together:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">optimize_and_get</span><span class="p">(</span><span class="n">dsk</span><span class="p">,</span> <span class="n">keys</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">dsk1</span><span class="p">,</span> <span class="n">deps</span> <span class="o">=</span> <span class="n">cull</span><span class="p">(</span><span class="n">dsk</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">dsk2</span> <span class="o">=</span> <span class="n">inline</span><span class="p">(</span><span class="n">dsk1</span><span class="p">,</span> <span class="n">dependencies</span><span class="o">=</span><span class="n">deps</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">dsk3</span> <span class="o">=</span> <span class="n">inline_functions</span><span class="p">(</span><span class="n">dsk2</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="p">[</span><span class="nb">len</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">split</span><span class="p">],</span>
+<span class="gp">... </span>                            <span class="n">dependencies</span><span class="o">=</span><span class="n">deps</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">dsk4</span><span class="p">,</span> <span class="n">deps</span> <span class="o">=</span> <span class="n">fuse</span><span class="p">(</span><span class="n">dsk3</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">get</span><span class="p">(</span><span class="n">dsk4</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">optimize_and_get</span><span class="p">(</span><span class="n">dsk</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span>
+<span class="go">word list has 2 occurrences of apple, out of 7 words</span>
+<span class="go">word list has 2 occurrences of orange, out of 7 words</span>
+</pre></div>
+</div>
+<p>In summary, the above operations accomplish the following:</p>
+<ol class="arabic simple">
+<li><p>Removed tasks unnecessary for the desired output using <code class="docutils literal notranslate"><span class="pre">cull</span></code></p></li>
+<li><p>Inlined constants using <code class="docutils literal notranslate"><span class="pre">inline</span></code></p></li>
+<li><p>Inlined cheap computations using <code class="docutils literal notranslate"><span class="pre">inline_functions</span></code>, improving parallelism</p></li>
+<li><p>Fused linear tasks together to ensure they run on the same worker using <code class="docutils literal notranslate"><span class="pre">fuse</span></code></p></li>
+</ol>
+<p>As stated previously, these optimizations are already performed automatically
+in the Dask collections. Users not working with custom graphs or computations
+should rarely need to directly interact with them.</p>
+<p>These are just a few of the optimizations provided in <code class="docutils literal notranslate"><span class="pre">dask.optimization</span></code>. For
+more information, see the API below.</p>
+</div>
+<div class="section" id="rewrite-rules">
+<h2>Rewrite Rules<a class="headerlink" href="#rewrite-rules" title="Permalink to this headline">¶</a></h2>
+<p>For context based optimizations, <code class="docutils literal notranslate"><span class="pre">dask.rewrite</span></code> provides functionality for
+pattern matching and term rewriting. This is useful for replacing expensive
+computations with equivalent, cheaper computations. For example, Dask Array
+uses the rewrite functionality to replace series of array slicing operations
+with a more efficient single slice.</p>
+<p>The interface to the rewrite system consists of two classes:</p>
+<ol class="arabic">
+<li><p><code class="docutils literal notranslate"><span class="pre">RewriteRule(lhs,</span> <span class="pre">rhs,</span> <span class="pre">vars)</span></code></p>
+<blockquote>
+<div><p>Given a left-hand-side (<code class="docutils literal notranslate"><span class="pre">lhs</span></code>), a right-hand-side (<code class="docutils literal notranslate"><span class="pre">rhs</span></code>), and a set of
+variables (<code class="docutils literal notranslate"><span class="pre">vars</span></code>), a rewrite rule declaratively encodes the following
+operation:</p>
+<p><code class="docutils literal notranslate"><span class="pre">lhs</span> <span class="pre">-&gt;</span> <span class="pre">rhs</span> <span class="pre">if</span> <span class="pre">task</span> <span class="pre">matches</span> <span class="pre">lhs</span> <span class="pre">over</span> <span class="pre">variables</span></code></p>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RuleSet(*rules)</span></code></p>
+<blockquote>
+<div><p>A collection of rewrite rules. The design of <code class="docutils literal notranslate"><span class="pre">RuleSet</span></code> class allows for
+efficient “many-to-one” pattern matching, meaning that there is minimal
+overhead for rewriting with multiple rules in a rule set.</p>
+</div></blockquote>
+</li>
+</ol>
+<div class="section" id="id1">
+<h3>Example<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Here we create two rewrite rules expressing the following mathematical transformations:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">+</span> <span class="pre">a</span> <span class="pre">-&gt;</span> <span class="pre">2*a</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">*</span> <span class="pre">a</span> <span class="pre">-&gt;</span> <span class="pre">a**2</span></code></p></li>
+</ol>
+<p>where <code class="docutils literal notranslate"><span class="pre">'a'</span></code> is a variable:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dask.rewrite</span> <span class="kn">import</span> <span class="n">RewriteRule</span><span class="p">,</span> <span class="n">RuleSet</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">add</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="nb">pow</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">variables</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rule1</span> <span class="o">=</span> <span class="n">RewriteRule</span><span class="p">((</span><span class="n">add</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">mul</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">variables</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rule2</span> <span class="o">=</span> <span class="n">RewriteRule</span><span class="p">((</span><span class="n">mul</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">),</span> <span class="p">(</span><span class="nb">pow</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">variables</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rs</span> <span class="o">=</span> <span class="n">RuleSet</span><span class="p">(</span><span class="n">rule1</span><span class="p">,</span> <span class="n">rule2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">RewriteRule</span></code> objects describe the desired transformations in a
+declarative way, and the <code class="docutils literal notranslate"><span class="pre">RuleSet</span></code> builds an efficient automata for applying
+that transformation. Rewriting can then be done using the <code class="docutils literal notranslate"><span class="pre">rewrite</span></code> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rs</span><span class="o">.</span><span class="n">rewrite</span><span class="p">((</span><span class="n">add</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="go">(mul, 5, 2)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rs</span><span class="o">.</span><span class="n">rewrite</span><span class="p">((</span><span class="n">mul</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="go">(pow, 5, 2)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rs</span><span class="o">.</span><span class="n">rewrite</span><span class="p">((</span><span class="n">mul</span><span class="p">,</span> <span class="p">(</span><span class="n">add</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="n">add</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))</span>
+<span class="go">(pow, (mul, 3, 2), 2)</span>
+</pre></div>
+</div>
+<p>The whole task is traversed by default. If you only want to apply a transform
+to the top-level of the task, you can pass in <code class="docutils literal notranslate"><span class="pre">strategy='top_level'</span></code> as shown:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Transforms whole task</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rs</span><span class="o">.</span><span class="n">rewrite</span><span class="p">((</span><span class="nb">sum</span><span class="p">,</span> <span class="p">[(</span><span class="n">add</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="n">mul</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]))</span>
+<span class="p">(</span><span class="nb">sum</span><span class="p">,</span> <span class="p">[(</span><span class="n">mul</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="nb">pow</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)])</span>
+
+<span class="c1"># Only applies to top level, no transform occurs</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rs</span><span class="o">.</span><span class="n">rewrite</span><span class="p">((</span><span class="nb">sum</span><span class="p">,</span> <span class="p">[(</span><span class="n">add</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="n">mul</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]),</span> <span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;top_level&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="nb">sum</span><span class="p">,</span> <span class="p">[(</span><span class="n">add</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="n">mul</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)])</span>
+</pre></div>
+</div>
+<p>The rewriting system provides a powerful abstraction for transforming
+computations at a task level. Again, for many users, directly interacting with
+these transformations will be unnecessary.</p>
+</div>
+</div>
+<div class="section" id="keyword-arguments">
+<h2>Keyword Arguments<a class="headerlink" href="#keyword-arguments" title="Permalink to this headline">¶</a></h2>
+<p>Some optimizations take optional keyword arguments.  To pass keywords from the
+compute call down to the right optimization, prepend the keyword with the name
+of the optimization.  For example, to send a <code class="docutils literal notranslate"><span class="pre">keys=</span></code> keyword argument to the
+<code class="docutils literal notranslate"><span class="pre">fuse</span></code> optimization from a compute call, use the <code class="docutils literal notranslate"><span class="pre">fuse_keys=</span></code> keyword:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fuse</span><span class="p">(</span><span class="n">dsk</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="o">...</span>
+
+<span class="n">x</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">fuse_keys</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="customizing-optimization">
+<h2>Customizing Optimization<a class="headerlink" href="#customizing-optimization" title="Permalink to this headline">¶</a></h2>
+<p>Dask defines a default optimization strategy for each collection type (Array,
+Bag, DataFrame, Delayed).  However, different applications may have different
+needs.  To address this variability of needs, you can construct your own custom
+optimization function and use it instead of the default.  An optimization
+function takes in a task graph and list of desired keys and returns a new
+task graph:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">my_optimize_function</span><span class="p">(</span><span class="n">dsk</span><span class="p">,</span> <span class="n">keys</span><span class="p">):</span>
+    <span class="n">new_dsk</span> <span class="o">=</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">new_dsk</span>
+</pre></div>
+</div>
+<p>You can then register this optimization class against whichever collection type
+you prefer and it will be used instead of the default scheme:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">array_optimize</span><span class="o">=</span><span class="n">my_optimize_function</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">dask</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can register separate optimization functions for different collections, or
+you can register <code class="docutils literal notranslate"><span class="pre">None</span></code> if you do not want particular types of collections to
+be optimized:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">array_optimize</span><span class="o">=</span><span class="n">my_optimize_function</span><span class="p">,</span>
+                     <span class="n">dataframe_optimize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                     <span class="n">delayed_optimize</span><span class="o">=</span><span class="n">my_other_optimize_function</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>You do not need to specify all collections.  Collections will default to their
+standard optimization scheme (which is usually a good choice).</p>
+</div>
+<div class="section" id="api">
+<h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<p><strong>Top level optimizations</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.optimization.cull" title="dask.optimization.cull"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cull</span></code></a>(dsk, keys)</p></td>
+<td><p>Return new dask with only the tasks required to calculate keys.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dask.optimization.fuse" title="dask.optimization.fuse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fuse</span></code></a>(dsk[, keys, dependencies, ave_width, …])</p></td>
+<td><p>Fuse tasks that form reductions; more advanced than <code class="docutils literal notranslate"><span class="pre">fuse_linear</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.optimization.inline" title="dask.optimization.inline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inline</span></code></a>(dsk[, keys, inline_constants, …])</p></td>
+<td><p>Return new dask with the given keys inlined with their values.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dask.optimization.inline_functions" title="dask.optimization.inline_functions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inline_functions</span></code></a>(dsk, output[, …])</p></td>
+<td><p>Inline cheap functions into larger operations</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Utility functions</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.optimization.functions_of" title="dask.optimization.functions_of"><code class="xref py py-obj docutils literal notranslate"><span class="pre">functions_of</span></code></a>(task)</p></td>
+<td><p>Set of functions contained within nested task</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rewrite Rules</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.rewrite.RewriteRule" title="dask.rewrite.RewriteRule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RewriteRule</span></code></a>(lhs, rhs[, vars])</p></td>
+<td><p>A rewrite rule.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dask.rewrite.RuleSet" title="dask.rewrite.RuleSet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RuleSet</span></code></a>(*rules)</p></td>
+<td><p>A set of rewrite rules.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="definitions">
+<h3>Definitions<a class="headerlink" href="#definitions" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="dask.optimization.cull">
+<code class="sig-prename descclassname">dask.optimization.</code><code class="sig-name descname">cull</code><span class="sig-paren">(</span><em class="sig-param">dsk</em>, <em class="sig-param">keys</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.optimization.cull" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return new dask with only the tasks required to calculate keys.</p>
+<p>In other words, remove unnecessary tasks from dask.
+<code class="docutils literal notranslate"><span class="pre">keys</span></code> may be a single key or list of keys.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>dsk: culled dask graph</strong></dt><dd></dd>
+<dt><strong>dependencies: Dict mapping {key: [deps]}.  Useful side effect to accelerate</strong></dt><dd><p>other optimizations, notably fuse.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">inc</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">),</span> <span class="s1">&#39;out&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">add</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dsk</span><span class="p">,</span> <span class="n">dependencies</span> <span class="o">=</span> <span class="n">cull</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s1">&#39;out&#39;</span><span class="p">)</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dsk</span>  
+<span class="go">{&#39;x&#39;: 1, &#39;out&#39;: (add, &#39;x&#39;, 10)}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dependencies</span>  
+<span class="go">{&#39;x&#39;: set(), &#39;out&#39;: set([&#39;x&#39;])}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="dask.optimization.fuse">
+<code class="sig-prename descclassname">dask.optimization.</code><code class="sig-name descname">fuse</code><span class="sig-paren">(</span><em class="sig-param">dsk</em>, <em class="sig-param">keys=None</em>, <em class="sig-param">dependencies=None</em>, <em class="sig-param">ave_width=None</em>, <em class="sig-param">max_width=None</em>, <em class="sig-param">max_height=None</em>, <em class="sig-param">max_depth_new_edges=None</em>, <em class="sig-param">rename_keys=None</em>, <em class="sig-param">fuse_subgraphs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.optimization.fuse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fuse tasks that form reductions; more advanced than <code class="docutils literal notranslate"><span class="pre">fuse_linear</span></code></p>
+<p>This trades parallelism opportunities for faster scheduling by making tasks
+less granular.  It can replace <code class="docutils literal notranslate"><span class="pre">fuse_linear</span></code> in optimization passes.</p>
+<p>This optimization applies to all reductions–tasks that have at most one
+dependent–so it may be viewed as fusing “multiple input, single output”
+groups of tasks into a single task.  There are many parameters to fine
+tune the behavior, which are described below.  <code class="docutils literal notranslate"><span class="pre">ave_width</span></code> is the
+natural parameter with which to compare parallelism to granularity, so
+it should always be specified.  Reasonable values for other parameters
+will be determined using <code class="docutils literal notranslate"><span class="pre">ave_width</span></code> if necessary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>dsk: dict</strong></dt><dd><p>dask graph</p>
+</dd>
+<dt><strong>keys: list or set, optional</strong></dt><dd><p>Keys that must remain in the returned dask graph</p>
+</dd>
+<dt><strong>dependencies: dict, optional</strong></dt><dd><p>{key: [list-of-keys]}.  Must be a list to provide count of each key
+This optional input often comes from <code class="docutils literal notranslate"><span class="pre">cull</span></code></p>
+</dd>
+<dt><strong>ave_width: float (default 2)</strong></dt><dd><p>Upper limit for <code class="docutils literal notranslate"><span class="pre">width</span> <span class="pre">=</span> <span class="pre">num_nodes</span> <span class="pre">/</span> <span class="pre">height</span></code>, a good measure of
+parallelizability</p>
+</dd>
+<dt><strong>max_width: int</strong></dt><dd><p>Don’t fuse if total width is greater than this</p>
+</dd>
+<dt><strong>max_height: int</strong></dt><dd><p>Don’t fuse more than this many levels</p>
+</dd>
+<dt><strong>max_depth_new_edges: int</strong></dt><dd><p>Don’t fuse if new dependencies are added after this many levels</p>
+</dd>
+<dt><strong>rename_keys: bool or func, optional</strong></dt><dd><p>Whether to rename the fused keys with <code class="docutils literal notranslate"><span class="pre">default_fused_keys_renamer</span></code>
+or not.  Renaming fused keys can keep the graph more understandable
+and comprehensive, but it comes at the cost of additional processing.
+If False, then the top-most key will be used.  For advanced usage, a
+function to create the new name is also accepted.</p>
+</dd>
+<dt><strong>fuse_subgraphs</strong><span class="classifier">bool, optional</span></dt><dd><p>Whether to fuse multiple tasks into <code class="docutils literal notranslate"><span class="pre">SubgraphCallable</span></code> objects.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>dsk: output graph with keys fused</strong></dt><dd></dd>
+<dt><strong>dependencies: dict mapping dependencies after fusion.  Useful side effect</strong></dt><dd><p>to accelerate other downstream optimizations.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="dask.optimization.inline">
+<code class="sig-prename descclassname">dask.optimization.</code><code class="sig-name descname">inline</code><span class="sig-paren">(</span><em class="sig-param">dsk</em>, <em class="sig-param">keys=None</em>, <em class="sig-param">inline_constants=True</em>, <em class="sig-param">dependencies=None</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.optimization.inline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return new dask with the given keys inlined with their values.</p>
+<p>Inlines all constants if <code class="docutils literal notranslate"><span class="pre">inline_constants</span></code> keyword is True. Note that
+the constant keys will remain in the graph, to remove them follow
+<code class="docutils literal notranslate"><span class="pre">inline</span></code> with <code class="docutils literal notranslate"><span class="pre">cull</span></code>.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">inc</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">),</span> <span class="s1">&#39;z&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">add</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">)}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inline</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>  
+<span class="go">{&#39;x&#39;: 1, &#39;y&#39;: (inc, 1), &#39;z&#39;: (add, 1, &#39;y&#39;)}</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">inline</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>  
+<span class="go">{&#39;x&#39;: 1, &#39;y&#39;: (inc, 1), &#39;z&#39;: (add, 1, (inc, 1))}</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">inline</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">inline_constants</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  
+<span class="go">{&#39;x&#39;: 1, &#39;y&#39;: (inc, 1), &#39;z&#39;: (add, &#39;x&#39;, (inc, &#39;x&#39;))}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="dask.optimization.inline_functions">
+<code class="sig-prename descclassname">dask.optimization.</code><code class="sig-name descname">inline_functions</code><span class="sig-paren">(</span><em class="sig-param">dsk</em>, <em class="sig-param">output</em>, <em class="sig-param">fast_functions=None</em>, <em class="sig-param">inline_constants=False</em>, <em class="sig-param">dependencies=None</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.optimization.inline_functions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inline cheap functions into larger operations</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dsk</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;out&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">add</span><span class="p">,</span> <span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">),</span>  
+<span class="gp">... </span>       <span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">inc</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">),</span>
+<span class="gp">... </span>       <span class="s1">&#39;d&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">double</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">),</span>
+<span class="gp">... </span>       <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inline_functions</span><span class="p">(</span><span class="n">dsk</span><span class="p">,</span> <span class="p">[],</span> <span class="p">[</span><span class="n">inc</span><span class="p">])</span>  
+<span class="go">{&#39;out&#39;: (add, (inc, &#39;x&#39;), &#39;d&#39;),</span>
+<span class="go"> &#39;d&#39;: (double, &#39;y&#39;),</span>
+<span class="go"> &#39;x&#39;: 1, &#39;y&#39;: 1}</span>
+</pre></div>
+</div>
+<p>Protect output keys.  In the example below <code class="docutils literal notranslate"><span class="pre">i</span></code> is not inlined because it
+is marked as an output key.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">inline_functions</span><span class="p">(</span><span class="n">dsk</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="s1">&#39;out&#39;</span><span class="p">],</span> <span class="p">[</span><span class="n">inc</span><span class="p">,</span> <span class="n">double</span><span class="p">])</span>  
+<span class="go">{&#39;out&#39;: (add, &#39;i&#39;, (double, &#39;y&#39;)),</span>
+<span class="go"> &#39;i&#39;: (inc, &#39;x&#39;),</span>
+<span class="go"> &#39;x&#39;: 1, &#39;y&#39;: 1}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="dask.optimization.functions_of">
+<code class="sig-prename descclassname">dask.optimization.</code><code class="sig-name descname">functions_of</code><span class="sig-paren">(</span><em class="sig-param">task</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.optimization.functions_of" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set of functions contained within nested task</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">task</span> <span class="o">=</span> <span class="p">(</span><span class="n">add</span><span class="p">,</span> <span class="p">(</span><span class="n">mul</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="n">inc</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">functions_of</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>  
+<span class="go">set([add, mul, inc])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="dask.rewrite.RewriteRule">
+<code class="sig-prename descclassname">dask.rewrite.</code><code class="sig-name descname">RewriteRule</code><span class="sig-paren">(</span><em class="sig-param">lhs</em>, <em class="sig-param">rhs</em>, <em class="sig-param">vars=()</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.rewrite.RewriteRule" title="Permalink to this definition">¶</a></dt>
+<dd><p>A rewrite rule.</p>
+<p>Expresses <cite>lhs</cite> -&gt; <cite>rhs</cite>, for variables <cite>vars</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>lhs</strong><span class="classifier">task</span></dt><dd><p>The left-hand-side of the rewrite rule.</p>
+</dd>
+<dt><strong>rhs</strong><span class="classifier">task or function</span></dt><dd><p>The right-hand-side of the rewrite rule. If it’s a task, variables in
+<cite>rhs</cite> will be replaced by terms in the subject that match the variables
+in <cite>lhs</cite>. If it’s a function, the function will be called with a dict
+of such matches.</p>
+</dd>
+<dt><strong>vars: tuple, optional</strong></dt><dd><p>Tuple of variables found in the lhs. Variables can be represented as
+any hashable object; a good convention is to use strings. If there are
+no variables, this can be omitted.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>Here’s a <cite>RewriteRule</cite> to replace all nested calls to <cite>list</cite>, so that
+<cite>(list, (list, ‘x’))</cite> is replaced with <cite>(list, ‘x’)</cite>, where <cite>‘x’</cite> is a
+variable.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lhs</span> <span class="o">=</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rhs</span> <span class="o">=</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">variables</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rule</span> <span class="o">=</span> <span class="n">RewriteRule</span><span class="p">(</span><span class="n">lhs</span><span class="p">,</span> <span class="n">rhs</span><span class="p">,</span> <span class="n">variables</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here’s a more complicated rule that uses a callable right-hand-side. A
+callable <cite>rhs</cite> takes in a dictionary mapping variables to their matching
+values. This rule replaces all occurrences of <cite>(list, ‘x’)</cite> with <cite>‘x’</cite> if
+<cite>‘x’</cite> is a list itself.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lhs</span> <span class="o">=</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">repl_list</span><span class="p">(</span><span class="n">sd</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">x</span> <span class="o">=</span> <span class="n">sd</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="n">x</span>
+<span class="gp">... </span>    <span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rule</span> <span class="o">=</span> <span class="n">RewriteRule</span><span class="p">(</span><span class="n">lhs</span><span class="p">,</span> <span class="n">repl_list</span><span class="p">,</span> <span class="n">variables</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="dask.rewrite.RuleSet">
+<code class="sig-prename descclassname">dask.rewrite.</code><code class="sig-name descname">RuleSet</code><span class="sig-paren">(</span><em class="sig-param">*rules</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.rewrite.RuleSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>A set of rewrite rules.</p>
+<p>Forms a structure for fast rewriting over a set of rewrite rules. This
+allows for syntactic matching of terms to patterns for many patterns at
+the same time.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">pass</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">pass</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">h</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">pass</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">add</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rs</span> <span class="o">=</span> <span class="n">RuleSet</span><span class="p">(</span>                 <span class="c1"># Make RuleSet with two Rules</span>
+<span class="gp">... </span>        <span class="n">RewriteRule</span><span class="p">((</span><span class="n">add</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,)),</span>
+<span class="gp">... </span>        <span class="n">RewriteRule</span><span class="p">((</span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">),</span> <span class="s1">&#39;y&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                    <span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                    <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">)))</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rs</span><span class="o">.</span><span class="n">rewrite</span><span class="p">((</span><span class="n">add</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>       <span class="c1"># Apply ruleset to single task</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rs</span><span class="o">.</span><span class="n">rewrite</span><span class="p">((</span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))</span>  
+<span class="go">(h, &#39;a&#39;, 3)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dsk</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">add</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>      <span class="c1"># Apply ruleset to full dask graph</span>
+<span class="gp">... </span>       <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">))}</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">toolz</span> <span class="kn">import</span> <span class="n">valmap</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">valmap</span><span class="p">(</span><span class="n">rs</span><span class="o">.</span><span class="n">rewrite</span><span class="p">,</span> <span class="n">dsk</span><span class="p">)</span>  
+<span class="go">{&#39;a&#39;: 2,</span>
+<span class="go"> &#39;b&#39;: (h, &#39;a&#39;, 3)}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>rules</strong><span class="classifier">list</span></dt><dd><p>A list of <cite>RewriteRule`s included in the `RuleSet</cite>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="custom-collections.html" class="btn btn-neutral float-right" title="Custom Collections" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="custom-graphs.html" class="btn btn-neutral float-left" title="Custom Graphs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

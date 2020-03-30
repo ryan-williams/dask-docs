@@ -1,0 +1,617 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Development Guidelines &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Changelog" href="changelog.html" />
+    <link rel="prev" title="Debugging" href="debugging.html" />
+    <link rel="shortcut icon" href="_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="array.html">Array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bag.html">Bag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataframe.html">DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Development Guidelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#where-to-ask-for-help">Where to ask for help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#separate-code-repositories">Separate Code Repositories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#issues">Issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#development-environment">Development Environment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#download-code">Download code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install">Install</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-tests">Run Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#contributing-to-code">Contributing to Code</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#python-versions">Python Versions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#test">Test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docstrings">Docstrings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#code-formatting">Code Formatting</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#contributing-to-documentation">Contributing to Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">Task Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Development Guidelines</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/develop.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="development-guidelines">
+<h1>Development Guidelines<a class="headerlink" href="#development-guidelines" title="Permalink to this headline">¶</a></h1>
+<p>Dask is a community maintained project.  We welcome contributions in the form
+of bug reports, documentation, code, design proposals, and more.
+This page provides resources on how best to contribute.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Dask strives to be a welcoming community of individuals with diverse
+backgrounds. For more information on our values, please see our
+<a class="reference external" href="https://github.com/dask/governance/blob/master/code-of-conduct.md">code of conduct</a>
+and
+<a class="reference external" href="https://github.com/dask/governance/blob/master/diversity.md">diversity statement</a></p>
+</div>
+<div class="section" id="where-to-ask-for-help">
+<h2>Where to ask for help<a class="headerlink" href="#where-to-ask-for-help" title="Permalink to this headline">¶</a></h2>
+<p>Dask conversation happens in the following places:</p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow #dask tag</a>: for usage questions</p></li>
+<li><p><a class="reference external" href="https://github.com/dask/dask/issues/">GitHub Issue Tracker</a>: for discussions around new features or established bugs</p></li>
+<li><p><a class="reference external" href="https://gitter.im/dask/dask">Gitter chat</a>: for real-time discussion</p></li>
+</ol>
+<p>For usage questions and bug reports we strongly prefer the use of Stack Overflow
+and GitHub issues over gitter chat.  GitHub and Stack Overflow are more easily
+searchable by future users and so is more efficient for everyone’s time.
+Gitter chat is generally reserved for community discussion.</p>
+</div>
+<div class="section" id="separate-code-repositories">
+<h2>Separate Code Repositories<a class="headerlink" href="#separate-code-repositories" title="Permalink to this headline">¶</a></h2>
+<p>Dask maintains code and documentation in a few git repositories hosted on the
+GitHub <code class="docutils literal notranslate"><span class="pre">dask</span></code> organization, <a class="reference external" href="https://github.com/dask">https://github.com/dask</a>.  This includes the primary
+repository and several other repositories for different components.  A
+non-exhaustive list follows:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/dask/dask">https://github.com/dask/dask</a>: The main code repository holding parallel
+algorithms, the single-machine scheduler, and most documentation</p></li>
+<li><p><a class="reference external" href="https://github.com/dask/distributed">https://github.com/dask/distributed</a>: The distributed memory scheduler</p></li>
+<li><p><a class="reference external" href="https://github.com/dask/dask-ml">https://github.com/dask/dask-ml</a>: Machine learning algorithms</p></li>
+<li><p><a class="reference external" href="https://github.com/dask/s3fs">https://github.com/dask/s3fs</a>: S3 Filesystem interface</p></li>
+<li><p><a class="reference external" href="https://github.com/dask/gcsfs">https://github.com/dask/gcsfs</a>: GCS Filesystem interface</p></li>
+<li><p><a class="reference external" href="https://github.com/dask/hdfs3">https://github.com/dask/hdfs3</a>: Hadoop Filesystem interface</p></li>
+<li><p>…</p></li>
+</ul>
+<p>Git and GitHub can be challenging at first.  Fortunately good materials exist
+on the internet.  Rather than repeat these materials here, we refer you to
+Pandas’ documentation and links on this subject at
+<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/contributing.html">https://pandas.pydata.org/pandas-docs/stable/contributing.html</a></p>
+</div>
+<div class="section" id="issues">
+<h2>Issues<a class="headerlink" href="#issues" title="Permalink to this headline">¶</a></h2>
+<p>The community discusses and tracks known bugs and potential features in the
+<a class="reference external" href="https://github.com/dask/dask/issues/">GitHub Issue Tracker</a>.  If you have a new idea or have identified a bug, then
+you should raise it there to start public discussion.</p>
+<p>If you are looking for an introductory issue to get started with development,
+then check out the <a class="reference external" href="https://github.com/dask/dask/labels/good%20first%20issue">“good first issue” label</a>, which contains issues that are good
+for starting developers.  Generally, familiarity with Python, NumPy, Pandas, and
+some parallel computing are assumed.</p>
+</div>
+<div class="section" id="development-environment">
+<h2>Development Environment<a class="headerlink" href="#development-environment" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="download-code">
+<h3>Download code<a class="headerlink" href="#download-code" title="Permalink to this headline">¶</a></h3>
+<p>Make a fork of the main <a class="reference external" href="https://github.com/dask/dask">Dask repository</a> and
+clone the fork:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/&lt;</span><span class="n">your</span><span class="o">-</span><span class="n">github</span><span class="o">-</span><span class="n">username</span><span class="o">&gt;/</span><span class="n">dask</span>
+</pre></div>
+</div>
+<p>Contributions to Dask can then be made by submitting pull requests on GitHub.</p>
+</div>
+<div class="section" id="install">
+<h3>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h3>
+<p>You may want to install larger dependencies like NumPy and Pandas using a
+binary package manager like <a class="reference external" href="https://conda.io/">conda</a>.  You can skip this step if you already
+have these libraries, don’t care to use them, or have sufficient build
+environment on your computer to compile them when installing with <code class="docutils literal notranslate"><span class="pre">pip</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">numpy</span> <span class="n">pandas</span> <span class="n">scipy</span> <span class="n">bokeh</span> <span class="n">psutil</span>
+</pre></div>
+</div>
+<p>Install Dask and dependencies:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">dask</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="s2">&quot;.[complete]&quot;</span>
+</pre></div>
+</div>
+<p>For development, Dask uses the following additional dependencies:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">pytest</span> <span class="n">moto</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="run-tests">
+<h3>Run Tests<a class="headerlink" href="#run-tests" title="Permalink to this headline">¶</a></h3>
+<p>Dask uses <a class="reference external" href="https://docs.pytest.org/en/latest/">py.test</a> for testing.  You can run tests from the main dask directory
+as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">py</span><span class="o">.</span><span class="n">test</span> <span class="n">dask</span> <span class="o">--</span><span class="n">verbose</span> <span class="o">--</span><span class="n">doctest</span><span class="o">-</span><span class="n">modules</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="contributing-to-code">
+<h2>Contributing to Code<a class="headerlink" href="#contributing-to-code" title="Permalink to this headline">¶</a></h2>
+<p>Dask maintains development standards that are similar to most PyData projects.  These standards include
+language support, testing, documentation, and style.</p>
+<div class="section" id="python-versions">
+<h3>Python Versions<a class="headerlink" href="#python-versions" title="Permalink to this headline">¶</a></h3>
+<p>Dask supports Python versions 3.5, 3.6, and 3.7.
+Name changes are handled by the <code class="file docutils literal notranslate"><span class="pre">dask/compatibility.py</span></code> file.</p>
+</div>
+<div class="section" id="test">
+<h3>Test<a class="headerlink" href="#test" title="Permalink to this headline">¶</a></h3>
+<p>Dask employs extensive unit tests to ensure correctness of code both for today
+and for the future.  Test coverage is expected for all code contributions.</p>
+<p>Tests are written in a py.test style with bare functions:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_fibonacci</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">fib</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">assert</span> <span class="n">fib</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">assert</span> <span class="n">fib</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="mi">55</span>
+    <span class="k">assert</span> <span class="n">fib</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="o">==</span> <span class="n">fib</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">]:</span>
+        <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+            <span class="n">fib</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>These tests should compromise well between covering all branches and fail cases
+and running quickly (slow test suites get run less often).</p>
+<p>You can run tests locally by running <code class="docutils literal notranslate"><span class="pre">py.test</span></code> in the local dask directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">py</span><span class="o">.</span><span class="n">test</span> <span class="n">dask</span> <span class="o">--</span><span class="n">verbose</span>
+</pre></div>
+</div>
+<p>You can also test certain modules or individual tests for faster response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">py</span><span class="o">.</span><span class="n">test</span> <span class="n">dask</span><span class="o">/</span><span class="n">dataframe</span> <span class="o">--</span><span class="n">verbose</span>
+
+<span class="n">py</span><span class="o">.</span><span class="n">test</span> <span class="n">dask</span><span class="o">/</span><span class="n">dataframe</span><span class="o">/</span><span class="n">tests</span><span class="o">/</span><span class="n">test_dataframe</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">test_rename_index</span>
+</pre></div>
+</div>
+<p>Tests run automatically on the Travis.ci and Appveyor continuous testing
+frameworks on every push to every pull request on GitHub.</p>
+<p>Tests are organized within the various modules’ subdirectories:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dask</span><span class="o">/</span><span class="n">array</span><span class="o">/</span><span class="n">tests</span><span class="o">/</span><span class="n">test_</span><span class="o">*.</span><span class="n">py</span>
+<span class="n">dask</span><span class="o">/</span><span class="n">bag</span><span class="o">/</span><span class="n">tests</span><span class="o">/</span><span class="n">test_</span><span class="o">*.</span><span class="n">py</span>
+<span class="n">dask</span><span class="o">/</span><span class="nb">bytes</span><span class="o">/</span><span class="n">tests</span><span class="o">/</span><span class="n">test_</span><span class="o">*.</span><span class="n">py</span>
+<span class="n">dask</span><span class="o">/</span><span class="n">dataframe</span><span class="o">/</span><span class="n">tests</span><span class="o">/</span><span class="n">test_</span><span class="o">*.</span><span class="n">py</span>
+<span class="n">dask</span><span class="o">/</span><span class="n">diagnostics</span><span class="o">/</span><span class="n">tests</span><span class="o">/</span><span class="n">test_</span><span class="o">*.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>For the Dask collections like Dask Array and Dask DataFrame, behavior is
+typically tested directly against the NumPy or Pandas libraries using the
+<code class="docutils literal notranslate"><span class="pre">assert_eq</span></code> functions:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">dask.array</span> <span class="k">as</span> <span class="nn">da</span>
+<span class="kn">from</span> <span class="nn">dask.array.utils</span> <span class="kn">import</span> <span class="n">assert_eq</span>
+
+<span class="k">def</span> <span class="nf">test_aggregations</span><span class="p">():</span>
+    <span class="n">nx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">dx</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,))</span>
+
+    <span class="n">assert_eq</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="n">dx</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+    <span class="n">assert_eq</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">dx</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+    <span class="n">assert_eq</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">dx</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>This technique helps to ensure compatibility with upstream libraries and tends
+to be simpler than testing correctness directly.  Additionally, by passing Dask
+collections directly to the <code class="docutils literal notranslate"><span class="pre">assert_eq</span></code> function rather than call compute
+manually, the testing suite is able to run a number of checks on the lazy
+collections themselves.</p>
+</div>
+<div class="section" id="docstrings">
+<h3>Docstrings<a class="headerlink" href="#docstrings" title="Permalink to this headline">¶</a></h3>
+<p>User facing functions should roughly follow the <a class="reference external" href="https://numpydoc.readthedocs.io/en/latest/format.html#docstring-standard">numpydoc</a> standard, including
+sections for <code class="docutils literal notranslate"><span class="pre">Parameters</span></code>, <code class="docutils literal notranslate"><span class="pre">Examples</span></code>, and general explanatory prose.</p>
+<p>By default, examples will be doc-tested.  Reproducible examples in documentation
+is valuable both for testing and, more importantly, for communication of common
+usage to the user.  Documentation trumps testing in this case and clear
+examples should take precedence over using the docstring as testing space.
+To skip a test in the examples add the comment <code class="docutils literal notranslate"><span class="pre">#</span> <span class="pre">doctest:</span> <span class="pre">+SKIP</span></code> directly
+after the line.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; A single line with a brief explanation</span>
+
+<span class="sd">    A more thorough description of the function, consisting of multiple</span>
+<span class="sd">    lines or paragraphs.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    i: int</span>
+<span class="sd">         A short description of the argument if not immediately clear</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; fib(4)</span>
+<span class="sd">    3</span>
+<span class="sd">    &gt;&gt;&gt; fib(5)</span>
+<span class="sd">    5</span>
+<span class="sd">    &gt;&gt;&gt; fib(6)</span>
+<span class="sd">    8</span>
+<span class="sd">    &gt;&gt;&gt; fib(-1)  # Robust to bad inputs</span>
+<span class="sd">    ValueError(...)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<p>Docstrings are currently tested under Python 3.6 on Travis.ci.  You can test
+docstrings with pytest as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">py</span><span class="o">.</span><span class="n">test</span> <span class="n">dask</span> <span class="o">--</span><span class="n">doctest</span><span class="o">-</span><span class="n">modules</span>
+</pre></div>
+</div>
+<p>Docstring testing requires <code class="docutils literal notranslate"><span class="pre">graphviz</span></code> to be installed. This can be done via:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">graphviz</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="code-formatting">
+<h3>Code Formatting<a class="headerlink" href="#code-formatting" title="Permalink to this headline">¶</a></h3>
+<p>Dask uses <a class="reference external" href="https://black.readthedocs.io/en/stable/">Black</a> and
+<a class="reference external" href="http://flake8.pycqa.org/en/latest/">Flake8</a> to ensure a consistent code
+format throughout the project. <code class="docutils literal notranslate"><span class="pre">black</span></code> and <code class="docutils literal notranslate"><span class="pre">flake8</span></code> can be installed with
+<code class="docutils literal notranslate"><span class="pre">pip</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">black</span> <span class="n">flake8</span>
+</pre></div>
+</div>
+<p>and then run from the root of the Dask repository:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">black</span> <span class="n">dask</span>
+<span class="n">flake8</span> <span class="n">dask</span>
+</pre></div>
+</div>
+<p>to auto-format your code. Additionally, many editors have plugins that will
+apply <code class="docutils literal notranslate"><span class="pre">black</span></code> as you edit files.</p>
+<p>Optionally, you may wish to setup <a class="reference external" href="https://pre-commit.com/">pre-commit hooks</a>
+to automatically run <code class="docutils literal notranslate"><span class="pre">black</span></code> and <code class="docutils literal notranslate"><span class="pre">flake8</span></code> when you make a git commit. This
+can be done by installing <code class="docutils literal notranslate"><span class="pre">pre-commit</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">pre</span><span class="o">-</span><span class="n">commit</span>
+</pre></div>
+</div>
+<p>and then running:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pre</span><span class="o">-</span><span class="n">commit</span> <span class="n">install</span>
+</pre></div>
+</div>
+<p>from the root of the Dask repository. Now <code class="docutils literal notranslate"><span class="pre">black</span></code> and <code class="docutils literal notranslate"><span class="pre">flake8</span></code> will be run
+each time you commit changes. You can skip these checks with
+<code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">commit</span> <span class="pre">--no-verify</span></code>.</p>
+</div>
+</div>
+<div class="section" id="contributing-to-documentation">
+<h2>Contributing to Documentation<a class="headerlink" href="#contributing-to-documentation" title="Permalink to this headline">¶</a></h2>
+<p>Dask uses <a class="reference external" href="https://www.sphinx-doc.org/">Sphinx</a> for documentation, hosted on <a class="reference external" href="https://readthedocs.org">https://readthedocs.org</a> .
+Documentation is maintained in the RestructuredText markup language (<code class="docutils literal notranslate"><span class="pre">.rst</span></code>
+files) in <code class="docutils literal notranslate"><span class="pre">dask/docs/source</span></code>.  The documentation consists both of prose
+and API documentation.</p>
+<p>To build the documentation locally, clone this repository and install
+the necessary requirements using <code class="docutils literal notranslate"><span class="pre">pip</span></code> or <code class="docutils literal notranslate"><span class="pre">conda</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">dask</span><span class="o">/</span><span class="n">dask</span><span class="o">.</span><span class="n">git</span>
+<span class="n">cd</span> <span class="n">dask</span><span class="o">/</span><span class="n">docs</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="o">-</span><span class="n">docs</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">conda</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">daskdocs</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="o">--</span><span class="n">file</span> <span class="n">requirements</span><span class="o">-</span><span class="n">docs</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">conda</span> <span class="n">activate</span> <span class="n">daskdocs</span>
+</pre></div>
+</div>
+<p>Then build the documentation with <code class="docutils literal notranslate"><span class="pre">make</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">html</span>
+</pre></div>
+</div>
+<p>The resulting HTML files end up in the <code class="docutils literal notranslate"><span class="pre">build/html</span></code> directory.</p>
+<p>You can now make edits to rst files and run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">html</span></code> again to update
+the affected pages.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="changelog.html" class="btn btn-neutral float-right" title="Changelog" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="debugging.html" class="btn btn-neutral float-left" title="Debugging" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

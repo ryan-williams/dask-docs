@@ -1,0 +1,590 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>High Performance Computers &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Kubernetes" href="kubernetes.html" />
+    <link rel="prev" title="SSH" href="ssh.html" />
+    <link rel="shortcut icon" href="../_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="../_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Install Dask</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../setup.html">Setup</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="single-machine.html">Single-Machine Scheduler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="single-distributed.html">Single Machine: dask.distributed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html">Command Line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssh.html">SSH</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">High Performance Computers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#relevant-machines">Relevant Machines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#where-to-start">Where to start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dask-jobqueue-and-dask-drmaa">Dask-jobqueue and Dask-drmaa</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-mpi">Using MPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-a-shared-network-file-system-and-a-job-scheduler">Using a Shared Network File System and a Job Scheduler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#high-performance-network">High Performance Network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#local-storage">Local Storage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#launch-many-small-jobs">Launch Many Small Jobs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#use-dask-to-co-launch-a-jupyter-server">Use Dask to co-launch a Jupyter server</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="kubernetes.html">Kubernetes</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://yarn.dask.org/en/latest/">YARN / Hadoop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python-advanced.html">Python API (advanced)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud.html">Cloud Deployments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adaptive.html">Adaptive Deployments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docker.html">Docker Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom-startup.html">Custom Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prometheus.html">Prometheus Monitoring</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../array.html">Array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bag.html">Bag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dataframe.html">DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphs.html">Task Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gpu.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../setup.html">Setup</a> &raquo;</li>
+        
+      <li>High Performance Computers</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/setup/hpc.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="high-performance-computers">
+<h1>High Performance Computers<a class="headerlink" href="#high-performance-computers" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="relevant-machines">
+<h2>Relevant Machines<a class="headerlink" href="#relevant-machines" title="Permalink to this headline">¶</a></h2>
+<p>This page includes instructions and guidelines when deploying Dask on high
+performance supercomputers commonly found in scientific and industry research
+labs.  These systems commonly have the following attributes:</p>
+<ol class="arabic simple">
+<li><p>Some mechanism to launch MPI applications or use job schedulers like
+SLURM, SGE, TORQUE, LSF, DRMAA, PBS, or others</p></li>
+<li><p>A shared network file system visible to all machines in the cluster</p></li>
+<li><p>A high performance network interconnect, such as Infiniband</p></li>
+<li><p>Little or no node-local storage</p></li>
+</ol>
+</div>
+<div class="section" id="where-to-start">
+<h2>Where to start<a class="headerlink" href="#where-to-start" title="Permalink to this headline">¶</a></h2>
+<p>Most of this page documents various ways and best practices to use Dask on an
+HPC cluster.  This is technical and aimed both at users with some experience
+deploying Dask and also system administrators.</p>
+<p>The preferred and simplest way to run Dask on HPC systems today both for new,
+experienced users or administrator is to use
+<a class="reference external" href="https://jobqueue.dask.org">dask-jobqueue</a>.</p>
+<p>However, dask-jobqueue is slightly oriented toward interactive analysis usage,
+and it might be better to use tools like dask-mpi in some routine batch
+production workloads.</p>
+</div>
+<div class="section" id="dask-jobqueue-and-dask-drmaa">
+<h2>Dask-jobqueue and Dask-drmaa<a class="headerlink" href="#dask-jobqueue-and-dask-drmaa" title="Permalink to this headline">¶</a></h2>
+<p>The following projects provide easy high-level access to Dask using resource
+managers that are commonly deployed on HPC systems:</p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://jobqueue.dask.org">dask-jobqueue</a> for use with PBS,
+SLURM, LSF, SGE and other resource managers</p></li>
+<li><p><a class="reference external" href="https://github.com/dask/dask-drmaa">dask-drmaa</a> for use with any DRMAA
+compliant resource manager</p></li>
+</ol>
+<p>They provide interfaces that look like the following:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dask_jobqueue</span> <span class="kn">import</span> <span class="n">PBSCluster</span>
+
+<span class="n">cluster</span> <span class="o">=</span> <span class="n">PBSCluster</span><span class="p">(</span><span class="n">cores</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span>
+                     <span class="n">memory</span><span class="o">=</span><span class="s2">&quot;100GB&quot;</span><span class="p">,</span>
+                     <span class="n">project</span><span class="o">=</span><span class="s1">&#39;P48500028&#39;</span><span class="p">,</span>
+                     <span class="n">queue</span><span class="o">=</span><span class="s1">&#39;premium&#39;</span><span class="p">,</span>
+                     <span class="n">interface</span><span class="o">=</span><span class="s1">&#39;ib0&#39;</span><span class="p">,</span>
+                     <span class="n">walltime</span><span class="o">=</span><span class="s1">&#39;02:00:00&#39;</span><span class="p">)</span>
+
+<span class="n">cluster</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>  <span class="c1"># Start 100 workers in 100 jobs that match the description above</span>
+
+<span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">cluster</span><span class="p">)</span>    <span class="c1"># Connect to that cluster</span>
+</pre></div>
+</div>
+<p>Dask-jobqueue provides a lot of possibilities like adaptive dynamic scaling
+of workers, we recommend reading the <a class="reference external" href="https://jobqueue.dask.org">dask-jobqueue documentation</a> first to get a basic system running and then
+returning to this documentation for fine-tuning if necessary.</p>
+</div>
+<div class="section" id="using-mpi">
+<h2>Using MPI<a class="headerlink" href="#using-mpi" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This section may not be necessary if you use a tool like
+dask-jobqueue.</p>
+</div>
+<p>You can launch a Dask network using <code class="docutils literal notranslate"><span class="pre">mpirun</span></code> or <code class="docutils literal notranslate"><span class="pre">mpiexec</span></code> and the
+<code class="docutils literal notranslate"><span class="pre">dask-mpi</span></code> command line executable.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mpirun --np <span class="m">4</span> dask-mpi --scheduler-file /home/<span class="nv">$USER</span>/scheduler.json
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">scheduler_file</span><span class="o">=</span><span class="s1">&#39;/path/to/scheduler.json&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This depends on the <a class="reference external" href="https://mpi4py.readthedocs.io/">mpi4py</a> library.  It only
+uses MPI to start the Dask cluster and not for inter-node communication. MPI
+implementations differ: the use of <code class="docutils literal notranslate"><span class="pre">mpirun</span> <span class="pre">--np</span> <span class="pre">4</span></code> is specific to the
+<code class="docutils literal notranslate"><span class="pre">mpich</span></code> or <code class="docutils literal notranslate"><span class="pre">open-mpi</span></code> MPI implementation installed through conda and linked
+to mpi4py.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda install mpi4py
+</pre></div>
+</div>
+<p>It is not necessary to use exactly this implementation, but you may want to
+verify that your <code class="docutils literal notranslate"><span class="pre">mpi4py</span></code> Python library is linked against the proper
+<code class="docutils literal notranslate"><span class="pre">mpirun/mpiexec</span></code> executable and that the flags used (like <code class="docutils literal notranslate"><span class="pre">--np</span> <span class="pre">4</span></code>) are
+correct for your system.  The system administrator of your cluster should be
+very familiar with these concerns and able to help.</p>
+<p>In some setups, MPI processes are not allowed to fork other processes. In this
+case, we recommend using <code class="docutils literal notranslate"><span class="pre">--no-nanny</span></code> option in order to prevent dask from
+using an additional nanny process to manage workers.</p>
+<p>Run <code class="docutils literal notranslate"><span class="pre">dask-mpi</span> <span class="pre">--help</span></code> to see more options for the <code class="docutils literal notranslate"><span class="pre">dask-mpi</span></code> command.</p>
+</div>
+<div class="section" id="using-a-shared-network-file-system-and-a-job-scheduler">
+<h2>Using a Shared Network File System and a Job Scheduler<a class="headerlink" href="#using-a-shared-network-file-system-and-a-job-scheduler" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This section is not necessary if you use a tool like dask-jobqueue.</p>
+</div>
+<p>Some clusters benefit from a shared File System (NFS, GPFS, Lustre or alike),
+and can use this to communicate the scheduler location to the workers:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dask</span><span class="o">-</span><span class="n">scheduler</span> <span class="o">--</span><span class="n">scheduler</span><span class="o">-</span><span class="n">file</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">scheduler</span><span class="o">.</span><span class="n">json</span>  <span class="c1"># writes address to file</span>
+
+<span class="n">dask</span><span class="o">-</span><span class="n">worker</span> <span class="o">--</span><span class="n">scheduler</span><span class="o">-</span><span class="n">file</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">scheduler</span><span class="o">.</span><span class="n">json</span>  <span class="c1"># reads file for address</span>
+<span class="n">dask</span><span class="o">-</span><span class="n">worker</span> <span class="o">--</span><span class="n">scheduler</span><span class="o">-</span><span class="n">file</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">scheduler</span><span class="o">.</span><span class="n">json</span>  <span class="c1"># reads file for address</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">scheduler_file</span><span class="o">=</span><span class="s1">&#39;/path/to/scheduler.json&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This can be particularly useful when deploying <code class="docutils literal notranslate"><span class="pre">dask-scheduler</span></code> and
+<code class="docutils literal notranslate"><span class="pre">dask-worker</span></code> processes using a job scheduler like
+SGE/SLURM/Torque/etc.  Here is an example using SGE’s <code class="docutils literal notranslate"><span class="pre">qsub</span></code> command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># Start a dask-scheduler somewhere and write the connection information to a file
+qsub -b y /path/to/dask-scheduler --scheduler-file /home/$USER/scheduler.json
+
+# Start 100 dask-worker processes in an array job pointing to the same file
+qsub -b y -t 1-100 /path/to/dask-worker --scheduler-file /home/$USER/scheduler.json
+</pre></div>
+</div>
+<p>Note, the <code class="docutils literal notranslate"><span class="pre">--scheduler-file</span></code> option is <em>only</em> valuable if your scheduler and
+workers share a network file system.</p>
+</div>
+<div class="section" id="high-performance-network">
+<h2>High Performance Network<a class="headerlink" href="#high-performance-network" title="Permalink to this headline">¶</a></h2>
+<p>Many HPC systems have both standard Ethernet networks as well as
+high-performance networks capable of increased bandwidth.  You can instruct
+Dask to use the high-performance network interface by using the <code class="docutils literal notranslate"><span class="pre">--interface</span></code>
+keyword with the <code class="docutils literal notranslate"><span class="pre">dask-worker</span></code>, <code class="docutils literal notranslate"><span class="pre">dask-scheduler</span></code>, or <code class="docutils literal notranslate"><span class="pre">dask-mpi</span></code> commands or
+the <code class="docutils literal notranslate"><span class="pre">interface=</span></code> keyword with the dask-jobqueue <code class="docutils literal notranslate"><span class="pre">Cluster</span></code> objects:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mpirun --np <span class="m">4</span> dask-mpi --scheduler-file /home/<span class="nv">$USER</span>/scheduler.json --interface ib0
+</pre></div>
+</div>
+<p>In the code example above, we have assumed that your cluster has an Infiniband
+network interface called <code class="docutils literal notranslate"><span class="pre">ib0</span></code>. You can check this by asking your system
+administrator or by inspecting the output of <code class="docutils literal notranslate"><span class="pre">ifconfig</span></code></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ ifconfig
+lo          Link encap:Local Loopback                       <span class="c1"># Localhost</span>
+                        inet addr:127.0.0.1  Mask:255.0.0.0
+                        inet6 addr: ::1/128 Scope:Host
+eth0        Link encap:Ethernet  HWaddr XX:XX:XX:XX:XX:XX   <span class="c1"># Ethernet</span>
+                        inet addr:192.168.0.101
+                        ...
+ib0         Link encap:Infiniband                           <span class="c1"># Fast InfiniBand</span>
+                        inet addr:172.42.0.101
+</pre></div>
+</div>
+<p><a class="reference external" href="https://stackoverflow.com/questions/43881157/how-do-i-use-an-infiniband-network-with-dask">https://stackoverflow.com/questions/43881157/how-do-i-use-an-infiniband-network-with-dask</a></p>
+</div>
+<div class="section" id="local-storage">
+<h2>Local Storage<a class="headerlink" href="#local-storage" title="Permalink to this headline">¶</a></h2>
+<p>Users often exceed memory limits available to a specific Dask deployment.  In
+normal operation, Dask spills excess data to disk, often to the default
+temporary directory.</p>
+<p>However, in HPC systems this default temporary directory may point to an
+network file system (NFS) mount which can cause problems as Dask tries to read
+and write many small files.  <em>Beware, reading and writing many tiny files from
+many distributed processes is a good way to shut down a national
+supercomputer</em>.</p>
+<p>If available, it’s good practice to point Dask workers to local storage, or
+hard drives that are physically on each node.  Your IT administrators will be
+able to point you to these locations.  You can do this with the
+<code class="docutils literal notranslate"><span class="pre">--local-directory</span></code> or <code class="docutils literal notranslate"><span class="pre">local_directory=</span></code> keyword in the <code class="docutils literal notranslate"><span class="pre">dask-worker</span></code>
+command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dask</span><span class="o">-</span><span class="n">mpi</span> <span class="o">...</span> <span class="o">--</span><span class="n">local</span><span class="o">-</span><span class="n">directory</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">storage</span>
+</pre></div>
+</div>
+<p>or any of the other Dask Setup utilities, or by specifying the
+following <a class="reference internal" href="../configuration.html"><span class="doc">configuration value</span></a>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">temporary-directory</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/path/to/local/storage</span>
+</pre></div>
+</div>
+<p>However, not all HPC systems have local storage.  If this is the case then you
+may want to turn off Dask’s ability to spill to disk altogether.  See <a class="reference external" href="https://distributed.dask.org/en/latest/worker.html#memory-management">this
+page</a>
+for more information on Dask’s memory policies.  Consider changing the
+following values in your <code class="docutils literal notranslate"><span class="pre">~/.config/dask/distributed.yaml</span></code> file to disable
+spilling data to disk:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">distributed</span><span class="p">:</span>
+  <span class="nt">worker</span><span class="p">:</span>
+    <span class="nt">memory</span><span class="p">:</span>
+      <span class="nt">target</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>  <span class="c1"># don&#39;t spill to disk</span>
+      <span class="nt">spill</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>  <span class="c1"># don&#39;t spill to disk</span>
+      <span class="nt">pause</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.80</span>  <span class="c1"># pause execution at 80% memory use</span>
+      <span class="nt">terminate</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.95</span>  <span class="c1"># restart the worker at 95% use</span>
+</pre></div>
+</div>
+<p>This stops Dask workers from spilling to disk, and instead relies entirely on
+mechanisms to stop them from processing when they reach memory limits.</p>
+<p>As a reminder, you can set the memory limit for a worker using the
+<code class="docutils literal notranslate"><span class="pre">--memory-limit</span></code> keyword:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dask</span><span class="o">-</span><span class="n">mpi</span> <span class="o">...</span> <span class="o">--</span><span class="n">memory</span><span class="o">-</span><span class="n">limit</span> <span class="mi">10</span><span class="n">GB</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="launch-many-small-jobs">
+<h2>Launch Many Small Jobs<a class="headerlink" href="#launch-many-small-jobs" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This section is not necessary if you use a tool like dask-jobqueue.</p>
+</div>
+<p>HPC job schedulers are optimized for large monolithic jobs with many nodes that
+all need to run as a group at the same time.  Dask jobs can be quite a bit more
+flexible: workers can come and go without strongly affecting the job.  If we
+split our job into many smaller jobs, we can often get through the job
+scheduling queue much more quickly than a typical job.  This is particularly
+valuable when we want to get started right away and interact with a Jupyter
+notebook session rather than waiting for hours for a suitable allocation block
+to become free.</p>
+<p>So, to get a large cluster quickly, we recommend allocating a dask-scheduler
+process on one node with a modest wall time (the intended time of your session)
+and then allocating many small single-node dask-worker jobs with shorter wall
+times (perhaps 30 minutes) that can easily squeeze into extra space in the job
+scheduler.  As you need more computation, you can add more of these single-node
+jobs or let them expire.</p>
+</div>
+<div class="section" id="use-dask-to-co-launch-a-jupyter-server">
+<h2>Use Dask to co-launch a Jupyter server<a class="headerlink" href="#use-dask-to-co-launch-a-jupyter-server" title="Permalink to this headline">¶</a></h2>
+<p>Dask can help you by launching other services alongside it.  For example, you
+can run a Jupyter notebook server on the machine running the <code class="docutils literal notranslate"><span class="pre">dask-scheduler</span></code>
+process with the following commands</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">scheduler_file</span><span class="o">=</span><span class="s1">&#39;scheduler.json&#39;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="n">host</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">run_on_scheduler</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">start_jlab</span><span class="p">(</span><span class="n">dask_scheduler</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">subprocess</span>
+    <span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s1">&#39;/path/to/jupyter&#39;</span><span class="p">,</span> <span class="s1">&#39;lab&#39;</span><span class="p">,</span> <span class="s1">&#39;--ip&#39;</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="s1">&#39;--no-browser&#39;</span><span class="p">])</span>
+    <span class="n">dask_scheduler</span><span class="o">.</span><span class="n">jlab_proc</span> <span class="o">=</span> <span class="n">proc</span>
+
+<span class="n">client</span><span class="o">.</span><span class="n">run_on_scheduler</span><span class="p">(</span><span class="n">start_jlab</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="kubernetes.html" class="btn btn-neutral float-right" title="Kubernetes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ssh.html" class="btn btn-neutral float-left" title="SSH" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

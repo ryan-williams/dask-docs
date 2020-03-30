@@ -1,0 +1,3487 @@
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Index &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="shortcut icon" href="_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="array.html">Array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bag.html">Bag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataframe.html">DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">Task Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Index</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#Symbols"><strong>Symbols</strong></a>
+ | <a href="#_"><strong>_</strong></a>
+ | <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#J"><strong>J</strong></a>
+ | <a href="#K"><strong>K</strong></a>
+ | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#Q"><strong>Q</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
+ | <a href="#V"><strong>V</strong></a>
+ | <a href="#W"><strong>W</strong></a>
+ | <a href="#Z"><strong>Z</strong></a>
+ 
+</div>
+<h2 id="Symbols">Symbols</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    --bokeh
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-bokeh">dask-scheduler command line option</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-bokeh">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --bokeh-port &lt;bokeh_port&gt;
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-bokeh-port">dask-scheduler command line option</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-bokeh-port">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --contact-address &lt;contact_address&gt;
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-contact-address">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --dashboard
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-dashboard">dask-scheduler command line option</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-dashboard">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --dashboard-address &lt;dashboard_address&gt;
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-dashboard-address">dask-scheduler command line option</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-dashboard-address">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --dashboard-prefix &lt;dashboard_prefix&gt;
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-dashboard-prefix">dask-scheduler command line option</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-dashboard-prefix">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --death-timeout &lt;death_timeout&gt;
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-death-timeout">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --host &lt;host&gt;
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-host">dask-scheduler command line option</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-host">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --hostfile &lt;hostfile&gt;
+
+      <ul>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-hostfile">dask-ssh command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --idle-timeout &lt;idle_timeout&gt;
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-idle-timeout">dask-scheduler command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --interface &lt;interface&gt;
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-interface">dask-scheduler command line option</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-interface">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --lifetime &lt;lifetime&gt;
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-lifetime">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --lifetime-restart
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-lifetime-restart">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --lifetime-stagger &lt;lifetime_stagger&gt;
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-lifetime-stagger">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --listen-address &lt;listen_address&gt;
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-listen-address">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --local-directory &lt;local_directory&gt;
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-local-directory">dask-scheduler command line option</a>
+</li>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-local-directory">dask-ssh command line option</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-local-directory">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --log-directory &lt;log_directory&gt;
+
+      <ul>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-log-directory">dask-ssh command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --memory-limit &lt;memory_limit&gt;
+
+      <ul>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-memory-limit">dask-ssh command line option</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-memory-limit">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --name &lt;name&gt;
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-name">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --nanny
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-nanny">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --nanny-port &lt;nanny_port&gt;
+
+      <ul>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-nanny-port">dask-ssh command line option</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-nanny-port">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --no-bokeh
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-bokeh">dask-scheduler command line option</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-bokeh">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --no-dashboard
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-dashboard">dask-scheduler command line option</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-dashboard">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --no-lifetime-restart
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-lifetime-restart">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --no-nanny
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-nanny">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --no-reconnect
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-reconnect">dask-worker command line option</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    --no-show
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-show">dask-scheduler command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --nohost
+
+      <ul>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-nohost">dask-ssh command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --nprocs &lt;nprocs&gt;
+
+      <ul>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-nprocs">dask-ssh command line option</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-nprocs">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --nthreads &lt;nthreads&gt;
+
+      <ul>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-nthreads">dask-ssh command line option</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-nthreads">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --pid-file &lt;pid_file&gt;
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-pid-file">dask-scheduler command line option</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-pid-file">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --port &lt;port&gt;
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-port">dask-scheduler command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --preload &lt;preload&gt;
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-preload">dask-scheduler command line option</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-preload">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --protocol &lt;protocol&gt;
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-protocol">dask-scheduler command line option</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-protocol">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --reconnect
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-reconnect">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --remote-dask-worker &lt;remote_dask_worker&gt;
+
+      <ul>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-remote-dask-worker">dask-ssh command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --remote-python &lt;remote_python&gt;
+
+      <ul>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-remote-python">dask-ssh command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --resources &lt;resources&gt;
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-resources">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --scheduler &lt;scheduler&gt;
+
+      <ul>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-scheduler">dask-ssh command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --scheduler-file &lt;scheduler_file&gt;
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-scheduler-file">dask-scheduler command line option</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-scheduler-file">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --scheduler-port &lt;scheduler_port&gt;
+
+      <ul>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-scheduler-port">dask-ssh command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --show
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-show">dask-scheduler command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --ssh-port &lt;ssh_port&gt;
+
+      <ul>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-ssh-port">dask-ssh command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --ssh-private-key &lt;ssh_private_key&gt;
+
+      <ul>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-ssh-private-key">dask-ssh command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --ssh-username &lt;ssh_username&gt;
+
+      <ul>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-ssh-username">dask-ssh command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --tls-ca-file &lt;tls_ca_file&gt;
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-tls-ca-file">dask-scheduler command line option</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-tls-ca-file">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --tls-cert &lt;tls_cert&gt;
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-tls-cert">dask-scheduler command line option</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-tls-cert">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --tls-key &lt;tls_key&gt;
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-tls-key">dask-scheduler command line option</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-tls-key">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --use-xheaders &lt;use_xheaders&gt;
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-use-xheaders">dask-scheduler command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --version
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-version">dask-scheduler command line option</a>
+</li>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-version">dask-ssh command line option</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-version">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --worker-class &lt;worker_class&gt;
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-worker-class">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --worker-port &lt;worker_port&gt;
+
+      <ul>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-worker-port">dask-ssh command line option</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-worker-port">dask-worker command line option</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="_">_</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="custom-collections.html#__dask_graph__">__dask_graph__()</a>
+</li>
+      <li><a href="custom-collections.html#__dask_keys__">__dask_keys__()</a>
+</li>
+      <li><a href="custom-collections.html#__dask_optimize__">__dask_optimize__()</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="custom-collections.html#__dask_postcompute__">__dask_postcompute__()</a>
+</li>
+      <li><a href="custom-collections.html#__dask_postpersist__">__dask_postpersist__()</a>
+</li>
+      <li><a href="custom-collections.html#__dask_scheduler__">__dask_scheduler__()</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.abs">abs() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.abs">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="bag-api.html#dask.bag.Bag.accumulate">accumulate() (dask.bag.Bag method)</a>
+</li>
+      <li><a href="futures.html#distributed.Lock.acquire">acquire() (distributed.Lock method)</a>
+</li>
+      <li><a href="setup/adaptive.html#distributed.deploy.Adaptive">Adaptive (class in distributed.deploy)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.adaptive_target">adaptive_target() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.add">add() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.add">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.add_client">add_client() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="futures.html#distributed.Future.add_done_callback">add_done_callback() (distributed.Future method)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.add_keys">add_keys() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.add_plugin">add_plugin() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.add_worker">add_worker() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.groupby.DataFrameGroupBy.agg">agg() (dask.dataframe.groupby.DataFrameGroupBy method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.SeriesGroupBy.agg">(dask.dataframe.groupby.SeriesGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.tseries.resample.Resampler.agg">(dask.dataframe.tseries.resample.Resampler method)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.groupby.DataFrameGroupBy.aggregate">aggregate() (dask.dataframe.groupby.DataFrameGroupBy method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.SeriesGroupBy.aggregate">(dask.dataframe.groupby.SeriesGroupBy method)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.groupby.Aggregation">Aggregation (class in dask.dataframe.groupby)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.align">align() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.align">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.Array.all">all() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="bag-api.html#dask.bag.Bag.all">(dask.bag.Bag method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.DataFrame.all">(dask.dataframe.DataFrame method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.all">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="array-api.html#dask.array.all">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.allclose">allclose() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.angle">angle() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.Array.any">any() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="bag-api.html#dask.bag.Bag.any">(dask.bag.Bag method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.DataFrame.any">(dask.dataframe.DataFrame method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.any">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="array-api.html#dask.array.any">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.append">append() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.append">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.apply">apply() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.DataFrameGroupBy.apply">(dask.dataframe.groupby.DataFrameGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.SeriesGroupBy.apply">(dask.dataframe.groupby.SeriesGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.apply">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="array-api.html#dask.array.apply_along_axis">apply_along_axis() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.gufunc.apply_gufunc">apply_gufunc() (in module dask.array.gufunc)</a>
+</li>
+      <li><a href="array-api.html#dask.array.apply_over_axes">apply_over_axes() (in module dask.array)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.applymap">applymap() (dask.dataframe.DataFrame method)</a>
+</li>
+      <li><a href="array-api.html#dask.array.arange">arange() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.arccos">arccos() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.arccosh">arccosh() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.arcsin">arcsin() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.arcsinh">arcsinh() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.arctan">arctan() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.arctan2">arctan2() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.arctanh">arctanh() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.Array.argmax">argmax() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="array-api.html#dask.array.argmax">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.Array.argmin">argmin() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="array-api.html#dask.array.argmin">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.Array.argtopk">argtopk() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="array-api.html#dask.array.argtopk">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.argwhere">argwhere() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.around">around() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.Array">Array (class in dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.array">array() (in module dask.array)</a>
+</li>
+      <li><a href="futures.html#distributed.as_completed">as_completed() (in module distributed)</a>
+</li>
+      <li><a href="array-api.html#dask.array.gufunc.as_gufunc">as_gufunc() (in module dask.array.gufunc)</a>
+</li>
+      <li><a href="array-api.html#dask.array.asanyarray">asanyarray() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.asarray">asarray() (in module dask.array)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.assign">assign() (dask.dataframe.DataFrame method)</a>
+</li>
+      <li><a href="array-api.html#dask.array.Array.astype">astype() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.DataFrame.astype">(dask.dataframe.DataFrame method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.astype">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="futures.html#distributed.Client.asynchronous">asynchronous() (distributed.Client property)</a>
+</li>
+      <li><a href="array-api.html#dask.array.atleast_1d">atleast_1d() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.atleast_2d">atleast_2d() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.atleast_3d">atleast_3d() (in module dask.array)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.Series.autocorr">autocorr() (dask.dataframe.Series method)</a>
+</li>
+      <li><a href="array-api.html#dask.array.average">average() (in module dask.array)</a>
+
+      <ul>
+        <li><a href="array-api.html#dask.array.ma.average">(in module dask.array.ma)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="bag-api.html#dask.bag.Bag">Bag (class in dask.bag)</a>
+</li>
+      <li><a href="array-api.html#dask.array.random.beta">beta() (in module dask.array.random)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.Series.between">between() (dask.dataframe.Series method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.bfill">bfill() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.bfill">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.bincount">bincount() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.random.binomial">binomial() (in module dask.array.random)</a>
+</li>
+      <li><a href="array-api.html#dask.array.bitwise_and">bitwise_and() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.bitwise_not">bitwise_not() (in module dask.array)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="array-api.html#dask.array.bitwise_or">bitwise_or() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.bitwise_xor">bitwise_xor() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.block">block() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.Array.blocks">blocks() (dask.array.Array property)</a>
+</li>
+      <li><a href="array-api.html#dask.array.blockwise">blockwise() (in module dask.array)</a>
+
+      <ul>
+        <li><a href="array-api.html#dask.array.core.blockwise">(in module dask.array.core)</a>
+</li>
+      </ul></li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.broadcast">broadcast() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="array-api.html#dask.array.broadcast_arrays">broadcast_arrays() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.broadcast_to">broadcast_to() (in module dask.array)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="diagnostics-local.html#dask.diagnostics.CacheProfiler">CacheProfiler() (in module dask.diagnostics)</a>
+</li>
+      <li><a href="futures.html#distributed.Client.call_stack">call_stack() (distributed.Client method)</a>
+</li>
+      <li><a href="diagnostics-local.html#dask.diagnostics.Callback">Callback() (in module dask.diagnostics)</a>
+</li>
+      <li><a href="futures.html#distributed.Client.cancel">cancel() (distributed.Client method)</a>
+
+      <ul>
+        <li><a href="futures.html#distributed.Future.cancel">(distributed.Future method)</a>
+</li>
+      </ul></li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.cancel_key">cancel_key() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="futures.html#distributed.Future.cancelled">cancelled() (distributed.Future method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.categorize">categorize() (dask.dataframe.DataFrame method)</a>
+</li>
+      <li><a href="array-api.html#dask.array.ceil">ceil() (in module dask.array)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.check_idle_saturated">check_idle_saturated() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="array-api.html#dask.array.random.chisquare">chisquare() (in module dask.array.random)</a>
+
+      <ul>
+        <li><a href="array-api.html#dask.array.stats.chisquare">(in module dask.array.stats)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.random.choice">choice() (in module dask.array.random)</a>
+</li>
+      <li><a href="array-api.html#dask.array.linalg.cholesky">cholesky() (in module dask.array.linalg)</a>
+</li>
+      <li><a href="array-api.html#dask.array.Array.choose">choose() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="array-api.html#dask.array.choose">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.clear_divisions">clear_divisions() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.clear_divisions">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="futures.html#distributed.Client">Client (class in distributed)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.client_heartbeat">client_heartbeat() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.client_releases_keys">client_releases_keys() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="array-api.html#dask.array.Array.clip">clip() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.DataFrame.clip">(dask.dataframe.DataFrame method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.clip">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="array-api.html#dask.array.clip">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="futures.html#distributed.Client.close">close() (distributed.Client method)</a>
+
+      <ul>
+        <li><a href="setup/python-advanced.html#distributed.Nanny.close">(distributed.Nanny method)</a>
+</li>
+        <li><a href="setup/python-advanced.html#distributed.Scheduler.close">(distributed.Scheduler method)</a>
+</li>
+      </ul></li>
+      <li><a href="setup/python-advanced.html#distributed.Nanny.close_gracefully">close_gracefully() (distributed.Nanny method)</a>
+
+      <ul>
+        <li><a href="setup/python-advanced.html#distributed.Worker.close_gracefully">(distributed.Worker method)</a>
+</li>
+      </ul></li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.close_worker">close_worker() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="setup/adaptive.html#distributed.deploy.Cluster">Cluster (class in distributed.deploy)</a>
+</li>
+      <li><a href="array-api.html#dask.array.coarsen">coarsen() (in module dask.array)</a>, <a href="array-api.html#dask.array.coarsen">[1]</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.coerce_address">coerce_address() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.coerce_hostname">coerce_hostname() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="configuration.html#dask.config.collect">collect() (in module dask.config)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.combine">combine() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.combine">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.combine_first">combine_first() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.combine_first">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.compress">compress() (in module dask.array)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.compute">compute() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.compute">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="futures.html#distributed.Client.compute">(distributed.Client method)</a>
+</li>
+        <li><a href="api.html#dask.compute">(in module dask)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.compute">(in module dask.dataframe)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.Array.compute_chunk_sizes">compute_chunk_sizes() (dask.array.Array method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="bag-api.html#dask.bag.concat">concat() (in module dask.bag)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.multi.concat">(in module dask.dataframe.multi)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.concatenate">concatenate() (in module dask.array)</a>, <a href="array-api.html#dask.array.concatenate">[1]</a>
+</li>
+      <li><a href="array-api.html#dask.array.conj">conj() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.Array.copy">copy() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.DataFrame.copy">(dask.dataframe.DataFrame method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.copy">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.copysign">copysign() (in module dask.array)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.corr">corr() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.DataFrameGroupBy.corr">(dask.dataframe.groupby.DataFrameGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.SeriesGroupBy.corr">(dask.dataframe.groupby.SeriesGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.corr">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.corrcoef">corrcoef() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.cos">cos() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.cosh">cosh() (in module dask.array)</a>
+</li>
+      <li><a href="bag-api.html#dask.bag.Bag.count">count() (dask.bag.Bag method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.DataFrame.count">(dask.dataframe.DataFrame method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.DataFrameGroupBy.count">(dask.dataframe.groupby.DataFrameGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.SeriesGroupBy.count">(dask.dataframe.groupby.SeriesGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.count">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.tseries.resample.Resampler.count">(dask.dataframe.tseries.resample.Resampler method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.count_nonzero">count_nonzero() (in module dask.array)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.cov">cov() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.DataFrameGroupBy.cov">(dask.dataframe.groupby.DataFrameGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.SeriesGroupBy.cov">(dask.dataframe.groupby.SeriesGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.cov">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="array-api.html#dask.array.cov">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="optimize.html#dask.optimization.cull">cull() (in module dask.optimization)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.groupby.DataFrameGroupBy.cumcount">cumcount() (dask.dataframe.groupby.DataFrameGroupBy method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.SeriesGroupBy.cumcount">(dask.dataframe.groupby.SeriesGroupBy method)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.cummax">cummax() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.cummax">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.cummin">cummin() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.cummin">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.Array.cumprod">cumprod() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.DataFrame.cumprod">(dask.dataframe.DataFrame method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.DataFrameGroupBy.cumprod">(dask.dataframe.groupby.DataFrameGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.SeriesGroupBy.cumprod">(dask.dataframe.groupby.SeriesGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.cumprod">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="array-api.html#dask.array.cumprod">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.Array.cumsum">cumsum() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.DataFrame.cumsum">(dask.dataframe.DataFrame method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.DataFrameGroupBy.cumsum">(dask.dataframe.groupby.DataFrameGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.SeriesGroupBy.cumsum">(dask.dataframe.groupby.SeriesGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.cumsum">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="array-api.html#dask.array.cumsum">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="futures.html#distributed.Client.current">current() (distributed.Client class method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    dask-scheduler command line option
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-bokeh">--bokeh</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-bokeh-port">--bokeh-port &lt;bokeh_port&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-dashboard">--dashboard</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-dashboard-address">--dashboard-address &lt;dashboard_address&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-dashboard-prefix">--dashboard-prefix &lt;dashboard_prefix&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-host">--host &lt;host&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-idle-timeout">--idle-timeout &lt;idle_timeout&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-interface">--interface &lt;interface&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-local-directory">--local-directory &lt;local_directory&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-bokeh">--no-bokeh</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-dashboard">--no-dashboard</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-show">--no-show</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-pid-file">--pid-file &lt;pid_file&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-port">--port &lt;port&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-preload">--preload &lt;preload&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-protocol">--protocol &lt;protocol&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-scheduler-file">--scheduler-file &lt;scheduler_file&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-show">--show</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-tls-ca-file">--tls-ca-file &lt;tls_ca_file&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-tls-cert">--tls-cert &lt;tls_cert&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-tls-key">--tls-key &lt;tls_key&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-use-xheaders">--use-xheaders &lt;use_xheaders&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-version">--version</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-arg-preload-argv">PRELOAD_ARGV</a>
+</li>
+      </ul></li>
+      <li>
+    dask-ssh command line option
+
+      <ul>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-hostfile">--hostfile &lt;hostfile&gt;</a>
+</li>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-local-directory">--local-directory &lt;local_directory&gt;</a>
+</li>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-log-directory">--log-directory &lt;log_directory&gt;</a>
+</li>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-memory-limit">--memory-limit &lt;memory_limit&gt;</a>
+</li>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-nanny-port">--nanny-port &lt;nanny_port&gt;</a>
+</li>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-nohost">--nohost</a>
+</li>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-nprocs">--nprocs &lt;nprocs&gt;</a>
+</li>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-nthreads">--nthreads &lt;nthreads&gt;</a>
+</li>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-remote-dask-worker">--remote-dask-worker &lt;remote_dask_worker&gt;</a>
+</li>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-remote-python">--remote-python &lt;remote_python&gt;</a>
+</li>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-scheduler">--scheduler &lt;scheduler&gt;</a>
+</li>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-scheduler-port">--scheduler-port &lt;scheduler_port&gt;</a>
+</li>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-ssh-port">--ssh-port &lt;ssh_port&gt;</a>
+</li>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-ssh-private-key">--ssh-private-key &lt;ssh_private_key&gt;</a>
+</li>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-ssh-username">--ssh-username &lt;ssh_username&gt;</a>
+</li>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-version">--version</a>
+</li>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-worker-port">--worker-port &lt;worker_port&gt;</a>
+</li>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-arg-hostnames">HOSTNAMES</a>
+</li>
+      </ul></li>
+      <li>
+    dask-worker command line option
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-bokeh">--bokeh</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-bokeh-port">--bokeh-port &lt;bokeh_port&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-contact-address">--contact-address &lt;contact_address&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-dashboard">--dashboard</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-dashboard-address">--dashboard-address &lt;dashboard_address&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-dashboard-prefix">--dashboard-prefix &lt;dashboard_prefix&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-death-timeout">--death-timeout &lt;death_timeout&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-host">--host &lt;host&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-interface">--interface &lt;interface&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-lifetime">--lifetime &lt;lifetime&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-lifetime-restart">--lifetime-restart</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-lifetime-stagger">--lifetime-stagger &lt;lifetime_stagger&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-listen-address">--listen-address &lt;listen_address&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-local-directory">--local-directory &lt;local_directory&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-memory-limit">--memory-limit &lt;memory_limit&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-name">--name &lt;name&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-nanny">--nanny</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-nanny-port">--nanny-port &lt;nanny_port&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-bokeh">--no-bokeh</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-dashboard">--no-dashboard</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-lifetime-restart">--no-lifetime-restart</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-nanny">--no-nanny</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-reconnect">--no-reconnect</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-nprocs">--nprocs &lt;nprocs&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-nthreads">--nthreads &lt;nthreads&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-pid-file">--pid-file &lt;pid_file&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-preload">--preload &lt;preload&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-protocol">--protocol &lt;protocol&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-reconnect">--reconnect</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-resources">--resources &lt;resources&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-scheduler-file">--scheduler-file &lt;scheduler_file&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-tls-ca-file">--tls-ca-file &lt;tls_ca_file&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-tls-cert">--tls-cert &lt;tls_cert&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-tls-key">--tls-key &lt;tls_key&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-version">--version</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-worker-class">--worker-class &lt;worker_class&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-worker-port">--worker-port &lt;worker_port&gt;</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-arg-preload-argv">PRELOAD_ARGV</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-arg-scheduler">SCHEDULER</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame">DataFrame (class in dask.dataframe)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.groupby.DataFrameGroupBy">DataFrameGroupBy (class in dask.dataframe.groupby)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.decide_worker">decide_worker() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="array-api.html#dask.array.deg2rad">deg2rad() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.degrees">degrees() (in module dask.array)</a>
+</li>
+      <li><a href="delayed-api.html#dask.delayed.delayed">delayed() (in module dask.delayed)</a>
+</li>
+      <li><a href="futures.html#distributed.Variable.delete">delete() (distributed.Variable method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.describe">describe() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.describe">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.diag">diag() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.diagonal">diagonal() (in module dask.array)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.diff">diff() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.diff">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="array-api.html#dask.array.diff">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.digitize">digitize() (in module dask.array)</a>
+</li>
+      <li><a href="bag-api.html#dask.bag.Bag.distinct">distinct() (dask.bag.Bag method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.div">div() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.div">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.divide">divide() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.divide">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="futures.html#distributed.Future.done">done() (distributed.Future method)</a>
+</li>
+      <li><a href="array-api.html#dask.array.Array.dot">dot() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="array-api.html#dask.array.dot">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.drop">drop() (dask.dataframe.DataFrame method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.drop_duplicates">drop_duplicates() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.drop_duplicates">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.dropna">dropna() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.dropna">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.dstack">dstack() (in module dask.array)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.Series.dt">dt (dask.dataframe.Series attribute)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.Series.dtype">dtype() (dask.dataframe.Series property)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.dtypes">dtypes() (dask.dataframe.DataFrame property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="array-api.html#dask.array.ediff1d">ediff1d() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.einsum">einsum() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.empty">empty() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.empty_like">empty_like() (in module dask.array)</a>
+</li>
+      <li><a href="configuration.html#dask.config.ensure_file">ensure_file() (in module dask.config)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.eq">eq() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.eq">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.eval">eval() (dask.dataframe.DataFrame method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="futures.html#distributed.Future.exception">exception() (distributed.Future method)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Worker.executor_submit">executor_submit() (distributed.Worker method)</a>
+</li>
+      <li><a href="array-api.html#dask.array.exp">exp() (in module dask.array)</a>
+</li>
+      <li><a href="configuration.html#dask.config.expand_environment_variables">expand_environment_variables() (in module dask.config)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.explode">explode() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.explode">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.expm1">expm1() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.random.exponential">exponential() (in module dask.array.random)</a>
+</li>
+      <li><a href="array-api.html#dask.array.eye">eye() (in module dask.array)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="array-api.html#dask.array.random.f">f() (in module dask.array.random)</a>
+</li>
+      <li><a href="array-api.html#dask.array.stats.f_oneway">f_oneway() (in module dask.array.stats)</a>
+</li>
+      <li><a href="array-api.html#dask.array.fabs">fabs() (in module dask.array)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.feed">feed() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.ffill">ffill() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.ffill">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.fft.fft">fft() (in module dask.array.fft)</a>
+</li>
+      <li><a href="array-api.html#dask.array.fft.fft2">fft2() (in module dask.array.fft)</a>
+</li>
+      <li><a href="array-api.html#dask.array.fft.fft_wrap">fft_wrap() (in module dask.array.fft)</a>
+</li>
+      <li><a href="array-api.html#dask.array.fft.fftfreq">fftfreq() (in module dask.array.fft)</a>
+</li>
+      <li><a href="array-api.html#dask.array.fft.fftn">fftn() (in module dask.array.fft)</a>
+</li>
+      <li><a href="array-api.html#dask.array.fft.fftshift">fftshift() (in module dask.array.fft)</a>
+</li>
+      <li><a href="array-api.html#dask.array.ma.filled">filled() (in module dask.array.ma)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.fillna">fillna() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.fillna">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="bag-api.html#dask.bag.Bag.filter">filter() (dask.bag.Bag method)</a>
+</li>
+      <li><a href="futures.html#distributed.fire_and_forget">fire_and_forget() (in module distributed)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.first">first() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.DataFrameGroupBy.first">(dask.dataframe.groupby.DataFrameGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.SeriesGroupBy.first">(dask.dataframe.groupby.SeriesGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.first">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.tseries.resample.Resampler.first">(dask.dataframe.tseries.resample.Resampler method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.fix">fix() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.ma.fix_invalid">fix_invalid() (in module dask.array.ma)</a>
+</li>
+      <li><a href="array-api.html#dask.array.flatnonzero">flatnonzero() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.Array.flatten">flatten() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="bag-api.html#dask.bag.Bag.flatten">(dask.bag.Bag method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.flip">flip() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.fliplr">fliplr() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.flipud">flipud() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.floor">floor() (in module dask.array)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.floordiv">floordiv() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.floordiv">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.fmax">fmax() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.fmin">fmin() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.fmod">fmod() (in module dask.array)</a>
+</li>
+      <li><a href="bag-api.html#dask.bag.Bag.fold">fold() (dask.bag.Bag method)</a>
+</li>
+      <li><a href="bag-api.html#dask.bag.Bag.foldby">foldby() (dask.bag.Bag method)</a>
+</li>
+      <li><a href="api.html#dask.utils.format_bytes">format_bytes() (in module dask.utils)</a>
+</li>
+      <li><a href="api.html#dask.utils.format_time">format_time() (in module dask.utils)</a>
+</li>
+      <li><a href="bag-api.html#dask.bag.Bag.frequencies">frequencies() (dask.bag.Bag method)</a>
+</li>
+      <li><a href="array-api.html#dask.array.frexp">frexp() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.from_array">from_array() (in module dask.array)</a>, <a href="array-api.html#dask.array.from_array">[1]</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.from_array">(in module dask.dataframe)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.from_bcolz">from_bcolz() (in module dask.dataframe)</a>
+</li>
+      <li><a href="high-level-graphs.html#dask.highlevelgraph.HighLevelGraph.from_collections">from_collections() (dask.highlevelgraph.HighLevelGraph class method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.from_dask_array">from_dask_array() (in module dask.dataframe)</a>
+</li>
+      <li><a href="array-api.html#dask.array.from_delayed">from_delayed() (in module dask.array)</a>, <a href="array-api.html#dask.array.from_delayed">[1]</a>
+
+      <ul>
+        <li><a href="bag-api.html#dask.bag.from_delayed">(in module dask.bag)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.from_delayed">(in module dask.dataframe)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.from_npy_stack">from_npy_stack() (in module dask.array)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.from_pandas">from_pandas() (in module dask.dataframe)</a>
+</li>
+      <li><a href="bag-api.html#dask.bag.from_sequence">from_sequence() (in module dask.bag)</a>
+</li>
+      <li><a href="array-api.html#dask.array.from_tiledb">from_tiledb() (in module dask.array)</a>
+</li>
+      <li><a href="bag-api.html#dask.bag.from_url">from_url() (in module dask.bag)</a>
+</li>
+      <li><a href="array-api.html#dask.array.from_zarr">from_zarr() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.fromfunction">fromfunction() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.frompyfunc">frompyfunc() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.full">full() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.full_like">full_like() (in module dask.array)</a>
+</li>
+      <li><a href="optimize.html#dask.optimization.functions_of">functions_of() (in module dask.optimization)</a>
+</li>
+      <li><a href="optimize.html#dask.optimization.fuse">fuse() (in module dask.optimization)</a>
+</li>
+      <li><a href="futures.html#distributed.Future">Future (class in distributed)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="array-api.html#dask.array.random.gamma">gamma() (in module dask.array.random)</a>
+</li>
+      <li><a href="futures.html#distributed.Client.gather">gather() (distributed.Client method)</a>
+
+      <ul>
+        <li><a href="setup/python-advanced.html#distributed.Scheduler.gather">(distributed.Scheduler method)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.ge">ge() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.ge">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.random.geometric">geometric() (in module dask.array.random)</a>
+</li>
+      <li><a href="high-level-graphs.html#dask.highlevelgraph.HighLevelGraph.get">get() (dask.highlevelgraph.HighLevelGraph method)</a>
+
+      <ul>
+        <li><a href="futures.html#distributed.Client.get">(distributed.Client method)</a>
+</li>
+        <li><a href="futures.html#distributed.Queue.get">(distributed.Queue method)</a>
+</li>
+        <li><a href="futures.html#distributed.Sub.get">(distributed.Sub method)</a>
+</li>
+        <li><a href="futures.html#distributed.Variable.get">(distributed.Variable method)</a>
+</li>
+        <li><a href="configuration.html#dask.config.get">(in module dask.config)</a>
+</li>
+      </ul></li>
+      <li><a href="futures.html#distributed.get_client">get_client() (in module distributed)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.get_comm_cost">get_comm_cost() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Worker.get_current_task">get_current_task() (distributed.Worker method)</a>
+</li>
+      <li><a href="futures.html#distributed.Client.get_dataset">get_dataset() (distributed.Client method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.reshape.get_dummies">get_dummies() (in module dask.dataframe.reshape)</a>
+</li>
+      <li><a href="futures.html#distributed.Client.get_executor">get_executor() (distributed.Client method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.groupby.DataFrameGroupBy.get_group">get_group() (dask.dataframe.groupby.DataFrameGroupBy method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.SeriesGroupBy.get_group">(dask.dataframe.groupby.SeriesGroupBy method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="futures.html#distributed.Client.get_metadata">get_metadata() (distributed.Client method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.get_partition">get_partition() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.get_partition">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="futures.html#distributed.Client.get_restrictions">get_restrictions() (distributed.Client class method)</a>
+</li>
+      <li><a href="futures.html#distributed.Client.get_scheduler_logs">get_scheduler_logs() (distributed.Client method)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.get_task_duration">get_task_duration() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="futures.html#distributed.Client.get_task_stream">get_task_stream() (distributed.Client method)</a>
+
+      <ul>
+        <li><a href="diagnostics-distributed.html#dask.distributed.get_task_stream">(in module dask.distributed)</a>
+</li>
+      </ul></li>
+      <li><a href="futures.html#distributed.Client.get_versions">get_versions() (distributed.Client method)</a>
+</li>
+      <li><a href="futures.html#distributed.Client.get_worker_logs">get_worker_logs() (distributed.Client method)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.get_worker_service_addr">get_worker_service_addr() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="array-api.html#dask.array.ma.getdata">getdata() (in module dask.array.ma)</a>
+</li>
+      <li><a href="array-api.html#dask.array.ma.getmaskarray">getmaskarray() (in module dask.array.ma)</a>
+</li>
+      <li><a href="array-api.html#dask.array.gradient">gradient() (in module dask.array)</a>
+</li>
+      <li><a href="bag-api.html#dask.bag.Bag.groupby">groupby() (dask.bag.Bag method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.DataFrame.groupby">(dask.dataframe.DataFrame method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.groupby">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.gt">gt() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.gt">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.gufunc.gufunc">gufunc() (in module dask.array.gufunc)</a>
+</li>
+      <li><a href="array-api.html#dask.array.random.gumbel">gumbel() (in module dask.array.random)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.handle_long_running">handle_long_running() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.handle_worker">handle_worker() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="futures.html#distributed.Client.has_what">has_what() (distributed.Client method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.head">head() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.head">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.fft.hfft">hfft() (in module dask.array.fft)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="high-level-graphs.html#dask.highlevelgraph.HighLevelGraph">HighLevelGraph (class in dask.highlevelgraph)</a>
+</li>
+      <li><a href="array-api.html#dask.array.histogram">histogram() (in module dask.array)</a>
+</li>
+      <li>
+    HOSTNAMES
+
+      <ul>
+        <li><a href="setup/ssh.html#cmdoption-dask-ssh-arg-hostnames">dask-ssh command line option</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.hstack">hstack() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.random.hypergeometric">hypergeometric() (in module dask.array.random)</a>
+</li>
+      <li><a href="array-api.html#dask.array.hypot">hypot() (in module dask.array)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.identity">identity() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.idxmax">idxmax() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.DataFrameGroupBy.idxmax">(dask.dataframe.groupby.DataFrameGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.SeriesGroupBy.idxmax">(dask.dataframe.groupby.SeriesGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.idxmax">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.idxmin">idxmin() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.DataFrameGroupBy.idxmin">(dask.dataframe.groupby.DataFrameGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.SeriesGroupBy.idxmin">(dask.dataframe.groupby.SeriesGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.idxmin">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.fft.ifft">ifft() (in module dask.array.fft)</a>
+</li>
+      <li><a href="array-api.html#dask.array.fft.ifft2">ifft2() (in module dask.array.fft)</a>
+</li>
+      <li><a href="array-api.html#dask.array.fft.ifftn">ifftn() (in module dask.array.fft)</a>
+</li>
+      <li><a href="array-api.html#dask.array.fft.ifftshift">ifftshift() (in module dask.array.fft)</a>
+</li>
+      <li><a href="array-api.html#dask.array.fft.ihfft">ihfft() (in module dask.array.fft)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.iloc">iloc() (dask.dataframe.DataFrame property)</a>
+</li>
+      <li><a href="array-api.html#dask.array.imag">imag() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.image.imread">imread() (in module dask.array.image)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.index">index() (dask.dataframe.DataFrame property)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.index">(dask.dataframe.Series property)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.indices">indices() (in module dask.array)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.info">info() (dask.dataframe.DataFrame method)</a>
+</li>
+      <li><a href="optimize.html#dask.optimization.inline">inline() (in module dask.optimization)</a>
+</li>
+      <li><a href="optimize.html#dask.optimization.inline_functions">inline_functions() (in module dask.optimization)</a>
+</li>
+      <li><a href="array-api.html#dask.array.insert">insert() (in module dask.array)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Nanny.instantiate">instantiate() (distributed.Nanny method)</a>
+</li>
+      <li><a href="array-api.html#dask.array.linalg.inv">inv() (in module dask.array.linalg)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="array-api.html#dask.array.invert">invert() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.fft.irfft">irfft() (in module dask.array.fft)</a>
+</li>
+      <li><a href="array-api.html#dask.array.fft.irfft2">irfft2() (in module dask.array.fft)</a>
+</li>
+      <li><a href="array-api.html#dask.array.fft.irfftn">irfftn() (in module dask.array.fft)</a>
+</li>
+      <li><a href="api.html#dask.is_dask_collection">is_dask_collection() (in module dask)</a>
+</li>
+      <li><a href="array-api.html#dask.array.isclose">isclose() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.iscomplex">iscomplex() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.isfinite">isfinite() (in module dask.array)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.isin">isin() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.isin">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="array-api.html#dask.array.isin">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.isinf">isinf() (in module dask.array)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.isna">isna() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.isna">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.isnan">isnan() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.isneginf">isneginf() (in module dask.array)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.isnull">isnull() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.isnull">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="array-api.html#dask.array.isnull">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.isposinf">isposinf() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.isreal">isreal() (in module dask.array)</a>
+</li>
+      <li><a href="high-level-graphs.html#dask.highlevelgraph.HighLevelGraph.items">items() (dask.highlevelgraph.HighLevelGraph method)</a>
+</li>
+      <li><a href="array-api.html#dask.array.Array.itemsize">itemsize() (dask.array.Array property)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.Series.iteritems">iteritems() (dask.dataframe.Series method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.iterrows">iterrows() (dask.dataframe.DataFrame method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.itertuples">itertuples() (dask.dataframe.DataFrame method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="J">J</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="bag-api.html#dask.bag.Bag.join">join() (dask.bag.Bag method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.DataFrame.join">(dask.dataframe.DataFrame method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="K">K</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="high-level-graphs.html#dask.highlevelgraph.HighLevelGraph.keys">keys() (dask.highlevelgraph.HighLevelGraph method)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Nanny.kill">kill() (distributed.Nanny method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.known_divisions">known_divisions() (dask.dataframe.DataFrame property)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.known_divisions">(dask.dataframe.Series property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="array-api.html#dask.array.stats.kurtosis">kurtosis() (in module dask.array.stats)</a>
+</li>
+      <li><a href="array-api.html#dask.array.stats.kurtosistest">kurtosistest() (in module dask.array.stats)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="array-api.html#dask.array.random.laplace">laplace() (in module dask.array.random)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.last">last() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.DataFrameGroupBy.last">(dask.dataframe.groupby.DataFrameGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.SeriesGroupBy.last">(dask.dataframe.groupby.SeriesGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.last">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.tseries.resample.Resampler.last">(dask.dataframe.tseries.resample.Resampler method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.ldexp">ldexp() (in module dask.array)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.le">le() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.le">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.linspace">linspace() (in module dask.array)</a>
+</li>
+      <li><a href="futures.html#distributed.Client.list_datasets">list_datasets() (distributed.Client method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.loc">loc() (dask.dataframe.DataFrame property)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.loc">(dask.dataframe.Series property)</a>
+</li>
+      </ul></li>
+      <li><a href="setup/python-advanced.html#distributed.Nanny.local_dir">local_dir() (distributed.Nanny property)</a>
+
+      <ul>
+        <li><a href="setup/python-advanced.html#distributed.Worker.local_dir">(distributed.Worker property)</a>
+</li>
+      </ul></li>
+      <li><a href="setup/single-distributed.html#distributed.deploy.local.LocalCluster">LocalCluster (class in distributed.deploy.local)</a>
+</li>
+      <li><a href="futures.html#distributed.Lock">Lock (class in distributed)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="array-api.html#dask.array.log">log() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.log10">log10() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.log1p">log1p() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.log2">log2() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.logaddexp">logaddexp() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.logaddexp2">logaddexp2() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.logical_and">logical_and() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.logical_not">logical_not() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.logical_or">logical_or() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.logical_xor">logical_xor() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.random.logistic">logistic() (in module dask.array.random)</a>
+</li>
+      <li><a href="array-api.html#dask.array.random.lognormal">lognormal() (in module dask.array.random)</a>
+</li>
+      <li><a href="array-api.html#dask.array.random.logseries">logseries() (in module dask.array.random)</a>
+</li>
+      <li><a href="array-api.html#dask.array.linalg.lstsq">lstsq() (in module dask.array.linalg)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.lt">lt() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.lt">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.linalg.lu">lu() (in module dask.array.linalg)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="dataframe-api.html#dask.dataframe.utils.make_meta">make_meta() (in module dask.dataframe.utils)</a>
+</li>
+      <li><a href="api.html#dask.datasets.make_people">make_people() (in module dask.datasets)</a>
+</li>
+      <li><a href="bag-api.html#dask.bag.Bag.map">map() (dask.bag.Bag method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.map">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="futures.html#distributed.Client.map">(distributed.Client method)</a>
+</li>
+        <li><a href="bag-api.html#dask.bag.map">(in module dask.bag)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.Array.map_blocks">map_blocks() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="array-api.html#dask.array.map_blocks">(in module dask.array)</a>
+</li>
+        <li><a href="array-api.html#dask.array.core.map_blocks">(in module dask.array.core)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.Array.map_overlap">map_overlap() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.DataFrame.map_overlap">(dask.dataframe.DataFrame method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.map_overlap">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="array-overlap.html#dask.array.map_overlap">(in module dask.array)</a>
+</li>
+        <li><a href="array-api.html#dask.array.overlap.map_overlap">(in module dask.array.overlap)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.rolling.map_overlap">(in module dask.dataframe.rolling)</a>
+</li>
+      </ul></li>
+      <li><a href="bag-api.html#dask.bag.Bag.map_partitions">map_partitions() (dask.bag.Bag method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.DataFrame.map_partitions">(dask.dataframe.DataFrame method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.map_partitions">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="bag-api.html#dask.bag.map_partitions">(in module dask.bag)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.map_partitions">(in module dask.dataframe)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.mask">mask() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.mask">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.ma.masked_array">masked_array() (in module dask.array.ma)</a>
+</li>
+      <li><a href="array-api.html#dask.array.ma.masked_equal">masked_equal() (in module dask.array.ma)</a>
+</li>
+      <li><a href="array-api.html#dask.array.ma.masked_greater">masked_greater() (in module dask.array.ma)</a>
+</li>
+      <li><a href="array-api.html#dask.array.ma.masked_greater_equal">masked_greater_equal() (in module dask.array.ma)</a>
+</li>
+      <li><a href="array-api.html#dask.array.ma.masked_inside">masked_inside() (in module dask.array.ma)</a>
+</li>
+      <li><a href="array-api.html#dask.array.ma.masked_invalid">masked_invalid() (in module dask.array.ma)</a>
+</li>
+      <li><a href="array-api.html#dask.array.ma.masked_less">masked_less() (in module dask.array.ma)</a>
+</li>
+      <li><a href="array-api.html#dask.array.ma.masked_less_equal">masked_less_equal() (in module dask.array.ma)</a>
+</li>
+      <li><a href="array-api.html#dask.array.ma.masked_not_equal">masked_not_equal() (in module dask.array.ma)</a>
+</li>
+      <li><a href="array-api.html#dask.array.ma.masked_outside">masked_outside() (in module dask.array.ma)</a>
+</li>
+      <li><a href="array-api.html#dask.array.ma.masked_values">masked_values() (in module dask.array.ma)</a>
+</li>
+      <li><a href="array-api.html#dask.array.ma.masked_where">masked_where() (in module dask.array.ma)</a>
+</li>
+      <li><a href="array-api.html#dask.array.matmul">matmul() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.Array.max">max() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="bag-api.html#dask.bag.Bag.max">(dask.bag.Bag method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.DataFrame.max">(dask.dataframe.DataFrame method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.DataFrameGroupBy.max">(dask.dataframe.groupby.DataFrameGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.SeriesGroupBy.max">(dask.dataframe.groupby.SeriesGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.max">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.tseries.resample.Resampler.max">(dask.dataframe.tseries.resample.Resampler method)</a>
+</li>
+        <li><a href="array-api.html#dask.array.max">(in module dask.array)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="array-api.html#dask.array.maximum">maximum() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.Array.mean">mean() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="bag-api.html#dask.bag.Bag.mean">(dask.bag.Bag method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.DataFrame.mean">(dask.dataframe.DataFrame method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.DataFrameGroupBy.mean">(dask.dataframe.groupby.DataFrameGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.SeriesGroupBy.mean">(dask.dataframe.groupby.SeriesGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.mean">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.tseries.resample.Resampler.mean">(dask.dataframe.tseries.resample.Resampler method)</a>
+</li>
+        <li><a href="array-api.html#dask.array.mean">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.tseries.resample.Resampler.median">median() (dask.dataframe.tseries.resample.Resampler method)</a>
+
+      <ul>
+        <li><a href="array-api.html#dask.array.median">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.melt">melt() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.reshape.melt">(in module dask.dataframe.reshape)</a>
+</li>
+      </ul></li>
+      <li><a href="setup/python-advanced.html#distributed.Nanny.memory_monitor">memory_monitor() (distributed.Nanny method)</a>
+
+      <ul>
+        <li><a href="setup/python-advanced.html#distributed.Worker.memory_monitor">(distributed.Worker method)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.memory_usage">memory_usage() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.memory_usage">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.memory_usage_per_partition">memory_usage_per_partition() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.memory_usage_per_partition">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.merge">merge() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="configuration.html#dask.config.merge">(in module dask.config)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.multi.merge">(in module dask.dataframe.multi)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.multi.merge_asof">merge_asof() (in module dask.dataframe.multi)</a>
+</li>
+      <li><a href="array-api.html#dask.array.meshgrid">meshgrid() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.Array.min">min() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="bag-api.html#dask.bag.Bag.min">(dask.bag.Bag method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.DataFrame.min">(dask.dataframe.DataFrame method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.DataFrameGroupBy.min">(dask.dataframe.groupby.DataFrameGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.SeriesGroupBy.min">(dask.dataframe.groupby.SeriesGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.min">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.tseries.resample.Resampler.min">(dask.dataframe.tseries.resample.Resampler method)</a>
+</li>
+        <li><a href="array-api.html#dask.array.min">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.minimum">minimum() (in module dask.array)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.mod">mod() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.mod">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.modf">modf() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.Array.moment">moment() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="array-api.html#dask.array.moment">(in module dask.array)</a>
+</li>
+        <li><a href="array-api.html#dask.array.stats.moment">(in module dask.array.stats)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.moveaxis">moveaxis() (in module dask.array)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.mul">mul() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.mul">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="array-api.html#dask.array.nan_to_num">nan_to_num() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.nanargmax">nanargmax() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.nanargmin">nanargmin() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.nancumprod">nancumprod() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.nancumsum">nancumsum() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.nanmax">nanmax() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.nanmean">nanmean() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.nanmedian">nanmedian() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.nanmin">nanmin() (in module dask.array)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Nanny">Nanny (class in distributed)</a>
+</li>
+      <li><a href="array-api.html#dask.array.nanprod">nanprod() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.nanstd">nanstd() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.nansum">nansum() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.nanvar">nanvar() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.Array.nbytes">nbytes() (dask.array.Array property)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.nbytes">(dask.dataframe.Series property)</a>
+</li>
+        <li><a href="futures.html#distributed.Client.nbytes">(distributed.Client method)</a>
+</li>
+      </ul></li>
+      <li><a href="futures.html#distributed.Client.ncores">ncores() (distributed.Client method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.ndim">ndim() (dask.dataframe.DataFrame property)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.ndim">(dask.dataframe.Series property)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.ne">ne() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.ne">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.random.negative_binomial">negative_binomial() (in module dask.array.random)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.new_task">new_task() (distributed.Scheduler method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="futures.html#distributed.Sub.next">next() (distributed.Sub method)</a>
+</li>
+      <li><a href="array-api.html#dask.array.nextafter">nextafter() (in module dask.array)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.nlargest">nlargest() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.nlargest">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.random.noncentral_chisquare">noncentral_chisquare() (in module dask.array.random)</a>
+</li>
+      <li><a href="array-api.html#dask.array.random.noncentral_f">noncentral_f() (in module dask.array.random)</a>
+</li>
+      <li><a href="array-api.html#dask.array.Array.nonzero">nonzero() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="array-api.html#dask.array.nonzero">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.linalg.norm">norm() (in module dask.array.linalg)</a>
+</li>
+      <li><a href="array-api.html#dask.array.random.normal">normal() (in module dask.array.random)</a>
+</li>
+      <li><a href="array-api.html#dask.array.core.normalize_chunks">normalize_chunks() (in module dask.array.core)</a>
+</li>
+      <li><a href="futures.html#distributed.Client.normalize_collection">normalize_collection() (distributed.Client method)</a>
+</li>
+      <li><a href="array-api.html#dask.array.stats.normaltest">normaltest() (in module dask.array.stats)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.notnull">notnull() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.notnull">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="array-api.html#dask.array.notnull">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.npartitions">npartitions() (dask.dataframe.DataFrame property)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.npartitions">(dask.dataframe.Series property)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.nsmallest">nsmallest() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.nsmallest">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="futures.html#distributed.Client.nthreads">nthreads() (distributed.Client method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.Series.nunique">nunique() (dask.dataframe.Series method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.tseries.resample.Resampler.nunique">(dask.dataframe.tseries.resample.Resampler method)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.nunique_approx">nunique_approx() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.nunique_approx">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="dataframe-api.html#dask.dataframe.tseries.resample.Resampler.ohlc">ohlc() (dask.dataframe.tseries.resample.Resampler method)</a>
+</li>
+      <li><a href="array-api.html#dask.array.ones">ones() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.ones_like">ones_like() (in module dask.array)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="remote-data-services.html#dask.bytes.open_files">open_files() (in module dask.bytes)</a>
+</li>
+      <li><a href="api.html#dask.optimize">optimize() (in module dask)</a>
+</li>
+      <li><a href="array-api.html#dask.array.outer">outer() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.overlap.overlap">overlap() (in module dask.array.overlap)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="array-api.html#dask.array.pad">pad() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.random.pareto">pareto() (in module dask.array.random)</a>
+</li>
+      <li><a href="api.html#dask.utils.parse_bytes">parse_bytes() (in module dask.utils)</a>
+</li>
+      <li><a href="api.html#dask.utils.parse_timedelta">parse_timedelta() (in module dask.utils)</a>
+</li>
+      <li><a href="array-api.html#dask.array.Array.partitions">partitions() (dask.array.Array property)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.DataFrame.partitions">(dask.dataframe.DataFrame property)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.partitions">(dask.dataframe.Series property)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.percentile">percentile() (in module dask.array)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.persist">persist() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.persist">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="futures.html#distributed.Client.persist">(distributed.Client method)</a>
+</li>
+        <li><a href="api.html#dask.persist">(in module dask)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.piecewise">piecewise() (in module dask.array)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.pipe">pipe() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.pipe">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.pivot_table">pivot_table() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.reshape.pivot_table">(in module dask.dataframe.reshape)</a>
+</li>
+      </ul></li>
+      <li><a href="bag-api.html#dask.bag.Bag.pluck">pluck() (dask.bag.Bag method)</a>
+</li>
+      <li><a href="array-api.html#dask.array.random.poisson">poisson() (in module dask.array.random)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.pop">pop() (dask.dataframe.DataFrame method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.pow">pow() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.pow">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.random.power">power() (in module dask.array.random)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="array-api.html#dask.array.stats.power_divergence">power_divergence() (in module dask.array.stats)</a>
+</li>
+      <li>
+    PRELOAD_ARGV
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-scheduler-arg-preload-argv">dask-scheduler command line option</a>
+</li>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-arg-preload-argv">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li><a href="futures.html#distributed.Client.processing">processing() (distributed.Client method)</a>
+</li>
+      <li><a href="array-api.html#dask.array.Array.prod">prod() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.DataFrame.prod">(dask.dataframe.DataFrame method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.DataFrameGroupBy.prod">(dask.dataframe.groupby.DataFrameGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.SeriesGroupBy.prod">(dask.dataframe.groupby.SeriesGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.prod">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.tseries.resample.Resampler.prod">(dask.dataframe.tseries.resample.Resampler method)</a>
+</li>
+        <li><a href="array-api.html#dask.array.prod">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="bag-api.html#dask.bag.Bag.product">product() (dask.bag.Bag method)</a>
+</li>
+      <li><a href="futures.html#distributed.Client.profile">profile() (distributed.Client method)</a>
+</li>
+      <li><a href="diagnostics-local.html#dask.diagnostics.Profiler">Profiler() (in module dask.diagnostics)</a>
+</li>
+      <li><a href="diagnostics-distributed.html#dask.distributed.progress">progress() (in module dask.distributed)</a>
+</li>
+      <li><a href="diagnostics-local.html#dask.diagnostics.ProgressBar">ProgressBar() (in module dask.diagnostics)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.proxy">proxy() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="array-api.html#dask.array.ptp">ptp() (in module dask.array)</a>
+</li>
+      <li><a href="futures.html#distributed.Pub">Pub (class in distributed)</a>, <a href="futures.html#distributed.Pub">[1]</a>
+</li>
+      <li><a href="futures.html#distributed.Client.publish_dataset">publish_dataset() (distributed.Client method)</a>
+</li>
+      <li><a href="futures.html#distributed.Pub.put">put() (distributed.Pub method)</a>, <a href="futures.html#distributed.Pub.put">[1]</a>
+
+      <ul>
+        <li><a href="futures.html#distributed.Queue.put">(distributed.Queue method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Q">Q</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="array-api.html#dask.array.linalg.qr">qr() (in module dask.array.linalg)</a>
+</li>
+      <li><a href="futures.html#distributed.Queue.qsize">qsize() (distributed.Queue method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.quantile">quantile() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.quantile">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.tseries.resample.Resampler.quantile">(dask.dataframe.tseries.resample.Resampler method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.query">query() (dask.dataframe.DataFrame method)</a>
+</li>
+      <li><a href="futures.html#distributed.Queue">Queue (class in distributed)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="array-api.html#dask.array.rad2deg">rad2deg() (in module dask.array)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.radd">radd() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.radd">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.radians">radians() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.random.randint">randint() (in module dask.array.random)</a>
+</li>
+      <li><a href="array-api.html#dask.array.random.random">random() (in module dask.array.random)</a>
+</li>
+      <li><a href="bag-api.html#dask.bag.Bag.random_sample">random_sample() (dask.bag.Bag method)</a>
+
+      <ul>
+        <li><a href="array-api.html#dask.array.random.random_sample">(in module dask.array.random)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.random_split">random_split() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.random_split">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="bag-api.html#dask.bag.range">range() (in module dask.bag)</a>
+</li>
+      <li><a href="array-api.html#dask.array.Array.ravel">ravel() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="array-api.html#dask.array.ravel">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.random.rayleigh">rayleigh() (in module dask.array.random)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.rdiv">rdiv() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.rdiv">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="bag-api.html#dask.bag.read_avro">read_avro() (in module dask.bag)</a>
+</li>
+      <li><a href="remote-data-services.html#dask.bytes.read_bytes">read_bytes() (in module dask.bytes)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.read_csv">read_csv() (in module dask.dataframe)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.read_fwf">read_fwf() (in module dask.dataframe)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.read_hdf">read_hdf() (in module dask.dataframe)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.read_json">read_json() (in module dask.dataframe)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.read_orc">read_orc() (in module dask.dataframe)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.read_parquet">read_parquet() (in module dask.dataframe)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.read_sql_table">read_sql_table() (in module dask.dataframe)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.read_table">read_table() (in module dask.dataframe)</a>
+</li>
+      <li><a href="bag-api.html#dask.bag.read_text">read_text() (in module dask.bag)</a>
+</li>
+      <li><a href="array-api.html#dask.array.real">real() (in module dask.array)</a>
+</li>
+      <li><a href="futures.html#distributed.Client.rebalance">rebalance() (distributed.Client method)</a>
+
+      <ul>
+        <li><a href="setup/python-advanced.html#distributed.Scheduler.rebalance">(distributed.Scheduler method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.Array.rechunk">rechunk() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="array-api.html#dask.array.rechunk">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="bag-api.html#dask.bag.Bag.reduction">reduction() (dask.bag.Bag method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.DataFrame.reduction">(dask.dataframe.DataFrame method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.reduction">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="array-api.html#dask.array.reduction">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.reevaluate_occupancy">reevaluate_occupancy() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="configuration.html#dask.config.refresh">refresh() (in module dask.config)</a>
+</li>
+      <li><a href="dataframe-extend.html#dask.dataframe.extensions.register_dataframe_accessor">register_dataframe_accessor() (in module dask.dataframe.extensions)</a>
+</li>
+      <li><a href="dataframe-extend.html#dask.dataframe.extensions.register_index_accessor">register_index_accessor() (in module dask.dataframe.extensions)</a>
+</li>
+      <li><a href="dataframe-extend.html#dask.dataframe.extensions.register_series_accessor">register_series_accessor() (in module dask.dataframe.extensions)</a>
+</li>
+      <li><a href="futures.html#distributed.Client.register_worker_callbacks">register_worker_callbacks() (distributed.Client method)</a>
+</li>
+      <li><a href="futures.html#distributed.Client.register_worker_plugin">register_worker_plugin() (distributed.Client method)</a>
+
+      <ul>
+        <li><a href="setup/python-advanced.html#distributed.Scheduler.register_worker_plugin">(distributed.Scheduler method)</a>
+</li>
+      </ul></li>
+      <li><a href="futures.html#distributed.rejoin">rejoin() (in module distributed)</a>
+</li>
+      <li><a href="futures.html#distributed.Lock.release">release() (distributed.Lock method)</a>
+</li>
+      <li><a href="bag-api.html#dask.bag.Bag.remove">remove() (dask.bag.Bag method)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.remove_client">remove_client() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.remove_plugin">remove_plugin() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.remove_worker">remove_worker() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.rename">rename() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.rename">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="bag-api.html#dask.bag.Bag.repartition">repartition() (dask.bag.Bag method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.DataFrame.repartition">(dask.dataframe.DataFrame method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.repartition">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="array-api.html#dask.array.Array.repeat">repeat() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="array-api.html#dask.array.repeat">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.replace">replace() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.replace">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="futures.html#distributed.Client.replicate">replicate() (distributed.Client method)</a>
+
+      <ul>
+        <li><a href="setup/python-advanced.html#distributed.Scheduler.replicate">(distributed.Scheduler method)</a>
+</li>
+      </ul></li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.report">report() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.resample">resample() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.resample">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.tseries.resample.Resampler">Resampler (class in dask.dataframe.tseries.resample)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.reschedule">reschedule() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.reset_index">reset_index() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.reset_index">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.Array.reshape">reshape() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="array-api.html#dask.array.reshape">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="diagnostics-local.html#dask.diagnostics.ResourceProfiler">ResourceProfiler() (in module dask.diagnostics)</a>
+</li>
+      <li><a href="futures.html#distributed.Client.restart">restart() (distributed.Client method)</a>
+
+      <ul>
+        <li><a href="setup/python-advanced.html#distributed.Scheduler.restart">(distributed.Scheduler method)</a>
+</li>
+      </ul></li>
+      <li><a href="futures.html#distributed.Future.result">result() (distributed.Future method)</a>
+</li>
+      <li><a href="array-api.html#dask.array.result_type">result_type() (in module dask.array)</a>
+</li>
+      <li><a href="futures.html#distributed.Client.retire_workers">retire_workers() (distributed.Client method)</a>
+
+      <ul>
+        <li><a href="setup/python-advanced.html#distributed.Scheduler.retire_workers">(distributed.Scheduler method)</a>
+</li>
+      </ul></li>
+      <li><a href="futures.html#distributed.Client.retry">retry() (distributed.Client method)</a>
+
+      <ul>
+        <li><a href="futures.html#distributed.Future.retry">(distributed.Future method)</a>
+</li>
+      </ul></li>
+      <li><a href="optimize.html#dask.rewrite.RewriteRule">RewriteRule() (in module dask.rewrite)</a>
+</li>
+      <li><a href="array-api.html#dask.array.fft.rfft">rfft() (in module dask.array.fft)</a>
+</li>
+      <li><a href="array-api.html#dask.array.fft.rfft2">rfft2() (in module dask.array.fft)</a>
+</li>
+      <li><a href="array-api.html#dask.array.fft.rfftfreq">rfftfreq() (in module dask.array.fft)</a>
+</li>
+      <li><a href="array-api.html#dask.array.fft.rfftn">rfftn() (in module dask.array.fft)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.rfloordiv">rfloordiv() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.rfloordiv">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.rint">rint() (in module dask.array)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.rmod">rmod() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.rmod">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.rmul">rmul() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.rmul">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.roll">roll() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.rollaxis">rollaxis() (in module dask.array)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.rolling">rolling() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.rolling">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.Array.round">round() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.DataFrame.round">(dask.dataframe.DataFrame method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.round">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="array-api.html#dask.array.round">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.rpow">rpow() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.rpow">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.rsub">rsub() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.rsub">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.rtruediv">rtruediv() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.rtruediv">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="optimize.html#dask.rewrite.RuleSet">RuleSet() (in module dask.rewrite)</a>
+</li>
+      <li><a href="futures.html#distributed.Client.run">run() (distributed.Client method)</a>
+</li>
+      <li><a href="futures.html#distributed.Client.run_coroutine">run_coroutine() (distributed.Client method)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.run_function">run_function() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="futures.html#distributed.Client.run_on_scheduler">run_on_scheduler() (distributed.Client method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.sample">sample() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.sample">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="futures.html#distributed.Client.scatter">scatter() (distributed.Client method)</a>
+
+      <ul>
+        <li><a href="setup/python-advanced.html#distributed.Scheduler.scatter">(distributed.Scheduler method)</a>
+</li>
+      </ul></li>
+      <li>
+    SCHEDULER
+
+      <ul>
+        <li><a href="setup/cli.html#cmdoption-dask-worker-arg-scheduler">dask-worker command line option</a>
+</li>
+      </ul></li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler">Scheduler (class in distributed)</a>
+</li>
+      <li><a href="futures.html#distributed.Client.scheduler_info">scheduler_info() (distributed.Client method)</a>
+</li>
+      <li><a href="futures.html#distributed.secede">secede() (in module distributed)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.select_dtypes">select_dtypes() (dask.dataframe.DataFrame method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.sem">sem() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.sem">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.tseries.resample.Resampler.sem">(dask.dataframe.tseries.resample.Resampler method)</a>
+</li>
+      </ul></li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.send_task_to_worker">send_task_to_worker() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.Series">Series (class in dask.dataframe)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.groupby.SeriesGroupBy">SeriesGroupBy (class in dask.dataframe.groupby)</a>
+</li>
+      <li><a href="futures.html#distributed.Variable.set">set() (distributed.Variable method)</a>
+
+      <ul>
+        <li><a href="configuration.html#dask.config.set">(in module dask.config)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.ma.set_fill_value">set_fill_value() (in module dask.array.ma)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.set_index">set_index() (dask.dataframe.DataFrame method)</a>
+</li>
+      <li><a href="futures.html#distributed.Client.set_metadata">set_metadata() (distributed.Client method)</a>
+</li>
+      <li><a href="array-api.html#dask.array.linalg.sfqr">sfqr() (in module dask.array.linalg)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.shape">shape() (dask.dataframe.DataFrame property)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.shape">(dask.dataframe.Series property)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.shift">shift() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.shift">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="futures.html#distributed.Client.shutdown">shutdown() (distributed.Client method)</a>
+</li>
+      <li><a href="array-api.html#dask.array.sign">sign() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.signbit">signbit() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.sin">sin() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.sinh">sinh() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.Array.size">size() (dask.array.Array property)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.DataFrame.size">(dask.dataframe.DataFrame property)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.DataFrameGroupBy.size">(dask.dataframe.groupby.DataFrameGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.SeriesGroupBy.size">(dask.dataframe.groupby.SeriesGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.size">(dask.dataframe.Series property)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.tseries.resample.Resampler.size">(dask.dataframe.tseries.resample.Resampler method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.stats.skew">skew() (in module dask.array.stats)</a>
+</li>
+      <li><a href="array-api.html#dask.array.stats.skewtest">skewtest() (in module dask.array.stats)</a>
+</li>
+      <li><a href="array-api.html#dask.array.linalg.solve">solve() (in module dask.array.linalg)</a>
+</li>
+      <li><a href="array-api.html#dask.array.linalg.solve_triangular">solve_triangular() (in module dask.array.linalg)</a>
+</li>
+      <li><a href="array-api.html#dask.array.sqrt">sqrt() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.square">square() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.Array.squeeze">squeeze() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.DataFrame.squeeze">(dask.dataframe.DataFrame method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.squeeze">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="array-api.html#dask.array.squeeze">(in module dask.array)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="setup/ssh.html#distributed.deploy.ssh.SSHCluster">SSHCluster() (in module distributed.deploy.ssh)</a>
+</li>
+      <li><a href="array-api.html#dask.array.stack">stack() (in module dask.array)</a>, <a href="array-api.html#dask.array.stack">[1]</a>
+</li>
+      <li><a href="array-api.html#dask.array.random.standard_cauchy">standard_cauchy() (in module dask.array.random)</a>
+</li>
+      <li><a href="array-api.html#dask.array.random.standard_exponential">standard_exponential() (in module dask.array.random)</a>
+</li>
+      <li><a href="array-api.html#dask.array.random.standard_gamma">standard_gamma() (in module dask.array.random)</a>
+</li>
+      <li><a href="array-api.html#dask.array.random.standard_normal">standard_normal() (in module dask.array.random)</a>
+</li>
+      <li><a href="array-api.html#dask.array.random.standard_t">standard_t() (in module dask.array.random)</a>
+</li>
+      <li><a href="bag-api.html#dask.bag.Bag.starmap">starmap() (dask.bag.Bag method)</a>
+</li>
+      <li><a href="futures.html#distributed.Client.start">start() (distributed.Client method)</a>
+
+      <ul>
+        <li><a href="setup/python-advanced.html#distributed.Nanny.start">(distributed.Nanny method)</a>
+</li>
+        <li><a href="setup/python-advanced.html#distributed.Scheduler.start">(distributed.Scheduler method)</a>
+</li>
+      </ul></li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.start_ipython">start_ipython() (distributed.Scheduler method)</a>
+
+      <ul>
+        <li><a href="setup/python-advanced.html#distributed.Worker.start_ipython">(distributed.Worker method)</a>
+</li>
+      </ul></li>
+      <li><a href="futures.html#distributed.Client.start_ipython_scheduler">start_ipython_scheduler() (distributed.Client method)</a>
+</li>
+      <li><a href="futures.html#distributed.Client.start_ipython_workers">start_ipython_workers() (distributed.Client method)</a>
+</li>
+      <li><a href="array-api.html#dask.array.Array.std">std() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="bag-api.html#dask.bag.Bag.std">(dask.bag.Bag method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.DataFrame.std">(dask.dataframe.DataFrame method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.DataFrameGroupBy.std">(dask.dataframe.groupby.DataFrameGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.SeriesGroupBy.std">(dask.dataframe.groupby.SeriesGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.std">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.tseries.resample.Resampler.std">(dask.dataframe.tseries.resample.Resampler method)</a>
+</li>
+        <li><a href="array-api.html#dask.array.std">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.stimulus_cancel">stimulus_cancel() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.stimulus_missing_data">stimulus_missing_data() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.stimulus_task_erred">stimulus_task_erred() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.stimulus_task_finished">stimulus_task_finished() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="array-api.html#dask.array.Array.store">store() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="array-api.html#dask.array.store">(in module dask.array)</a>, <a href="array-api.html#dask.array.store">[1]</a>
+</li>
+      </ul></li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.story">story() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.Series.str">str (dask.dataframe.Series attribute)</a>
+</li>
+      <li><a href="bag-api.html#dask.bag.Bag.str">str() (dask.bag.Bag property)</a>
+</li>
+      <li><a href="futures.html#distributed.Sub">Sub (class in distributed)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.sub">sub() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.sub">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="futures.html#distributed.Client.submit">submit() (distributed.Client method)</a>
+</li>
+      <li><a href="array-api.html#dask.array.Array.sum">sum() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="bag-api.html#dask.bag.Bag.sum">(dask.bag.Bag method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.DataFrame.sum">(dask.dataframe.DataFrame method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.DataFrameGroupBy.sum">(dask.dataframe.groupby.DataFrameGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.SeriesGroupBy.sum">(dask.dataframe.groupby.SeriesGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.sum">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.tseries.resample.Resampler.sum">(dask.dataframe.tseries.resample.Resampler method)</a>
+</li>
+        <li><a href="array-api.html#dask.array.sum">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.linalg.svd">svd() (in module dask.array.linalg)</a>
+</li>
+      <li><a href="array-api.html#dask.array.linalg.svd_compressed">svd_compressed() (in module dask.array.linalg)</a>
+</li>
+      <li><a href="array-api.html#dask.array.Array.swapaxes">swapaxes() (dask.array.Array method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.tail">tail() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.tail">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="bag-api.html#dask.bag.Bag.take">take() (dask.bag.Bag method)</a>
+
+      <ul>
+        <li><a href="array-api.html#dask.array.take">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.tan">tan() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.tanh">tanh() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.tensordot">tensordot() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.tile">tile() (in module dask.array)</a>
+</li>
+      <li><a href="api.html#dask.datasets.timeseries">timeseries() (in module dask.datasets)</a>
+</li>
+      <li><a href="bag-api.html#dask.bag.Bag.to_avro">to_avro() (dask.bag.Bag method)</a>
+
+      <ul>
+        <li><a href="bag-creation.html#dask.bag.avro.to_avro">(in module dask.bag.avro)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.to_bag">to_bag() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.to_bag">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.to_bag">(in module dask.dataframe)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.to_csv">to_csv() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.to_csv">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.to_csv">(in module dask.dataframe)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.to_dask_array">to_dask_array() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.to_dask_array">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.Array.to_dask_dataframe">to_dask_dataframe() (dask.array.Array method)</a>
+</li>
+      <li><a href="bag-api.html#dask.bag.Bag.to_dataframe">to_dataframe() (dask.bag.Bag method)</a>
+
+      <ul>
+        <li><a href="bag-creation.html#dask.bag.core.Bag.to_dataframe">(dask.bag.core.Bag method)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.to_datetime">to_datetime() (in module dask.dataframe)</a>
+</li>
+      <li><a href="array-api.html#dask.array.Array.to_delayed">to_delayed() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="bag-api.html#dask.bag.Bag.to_delayed">(dask.bag.Bag method)</a>
+</li>
+        <li><a href="bag-creation.html#dask.bag.core.Bag.to_delayed">(dask.bag.core.Bag method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.DataFrame.to_delayed">(dask.dataframe.DataFrame method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.to_delayed">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.Series.to_frame">to_frame() (dask.dataframe.Series method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.to_hdf">to_hdf() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.to_hdf">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.to_hdf">(in module dask.dataframe)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.Array.to_hdf5">to_hdf5() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="array-api.html#dask.array.to_hdf5">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.to_html">to_html() (dask.dataframe.DataFrame method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.to_json">to_json() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.to_json">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.to_json">(in module dask.dataframe)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.to_npy_stack">to_npy_stack() (in module dask.array)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.to_numeric">to_numeric() (in module dask.dataframe)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.to_parquet">to_parquet() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.to_parquet">(in module dask.dataframe)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.to_records">to_records() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.to_records">(in module dask.dataframe)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.to_sql">to_sql() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.to_sql">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.to_sql">(in module dask.dataframe)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.to_string">to_string() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.to_string">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.Array.to_svg">to_svg() (dask.array.Array method)</a>
+</li>
+      <li><a href="bag-api.html#dask.bag.Bag.to_textfiles">to_textfiles() (dask.bag.Bag method)</a>
+
+      <ul>
+        <li><a href="bag-creation.html#dask.bag.core.to_textfiles">(in module dask.bag.core)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.Array.to_tiledb">to_tiledb() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="array-api.html#dask.array.to_tiledb">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.to_timestamp">to_timestamp() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.to_timestamp">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.Array.to_zarr">to_zarr() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="array-api.html#dask.array.to_zarr">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.Array.topk">topk() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="bag-api.html#dask.bag.Bag.topk">(dask.bag.Bag method)</a>
+</li>
+        <li><a href="array-api.html#dask.array.topk">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.Array.trace">trace() (dask.array.Array method)</a>
+</li>
+      <li><a href="futures.html#distributed.Future.traceback">traceback() (distributed.Future method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.groupby.DataFrameGroupBy.transform">transform() (dask.dataframe.groupby.DataFrameGroupBy method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.SeriesGroupBy.transform">(dask.dataframe.groupby.SeriesGroupBy method)</a>
+</li>
+      </ul></li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.transition">transition() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.transition_story">transition_story() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.transitions">transitions() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="array-api.html#dask.array.Array.transpose">transpose() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="array-api.html#dask.array.transpose">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.random.triangular">triangular() (in module dask.array.random)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Worker.trigger_profile">trigger_profile() (distributed.Worker method)</a>
+</li>
+      <li><a href="array-api.html#dask.array.tril">tril() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.overlap.trim_internal">trim_internal() (in module dask.array.overlap)</a>
+</li>
+      <li><a href="array-api.html#dask.array.overlap.trim_overlap">trim_overlap() (in module dask.array.overlap)</a>
+</li>
+      <li><a href="array-api.html#dask.array.triu">triu() (in module dask.array)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.truediv">truediv() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.truediv">(dask.dataframe.Series method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.trunc">trunc() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.linalg.tsqr">tsqr() (in module dask.array.linalg)</a>
+</li>
+      <li><a href="array-api.html#dask.array.stats.ttest_1samp">ttest_1samp() (in module dask.array.stats)</a>
+</li>
+      <li><a href="array-api.html#dask.array.stats.ttest_ind">ttest_ind() (in module dask.array.stats)</a>
+</li>
+      <li><a href="array-api.html#dask.array.stats.ttest_rel">ttest_rel() (in module dask.array.stats)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="array-api.html#dask.array.random.uniform">uniform() (in module dask.array.random)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.groupby.SeriesGroupBy.unique">unique() (dask.dataframe.groupby.SeriesGroupBy method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.unique">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="array-api.html#dask.array.unique">(in module dask.array)</a>
+</li>
+      </ul></li>
+      <li><a href="futures.html#distributed.Client.unpublish_dataset">unpublish_dataset() (distributed.Client method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="array-api.html#dask.array.unravel_index">unravel_index() (in module dask.array)</a>
+</li>
+      <li><a href="bag-api.html#dask.bag.Bag.unzip">unzip() (dask.bag.Bag method)</a>
+</li>
+      <li><a href="configuration.html#dask.config.update">update() (in module dask.config)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.update_data">update_data() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.update_graph">update_graph() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="futures.html#distributed.Client.upload_file">upload_file() (distributed.Client method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.valid_workers">valid_workers() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.Series.value_counts">value_counts() (dask.dataframe.Series method)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.values">values() (dask.dataframe.DataFrame property)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.values">(dask.dataframe.Series property)</a>
+</li>
+        <li><a href="high-level-graphs.html#dask.highlevelgraph.HighLevelGraph.values">(dask.highlevelgraph.HighLevelGraph method)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.Array.var">var() (dask.array.Array method)</a>
+
+      <ul>
+        <li><a href="bag-api.html#dask.bag.Bag.var">(dask.bag.Bag method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.DataFrame.var">(dask.dataframe.DataFrame method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.DataFrameGroupBy.var">(dask.dataframe.groupby.DataFrameGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.groupby.SeriesGroupBy.var">(dask.dataframe.groupby.SeriesGroupBy method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.var">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="dataframe-api.html#dask.dataframe.tseries.resample.Resampler.var">(dask.dataframe.tseries.resample.Resampler method)</a>
+</li>
+        <li><a href="array-api.html#dask.array.var">(in module dask.array)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="futures.html#distributed.Variable">Variable (class in distributed)</a>
+</li>
+      <li><a href="array-api.html#dask.array.vdot">vdot() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.Array.view">view() (dask.array.Array method)</a>
+</li>
+      <li><a href="array-api.html#dask.array.Array.vindex">vindex() (dask.array.Array property)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.visualize">visualize() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.visualize">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="api.html#dask.visualize">(in module dask)</a>
+</li>
+        <li><a href="diagnostics-local.html#dask.diagnostics.visualize">(in module dask.diagnostics)</a>
+</li>
+      </ul></li>
+      <li><a href="array-api.html#dask.array.random.vonmises">vonmises() (in module dask.array.random)</a>
+</li>
+      <li><a href="array-api.html#dask.array.vstack">vstack() (in module dask.array)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="futures.html#distributed.wait">wait() (in module distributed)</a>
+</li>
+      <li><a href="futures.html#distributed.Client.wait_for_workers">wait_for_workers() (distributed.Client method)</a>
+</li>
+      <li><a href="array-api.html#dask.array.random.wald">wald() (in module dask.array.random)</a>
+</li>
+      <li><a href="array-api.html#dask.array.random.weibull">weibull() (in module dask.array.random)</a>
+</li>
+      <li><a href="dataframe-api.html#dask.dataframe.DataFrame.where">where() (dask.dataframe.DataFrame method)</a>
+
+      <ul>
+        <li><a href="dataframe-api.html#dask.dataframe.Series.where">(dask.dataframe.Series method)</a>
+</li>
+        <li><a href="array-api.html#dask.array.where">(in module dask.array)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="futures.html#distributed.Client.who_has">who_has() (distributed.Client method)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Worker">Worker (class in distributed)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Worker.worker_address">worker_address() (distributed.Worker property)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.worker_objective">worker_objective() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.worker_send">worker_send() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.workers_list">workers_list() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="setup/python-advanced.html#distributed.Scheduler.workers_to_close">workers_to_close() (distributed.Scheduler method)</a>
+</li>
+      <li><a href="futures.html#distributed.Client.write_scheduler_file">write_scheduler_file() (distributed.Client method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Z">Z</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="array-api.html#dask.array.zeros">zeros() (in module dask.array)</a>
+</li>
+      <li><a href="array-api.html#dask.array.zeros_like">zeros_like() (in module dask.array)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="bag-api.html#dask.bag.zip">zip() (in module dask.bag)</a>
+</li>
+      <li><a href="array-api.html#dask.array.random.zipf">zipf() (in module dask.array.random)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

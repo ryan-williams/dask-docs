@@ -1,0 +1,466 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Opportunistic Caching &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Task Graphs" href="graphs.html" />
+    <link rel="prev" title="Comparison to Spark" href="spark.html" />
+    <link rel="shortcut icon" href="_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="array.html">Array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bag.html">Bag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataframe.html">DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Opportunistic Caching</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#motivating-example">Motivating Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#two-simple-solutions">Two Simple Solutions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#automatic-opportunistic-caching">Automatic Opportunistic Caching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cache-tasks-not-expressions">Cache tasks, not expressions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#disclaimer">Disclaimer</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">Task Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Opportunistic Caching</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/caching.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="opportunistic-caching">
+<h1>Opportunistic Caching<a class="headerlink" href="#opportunistic-caching" title="Permalink to this headline">¶</a></h1>
+<p>EXPERIMENTAL FEATURE added to Version 0.6.2 and above - see <a class="reference internal" href="#disclaimer"><span class="std std-ref">disclaimer</span></a>.</p>
+<p>Dask usually removes intermediate values as quickly as possible in order to
+make space for more data to flow through your computation.  However, in some
+cases, we may want to hold onto intermediate values, because they might be
+useful for future computations in an interactive session.</p>
+<p>We need to balance the following concerns:</p>
+<ol class="arabic simple">
+<li><p>Intermediate results might be useful in future unknown computations</p></li>
+<li><p>Intermediate results also fill up memory, reducing space for the rest of our
+current computation</p></li>
+</ol>
+<p>Negotiating between these two concerns helps us to leverage the memory that we
+have available to speed up future, unanticipated computations.  Which intermediate results
+should we keep?</p>
+<p>This document explains an experimental, opportunistic caching mechanism that automatically
+picks out and stores useful tasks.</p>
+<div class="section" id="motivating-example">
+<h2>Motivating Example<a class="headerlink" href="#motivating-example" title="Permalink to this headline">¶</a></h2>
+<p>Consider computing the maximum value of a column in a CSV file:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask.dataframe</span> <span class="k">as</span> <span class="nn">dd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;myfile.csv&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+<span class="go">[&#39;first-name&#39;, &#39;last-name&#39;, &#39;amount&#39;, &#39;id&#39;, &#39;timestamp&#39;]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">amount</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="go">1000</span>
+</pre></div>
+</div>
+<p>Even though our full dataset may be too large to fit in memory, the single
+<code class="docutils literal notranslate"><span class="pre">df.amount</span></code> column may be small enough to hold in memory just in case it
+might be useful in the future.  This is often the case during data exploration,
+because we investigate the same subset of our data repeatedly before moving on.</p>
+<p>For example, we may now want to find the minimum of the amount column:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">amount</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="go">-1000</span>
+</pre></div>
+</div>
+<p>Under normal operations, this would need to read through the entire CSV file over
+again.  This is somewhat wasteful and stymies interactive data exploration.</p>
+</div>
+<div class="section" id="two-simple-solutions">
+<h2>Two Simple Solutions<a class="headerlink" href="#two-simple-solutions" title="Permalink to this headline">¶</a></h2>
+<p>If we know ahead of time that we want both the maximum and minimum, we can
+compute them simultaneously.  Dask will share intermediates intelligently,
+reading through the dataset only once:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dd</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">amount</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">df</span><span class="o">.</span><span class="n">amount</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+<span class="go">(1000, -1000)</span>
+</pre></div>
+</div>
+<p>If we know that this column fits in memory, then we can also explicitly
+compute the column and then continue forward with straight Pandas:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">amount</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">amount</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">amount</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="go">1000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">amount</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+<span class="go">-1000</span>
+</pre></div>
+</div>
+<p>If either of these solutions work for you, great.  Otherwise, continue on for a third approach.</p>
+</div>
+<div class="section" id="automatic-opportunistic-caching">
+<h2>Automatic Opportunistic Caching<a class="headerlink" href="#automatic-opportunistic-caching" title="Permalink to this headline">¶</a></h2>
+<p>Another approach is to watch <em>all</em> intermediate computations, and <em>guess</em> which
+ones might be valuable to keep for the future.  Dask has an <em>opportunistic
+caching mechanism</em> that stores intermediate tasks that show the following
+characteristics:</p>
+<ol class="arabic simple">
+<li><p>Expensive to compute</p></li>
+<li><p>Cheap to store</p></li>
+<li><p>Frequently used</p></li>
+</ol>
+<p>We can activate a fixed sized cache as a <a class="reference external" href="diagnostics.rst">callback</a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dask.cache</span> <span class="kn">import</span> <span class="n">Cache</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cache</span> <span class="o">=</span> <span class="n">Cache</span><span class="p">(</span><span class="mf">2e9</span><span class="p">)</span>  <span class="c1"># Leverage two gigabytes of memory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cache</span><span class="o">.</span><span class="n">register</span><span class="p">()</span>    <span class="c1"># Turn cache on globally</span>
+</pre></div>
+</div>
+<p>Now the cache will watch every small part of the computation and judge the
+value of that part based on the three characteristics listed above (expensive
+to compute, cheap to store, and frequently used).</p>
+<p>Dask will hold on to 2GB of the
+best intermediate results it can find, evicting older results as better results
+come in.  If the <code class="docutils literal notranslate"><span class="pre">df.amount</span></code> column fits in 2GB, then probably all of it will
+be stored while we keep working on it.</p>
+<p>If we start work on something else,
+then the <code class="docutils literal notranslate"><span class="pre">df.amount</span></code> column will likely be evicted to make space for other
+more timely results:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">amount</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>  <span class="c1"># slow the first time</span>
+<span class="go">1000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">amount</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>  <span class="c1"># fast because df.amount is in the cache</span>
+<span class="go">-1000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>  <span class="c1"># starts to push out df.amount from cache</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="cache-tasks-not-expressions">
+<h2>Cache tasks, not expressions<a class="headerlink" href="#cache-tasks-not-expressions" title="Permalink to this headline">¶</a></h2>
+<p>This caching happens at the low-level scheduling layer, not the high-level
+Dask DataFrame or Dask Array layer.  We don’t explicitly cache the column
+<code class="docutils literal notranslate"><span class="pre">df.amount</span></code>.  Instead, we cache the hundreds of small pieces of that column
+that form the dask graph.  It could be that we end up caching only a fraction
+of the column.</p>
+<p>This means that the opportunistic caching mechanism described above works for <em>all</em> Dask
+computations, as long as those computations employ a consistent naming scheme
+(as all of Dask DataFrame, Dask Array, and Dask Delayed do).</p>
+<p>You can see which tasks are held by the cache by inspecting the following
+attributes of the cache object:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cache</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">data</span>
+<span class="go">&lt;stored values&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cache</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">heap</span><span class="o">.</span><span class="n">heap</span>
+<span class="go">&lt;scores of items in cache&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cache</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">nbytes</span>
+<span class="go">&lt;number of bytes per item in cache&gt;</span>
+</pre></div>
+</div>
+<p>The cache object is powered by <a class="reference external" href="https://github.com/blaze/cachey">cachey</a>, a tiny library for opportunistic
+caching.</p>
+</div>
+<div class="section" id="disclaimer">
+<span id="id1"></span><h2>Disclaimer<a class="headerlink" href="#disclaimer" title="Permalink to this headline">¶</a></h2>
+<p>This feature is still experimental, and can cause your computation to fill up RAM.</p>
+<p>Restricting your cache to a fixed size like 2GB requires Dask to accurately count
+the size of each of our objects in memory.  This can be tricky, particularly
+for Pythonic objects like lists and tuples, and for DataFrames that contain
+object dtypes.</p>
+<p>It is entirely possible that the caching mechanism will
+<em>undercount</em> the size of objects, causing it to use up more memory than
+anticipated, which can lead to blowing up RAM and crashing your session.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="graphs.html" class="btn btn-neutral float-right" title="Task Graphs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="spark.html" class="btn btn-neutral float-left" title="Comparison to Spark" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

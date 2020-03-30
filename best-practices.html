@@ -1,0 +1,679 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Best Practices &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API" href="api.html" />
+    <link rel="prev" title="Futures" href="futures.html" />
+    <link rel="shortcut icon" href="_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="array.html">Array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bag.html">Bag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataframe.html">DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Best Practices</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#start-small">Start Small</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#use-the-dashboard">Use The Dashboard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#avoid-very-large-partitions">Avoid Very Large Partitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#avoid-very-large-graphs">Avoid Very Large Graphs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#learn-techniques-for-customization">Learn Techniques For Customization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stop-using-dask-when-no-longer-needed">Stop Using Dask When No Longer Needed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#persist-when-you-can">Persist When You Can</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#store-data-efficiently">Store Data Efficiently</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#processes-and-threads">Processes and Threads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#load-data-with-dask">Load Data with Dask</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dataframes">DataFrames</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#arrays">Arrays</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#delayed">Delayed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#avoid-calling-compute-repeatedly">Avoid calling compute repeatedly</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">Task Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Best Practices</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/best-practices.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="best-practices">
+<h1>Best Practices<a class="headerlink" href="#best-practices" title="Permalink to this headline">¶</a></h1>
+<p>It is easy to get started with Dask’s APIs, but using them <em>well</em> requires some
+experience. This page contains suggestions for best practices, and includes
+solutions to common problems.</p>
+<p>This document specifically focuses on best practices that are shared among all
+of the Dask APIs.  Readers may first want to investigate one of the
+API-specific Best Practices documents first.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="array-best-practices.html"><span class="doc">Arrays</span></a></p></li>
+<li><p><a class="reference internal" href="dataframe-best-practices.html"><span class="doc">DataFrames</span></a></p></li>
+<li><p><a class="reference internal" href="delayed-best-practices.html"><span class="doc">Delayed</span></a></p></li>
+</ul>
+<div class="section" id="start-small">
+<h2>Start Small<a class="headerlink" href="#start-small" title="Permalink to this headline">¶</a></h2>
+<p>Parallelism brings extra complexity and overhead.
+Sometimes it’s necessary for larger problems, but often it’s not.
+Before adding a parallel computing system like Dask to your workload you may
+want to first try some alternatives:</p>
+<ul class="simple">
+<li><p><strong>Use better algorithms or data structures</strong>:  NumPy, Pandas, Scikit-Learn
+may have faster functions for what you’re trying to do.  It may be worth
+consulting with an expert or reading through their docs again to find a
+better pre-built algorithm.</p></li>
+<li><p><strong>Better file formats</strong>:  Efficient binary formats that support random
+access can often help you manage larger-than-memory datasets efficiently and
+simply.  See the <a class="reference internal" href="#store-data-efficiently">Store Data Efficiently</a> section below.</p></li>
+<li><p><strong>Compiled code</strong>:  Compiling your Python code with Numba or Cython might
+make parallelism unnecessary.  Or you might use the multi-core parallelism
+available within those libraries.</p></li>
+<li><p><strong>Sampling</strong>:  Even if you have a lot of data, there might not be much
+advantage from using all of it.  By sampling intelligently you might be able
+to derive the same insight from a much more manageable subset.</p></li>
+<li><p><strong>Profile</strong>:  If you’re trying to speed up slow code it’s important that
+you first understand why it is slow.  Modest time investments in profiling
+your code can help you to identify what is slowing you down.  This
+information can help you make better decisions about if parallelism is likely
+to help, or if other approaches are likely to be more effective.</p></li>
+</ul>
+</div>
+<div class="section" id="use-the-dashboard">
+<h2>Use The Dashboard<a class="headerlink" href="#use-the-dashboard" title="Permalink to this headline">¶</a></h2>
+<p>Dask’s dashboard helps you to understand the state of your workers.
+This information can help to guide you to efficient solutions.
+In parallel and distributed computing there are new costs to be aware of and so
+your old intuition may no longer be true.  Working with the dashboard can help
+you relearn about what is fast and slow and how to deal with it.</p>
+<p>See <a class="reference internal" href="diagnostics-distributed.html"><span class="doc">Documentation on Dask’s dashboard</span></a> for more
+information.</p>
+</div>
+<div class="section" id="avoid-very-large-partitions">
+<h2>Avoid Very Large Partitions<a class="headerlink" href="#avoid-very-large-partitions" title="Permalink to this headline">¶</a></h2>
+<p>Your chunks of data should be small enough so that many of them fit in a
+worker’s available memory at once.  You often control this when you select
+partition size in Dask DataFrame or chunk size in Dask Array.</p>
+<p>Dask will likely manipulate as many chunks in parallel on one machine as you
+have cores on that machine.  So if you have 1 GB chunks and ten
+cores, then Dask is likely to use <em>at least</em> 10 GB of memory.  Additionally,
+it’s common for Dask to have 2-3 times as many chunks available to work on so
+that it always has something to work on.</p>
+<p>If you have a machine with 100 GB and 10 cores, then you might want to choose
+chunks in the 1GB range.  You have space for ten chunks per core which gives
+Dask a healthy margin, without having tasks that are too small</p>
+<p>Note that you also want to avoid chunk sizes that are too small.  See the next
+section for details.</p>
+</div>
+<div class="section" id="avoid-very-large-graphs">
+<h2>Avoid Very Large Graphs<a class="headerlink" href="#avoid-very-large-graphs" title="Permalink to this headline">¶</a></h2>
+<p>Dask workloads are composed of <em>tasks</em>.
+A task is a Python function, like <code class="docutils literal notranslate"><span class="pre">np.sum</span></code> applied onto a Python object,
+like a Pandas dataframe or NumPy array.  If you are working with Dask
+collections with many partitions, then every operation you do, like <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">+</span> <span class="pre">1</span></code>
+likely generates many tasks, at least as many as partitions in your collection.</p>
+<p>Every task comes with some overhead.  This is somewhere between 200us and 1ms.
+If you have a computation with thousands of tasks this is fine, there will be
+about a second of overhead, and that may not trouble you.</p>
+<p>However when you have very large graphs with millions of tasks then this may
+become troublesome, both because overhead is now in the 10 minutes to hours
+range, and also because the overhead of dealing with such a large graph can
+start to overwhelm the scheduler.</p>
+<p>There are a few things you can do to address this:</p>
+<ul>
+<li><p>Build smaller graphs.  You can do this by …</p>
+<ul>
+<li><p><strong>Increasing your chunk size:</strong>  If you have a 1000 GB of data and are using
+10 MB chunks, then you have 100,000 partitions.  Every operation on such
+a collection will generate at least 100,000 tasks.</p>
+<p>However if you increase your chunksize to 1 GB or even a few GB then you
+reduce the overhead by orders of magnitude.  This requires that your
+workers have much more than 1 GB of memory, but that’s typical for larger
+workloads.</p>
+</li>
+<li><p><strong>Fusing operations together:</strong> Dask will do a bit of this on its own, but you
+can help it.  If you have a very complex operation with dozens of
+sub-operations, maybe you can pack that into a single Python function
+and use a function like <code class="docutils literal notranslate"><span class="pre">da.map_blocks</span></code> or <code class="docutils literal notranslate"><span class="pre">dd.map_partitions</span></code>.</p>
+<p>In general, the more administrative work you can move into your functions
+the better.  That way the Dask scheduler doesn’t need to think about all
+of the fine-grained operations.</p>
+</li>
+<li><p><strong>Breaking up your computation:</strong> For very large workloads you may also want to
+try sending smaller chunks to Dask at a time.  For example if you’re
+processing a petabyte of data but find that Dask is only happy with 100
+TB, maybe you can break up your computation into ten pieces and submit
+them one after the other.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="learn-techniques-for-customization">
+<h2>Learn Techniques For Customization<a class="headerlink" href="#learn-techniques-for-customization" title="Permalink to this headline">¶</a></h2>
+<p>The high level Dask collections (array, dataframe, bag) include common
+operations that follow standard Python APIs from NumPy and Pandas.
+However, many Python workloads are complex and may require operations that are
+not included in these high level APIs.</p>
+<p>Fortunately, there are many options to support custom workloads:</p>
+<ul>
+<li><p>All collections have a <code class="docutils literal notranslate"><span class="pre">map_partitions</span></code> or <code class="docutils literal notranslate"><span class="pre">map_blocks</span></code> function, that
+applies a user provided function across every Pandas dataframe or NumPy array
+in the collection.  Because Dask collections are made up of normal Python
+objects, it’s often quite easy to map custom functions across partitions of a
+dataset without much modification.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">map_partitions</span><span class="p">(</span><span class="n">my_custom_func</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>More complex <code class="docutils literal notranslate"><span class="pre">map_*</span></code> functions.  Sometimes your custom behavior isn’t
+embarrassingly parallel, but requires more advanced communication.  For
+example maybe you need to communicate a little bit of information from one
+partition to the next, or maybe you want to build a custom aggregation.</p>
+<p>Dask collections include methods for these as well.</p>
+</li>
+<li><p>For even more complex workloads you can convert your collections into
+individual blocks, and arrange those blocks as you like using Dask Delayed.
+There is usually a <code class="docutils literal notranslate"><span class="pre">to_delayed</span></code> method on every collection.</p></li>
+</ul>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="dataframe-api.html#dask.dataframe.map_partitions" title="dask.dataframe.map_partitions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">map_partitions</span></code></a>(func, *args[, meta, …])</p></td>
+<td><p>Apply Python function on each DataFrame partition.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="dataframe-api.html#dask.dataframe.rolling.map_overlap" title="dask.dataframe.rolling.map_overlap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rolling.map_overlap</span></code></a>(func, df, before, after, …)</p></td>
+<td><p>Apply a function to each partition, sharing rows with adjacent partitions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="dataframe-api.html#dask.dataframe.groupby.Aggregation" title="dask.dataframe.groupby.Aggregation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">groupby.Aggregation</span></code></a>(name, chunk, agg[, finalize])</p></td>
+<td><p>User defined groupby-aggregation.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="array-api.html#dask.array.blockwise" title="dask.array.blockwise"><code class="xref py py-obj docutils literal notranslate"><span class="pre">blockwise</span></code></a>(func, out_ind, *args[, name, …])</p></td>
+<td><p>Tensor operation: Generalized inner and outer products</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="array-api.html#dask.array.map_blocks" title="dask.array.map_blocks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">map_blocks</span></code></a>(func, *args[, name, token, …])</p></td>
+<td><p>Map a function across all blocks of a dask array.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="array-overlap.html#dask.array.map_overlap" title="dask.array.map_overlap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">map_overlap</span></code></a>(x, func, depth[, boundary, trim])</p></td>
+<td><p>Map a function over blocks of the array with some overlap</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="array-api.html#dask.array.reduction" title="dask.array.reduction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduction</span></code></a>(x, chunk, aggregate[, axis, …])</p></td>
+<td><p>General version of reductions</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="stop-using-dask-when-no-longer-needed">
+<h2>Stop Using Dask When No Longer Needed<a class="headerlink" href="#stop-using-dask-when-no-longer-needed" title="Permalink to this headline">¶</a></h2>
+<p>In many workloads it is common to use Dask to read in a large amount of data,
+reduce it down, and then iterate on a much smaller amount of data.  For this
+latter stage on smaller data it may make sense to stop using Dask, and start
+using normal Python again.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;lots-of-data-*.parquet&quot;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>  <span class="c1"># reduce data significantly</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>               <span class="c1"># continue on with Pandas/NumPy</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="persist-when-you-can">
+<h2>Persist When You Can<a class="headerlink" href="#persist-when-you-can" title="Permalink to this headline">¶</a></h2>
+<p>Accessing data from RAM is often much faster than accessing it from disk.
+Once you have your dataset in a clean state that both:</p>
+<ol class="arabic simple">
+<li><p>Fits in memory</p></li>
+<li><p>Is clean enough that you will want to try many different analyses</p></li>
+</ol>
+<p>Then it is a good time to <em>persist</em> your data in RAM</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;lots-of-data-*.parquet&quot;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>  <span class="c1"># clean up things lazily</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;Alice&#39;</span><span class="p">]</span>  <span class="c1"># get down to a more reasonable size</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">persist</span><span class="p">()</span>  <span class="c1"># trigger computation, persist in distributed RAM</span>
+</pre></div>
+</div>
+<p>Note that this is only relevant if you are on a distributed machine (otherwise,
+as mentioned above, you should probably continue on without Dask).</p>
+</div>
+<div class="section" id="store-data-efficiently">
+<h2>Store Data Efficiently<a class="headerlink" href="#store-data-efficiently" title="Permalink to this headline">¶</a></h2>
+<p>As your ability to compute increases you will likely find that data access and
+I/O take up a larger portion of your total time.  Additionally, parallel
+computing will often add new constraints to how your store your data,
+particularly around providing random access to blocks of your data that are in
+line with how you plan to compute on it.</p>
+<p>For example …</p>
+<ul class="simple">
+<li><p>For compression you’ll probably find that you drop gzip and bz2, and embrace
+newer systems like lz4, snappy, and Z-Standard that provide better
+performance and random access.</p></li>
+<li><p>For storage formats you may find that you want self-describing formats that
+are optimized for random access, metadata storage, and binary encoding like
+Parquet, ORC, Zarr, HDF5, GeoTIFF and so on</p></li>
+<li><p>When working on the cloud you may find that some older formats like HDF5 may
+not work well</p></li>
+<li><p>You may want to partition or chunk your data in ways that align well to
+common queries.  In Dask DataFrame this might mean choosing a column to
+sort by for fast selection and joins.  For Dask dataframe this might mean
+choosing chunk sizes that are aligned with your access patterns and
+algorithms.</p></li>
+</ul>
+</div>
+<div class="section" id="processes-and-threads">
+<h2>Processes and Threads<a class="headerlink" href="#processes-and-threads" title="Permalink to this headline">¶</a></h2>
+<p>If you’re doing mostly numeric work with Numpy, Pandas, Scikit-Learn, Numba,
+and other libraries that release the <a class="reference external" href="https://docs.python.org/3/glossary.html#term-global-interpreter-lock">GIL</a>, then use mostly threads.  If you’re
+doing work on text data or Python collections like lists and dicts then use
+mostly processes.</p>
+<p>If you’re on larger machines with a high thread count (greater than 10), then
+you should probably split things up into at least a few processes regardless.
+Python can be highly productive with 10 threads per process with numeric work,
+but not 50 threads.</p>
+<p>For more information on threads, processes, and how to configure them in Dask, see
+<a class="reference internal" href="scheduling.html"><span class="doc">the scheduler documentation</span></a>.</p>
+</div>
+<div class="section" id="load-data-with-dask">
+<h2>Load Data with Dask<a class="headerlink" href="#load-data-with-dask" title="Permalink to this headline">¶</a></h2>
+<p>If you need to work with large Python objects, then please let Dask create
+them.  A common anti-pattern we see is people creating large Python objects
+outside of Dask, then giving those objects to Dask and asking it to manage them.
+This works, but means that Dask needs to move around these very large objects
+with its metadata, rather than as normal Dask-controlled results.</p>
+<p>Here are some common patterns to avoid and nicer alternatives:</p>
+<div class="section" id="dataframes">
+<h3>DataFrames<a class="headerlink" href="#dataframes" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Don&#39;t</span>
+
+<span class="n">ddf</span> <span class="o">=</span> <span class="o">...</span> <span class="n">a</span> <span class="n">dask</span> <span class="n">dataframe</span> <span class="o">...</span>
+<span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>  <span class="c1"># Read locally with Pandas</span>
+    <span class="n">ddf</span> <span class="o">=</span> <span class="n">ddf</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>            <span class="c1"># Give to Dask</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Do</span>
+
+<span class="n">ddf</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filenames</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="arrays">
+<h3>Arrays<a class="headerlink" href="#arrays" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Don&#39;t</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">])</span>  <span class="c1"># Get data as a NumPy array locally</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1"># Hand NumPy array to Dask</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Do</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">])</span>  <span class="c1"># Let Dask do the reading</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="delayed">
+<h3>Delayed<a class="headerlink" href="#delayed" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Don&#39;t</span>
+
+<span class="nd">@dask</span><span class="o">.</span><span class="n">delayed</span>
+<span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="o">...</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;some-large-file.csv&quot;</span><span class="p">)</span>  <span class="c1"># Create large object locally</span>
+<span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">L</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">process</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>  <span class="c1"># include df in every delayed call</span>
+    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Do</span>
+
+<span class="nd">@dask</span><span class="o">.</span><span class="n">delayed</span>
+<span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="o">...</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">dask</span><span class="o">.</span><span class="n">delayed</span><span class="p">(</span><span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">)(</span><span class="s2">&quot;some-large-file.csv&quot;</span><span class="p">)</span>  <span class="c1"># Let Dask build object</span>
+<span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">L</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">process</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>  <span class="c1"># include pointer to df in every delayed call</span>
+    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="avoid-calling-compute-repeatedly">
+<h2>Avoid calling compute repeatedly<a class="headerlink" href="#avoid-calling-compute-repeatedly" title="Permalink to this headline">¶</a></h2>
+<p>Compute related results with shared computations in a single <a class="reference internal" href="api.html#dask.compute" title="dask.compute"><code class="xref py py-func docutils literal notranslate"><span class="pre">dask.compute()</span></code></a> call</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Don&#39;t repeatedly call compute</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;...&quot;</span><span class="p">)</span>
+<span class="n">xmin</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="n">xmax</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Do compute multiple results at the same time</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;...&quot;</span><span class="p">)</span>
+
+<span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">=</span> <span class="n">dask</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">df</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>This allows Dask to compute the shared parts of the computation (like the
+<code class="docutils literal notranslate"><span class="pre">dd.read_csv</span></code> call above) only once, rather than once per <code class="docutils literal notranslate"><span class="pre">compute</span></code> call.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="api.html" class="btn btn-neutral float-right" title="API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="futures.html" class="btn btn-neutral float-left" title="Futures" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

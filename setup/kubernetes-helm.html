@@ -1,0 +1,574 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Kubernetes and Helm &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Kubernetes Native" href="kubernetes-native.html" />
+    <link rel="prev" title="Kubernetes" href="kubernetes.html" />
+    <link rel="shortcut icon" href="../_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="../_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Install Dask</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../setup.html">Setup</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="single-machine.html">Single-Machine Scheduler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="single-distributed.html">Single Machine: dask.distributed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html">Command Line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssh.html">SSH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hpc.html">High Performance Computers</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="kubernetes.html">Kubernetes</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Helm</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#launch-kubernetes-cluster">Launch Kubernetes Cluster</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#helm-install-dask">Helm Install Dask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#verify-deployment">Verify Deployment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#connect-to-dask-and-jupyter">Connect to Dask and Jupyter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configure-environment">Configure Environment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#check-status-and-logs">Check status and logs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-a-helm-deployment">Delete a Helm deployment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#avoid-the-jupyter-server">Avoid the Jupyter Server</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="kubernetes-native.html">Native</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference external" href="https://yarn.dask.org/en/latest/">YARN / Hadoop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python-advanced.html">Python API (advanced)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud.html">Cloud Deployments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adaptive.html">Adaptive Deployments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docker.html">Docker Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom-startup.html">Custom Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prometheus.html">Prometheus Monitoring</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../array.html">Array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bag.html">Bag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dataframe.html">DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphs.html">Task Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gpu.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../setup.html">Setup</a> &raquo;</li>
+        
+          <li><a href="kubernetes.html">Kubernetes</a> &raquo;</li>
+        
+      <li>Kubernetes and Helm</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/setup/kubernetes-helm.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="kubernetes-and-helm">
+<h1>Kubernetes and Helm<a class="headerlink" href="#kubernetes-and-helm" title="Permalink to this headline">¶</a></h1>
+<p>It is easy to launch a Dask cluster and a Jupyter notebook server on cloud
+resources using <a class="reference external" href="https://kubernetes.io/">Kubernetes</a> and <a class="reference external" href="https://helm.sh/">Helm</a>.</p>
+<p>This is particularly useful when you want to deploy a fresh Python environment
+on Cloud services like Amazon Web Services, Google Compute Engine, or
+Microsoft Azure.</p>
+<p>If you already have Python environments running in a pre-existing Kubernetes
+cluster, then you may prefer the <a class="reference internal" href="kubernetes-native.html"><span class="doc">Kubernetes native</span></a>
+documentation, which is a bit lighter weight.</p>
+<div class="section" id="launch-kubernetes-cluster">
+<h2>Launch Kubernetes Cluster<a class="headerlink" href="#launch-kubernetes-cluster" title="Permalink to this headline">¶</a></h2>
+<p>This document assumes that you have a Kubernetes cluster and Helm installed.</p>
+<p>If this is not the case, then you might consider setting up a Kubernetes cluster
+on one of the common cloud providers like Google, Amazon, or
+Microsoft.  We recommend the first part of the documentation in the guide
+<a class="reference external" href="https://zero-to-jupyterhub.readthedocs.io/en/latest/">Zero to JupyterHub</a>
+that focuses on Kubernetes and Helm (you do not need to follow all of these
+instructions).  Also, JupyterHub is not necessary to deploy Dask:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://zero-to-jupyterhub.readthedocs.io/en/latest/create-k8s-cluster.html">Creating a Kubernetes Cluster</a></p></li>
+<li><p><a class="reference external" href="https://zero-to-jupyterhub.readthedocs.io/en/latest/setup-helm.html">Setting up Helm</a></p></li>
+</ul>
+<p>Alternatively, you may want to experiment with Kubernetes locally using
+<a class="reference external" href="https://kubernetes.io/docs/getting-started-guides/minikube/">Minikube</a>.</p>
+</div>
+<div class="section" id="helm-install-dask">
+<h2>Helm Install Dask<a class="headerlink" href="#helm-install-dask" title="Permalink to this headline">¶</a></h2>
+<p>Dask maintains a Helm chart repository containing various charts for the Dask community
+<a class="reference external" href="https://helm.dask.org/">https://helm.dask.org/</a> .
+You will need to add this to your known channels and update your local charts:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">helm</span> <span class="n">repo</span> <span class="n">add</span> <span class="n">dask</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">helm</span><span class="o">.</span><span class="n">dask</span><span class="o">.</span><span class="n">org</span><span class="o">/</span>
+<span class="n">helm</span> <span class="n">repo</span> <span class="n">update</span>
+</pre></div>
+</div>
+<p>Now, you can launch Dask on your Kubernetes cluster using the Dask <a class="reference external" href="https://helm.sh/">Helm</a> chart:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">helm</span> <span class="n">install</span> <span class="n">dask</span><span class="o">/</span><span class="n">dask</span>
+</pre></div>
+</div>
+<p>This deploys a <code class="docutils literal notranslate"><span class="pre">dask-scheduler</span></code>, several <code class="docutils literal notranslate"><span class="pre">dask-worker</span></code> processes, and
+also an optional Jupyter server.</p>
+</div>
+<div class="section" id="verify-deployment">
+<h2>Verify Deployment<a class="headerlink" href="#verify-deployment" title="Permalink to this headline">¶</a></h2>
+<p>This might take a minute to deploy.  You can check its status with
+<code class="docutils literal notranslate"><span class="pre">kubectl</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>kubectl get pods
+kubectl get services
+
+$ kubectl get pods
+NAME                                  READY     STATUS              RESTARTS    AGE
+bald-eel-jupyter-924045334-twtxd      0/1       ContainerCreating   0            1m
+bald-eel-scheduler-3074430035-cn1dt   1/1       Running             0            1m
+bald-eel-worker-3032746726-202jt      1/1       Running             0            1m
+bald-eel-worker-3032746726-b8nqq      1/1       Running             0            1m
+bald-eel-worker-3032746726-d0chx      0/1       ContainerCreating   0            1m
+
+$ kubectl get services
+NAME                 TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)                      AGE
+bald-eel-jupyter     LoadBalancer   10.11.247.201   35.226.183.149   80:30173/TCP                  2m
+bald-eel-scheduler   LoadBalancer   10.11.245.241   35.202.201.129   8786:31166/TCP,80:31626/TCP   2m
+kubernetes           ClusterIP      10.11.240.1     &lt;none&gt;           443/TCP
+48m
+</pre></div>
+</div>
+<p>You can use the addresses under <code class="docutils literal notranslate"><span class="pre">EXTERNAL-IP</span></code> to connect to your now-running
+Jupyter and Dask systems.</p>
+<p>Notice the name <code class="docutils literal notranslate"><span class="pre">bald-eel</span></code>.  This is the name that Helm has given to your
+particular deployment of Dask.  You could, for example, have multiple
+Dask-and-Jupyter clusters running at once, and each would be given a different
+name.  Note that you will need to use this name to refer to your deployment in the future.
+Additionally, you can list all active helm deployments with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">helm</span> <span class="nb">list</span>
+
+<span class="n">NAME</span>            <span class="n">REVISION</span>        <span class="n">UPDATED</span>                         <span class="n">STATUS</span>      <span class="n">CHART</span>           <span class="n">NAMESPACE</span>
+<span class="n">bald</span><span class="o">-</span><span class="n">eel</span>        <span class="mi">1</span>               <span class="n">Wed</span> <span class="n">Dec</span>  <span class="mi">6</span> <span class="mi">11</span><span class="p">:</span><span class="mi">19</span><span class="p">:</span><span class="mi">54</span> <span class="mi">2017</span>        <span class="n">DEPLOYED</span>    <span class="n">dask</span><span class="o">-</span><span class="mf">0.1</span><span class="o">.</span><span class="mi">0</span>      <span class="n">default</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="connect-to-dask-and-jupyter">
+<h2>Connect to Dask and Jupyter<a class="headerlink" href="#connect-to-dask-and-jupyter" title="Permalink to this headline">¶</a></h2>
+<p>When we ran <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">get</span> <span class="pre">services</span></code>, we saw some externally visible IPs:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mrocklin@pangeo-181919:~$ kubectl get services
+NAME                 TYPE           CLUSTER-IP      EXTERNAL-IP      PORT<span class="o">(</span>S<span class="o">)</span>                       AGE
+bald-eel-jupyter     LoadBalancer   <span class="m">10</span>.11.247.201   <span class="m">35</span>.226.183.149   <span class="m">80</span>:30173/TCP                  2m
+bald-eel-scheduler   LoadBalancer   <span class="m">10</span>.11.245.241   <span class="m">35</span>.202.201.129   <span class="m">8786</span>:31166/TCP,80:31626/TCP   2m
+kubernetes           ClusterIP      <span class="m">10</span>.11.240.1     &lt;none&gt;           <span class="m">443</span>/TCP                       48m
+</pre></div>
+</div>
+<p>We can navigate to these services from any web browser. Here, one is the Dask diagnostic
+dashboard, and the other is the Jupyter server.  You can log into the Jupyter
+notebook server with the password, <code class="docutils literal notranslate"><span class="pre">dask</span></code>.</p>
+<p>You can create a notebook and create a Dask client from there.  The
+<code class="docutils literal notranslate"><span class="pre">DASK_SCHEDULER_ADDRESS</span></code> environment variable has been populated with the
+address of the Dask scheduler.  This is available in Python in the <code class="docutils literal notranslate"><span class="pre">config</span></code> dictionary.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;scheduler-address&#39;</span><span class="p">]</span>
+<span class="go">&#39;bald-eel-scheduler:8786&#39;</span>
+</pre></div>
+</div>
+<p>Although you don’t need to use this address, the Dask client will find this
+variable automatically.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">config</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configure-environment">
+<h2>Configure Environment<a class="headerlink" href="#configure-environment" title="Permalink to this headline">¶</a></h2>
+<p>By default, the Helm deployment launches three workers using one core each and
+a standard conda environment. We can customize this environment by creating a
+small yaml file that implements a subset of the values in the
+<a class="reference external" href="https://github.com/dask/helm-chart/blob/master/dask/values.yaml">dask helm chart values.yaml file</a>.</p>
+<p>For example, we can increase the number of workers, and include extra conda and
+pip packages to install on the both the workers and Jupyter server (these two
+environments should be matched).</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># config.yaml</span>
+
+<span class="nt">worker</span><span class="p">:</span>
+  <span class="nt">replicas</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">8</span>
+  <span class="nt">resources</span><span class="p">:</span>
+    <span class="nt">limits</span><span class="p">:</span>
+      <span class="nt">cpu</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+      <span class="nt">memory</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">7.5G</span>
+    <span class="nt">requests</span><span class="p">:</span>
+      <span class="nt">cpu</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+      <span class="nt">memory</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">7.5G</span>
+  <span class="nt">env</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">EXTRA_CONDA_PACKAGES</span>
+      <span class="nt">value</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">numba xarray -c conda-forge</span>
+    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">EXTRA_PIP_PACKAGES</span>
+      <span class="nt">value</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">s3fs dask-ml --upgrade</span>
+
+<span class="c1"># We want to keep the same packages on the worker and jupyter environments</span>
+<span class="nt">jupyter</span><span class="p">:</span>
+  <span class="nt">enabled</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+  <span class="nt">env</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">EXTRA_CONDA_PACKAGES</span>
+      <span class="nt">value</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">numba xarray matplotlib -c conda-forge</span>
+    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">EXTRA_PIP_PACKAGES</span>
+      <span class="nt">value</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">s3fs dask-ml --upgrade</span>
+</pre></div>
+</div>
+<p>This config file overrides the configuration for the number and size of workers and the
+conda and pip packages installed on the worker and Jupyter containers.  In
+general, we will want to make sure that these two software environments match.</p>
+<p>Update your deployment to use this configuration file.  Note that <em>you will not
+use helm install</em> for this stage: that would create a <em>new</em> deployment on the
+same Kubernetes cluster.  Instead, you will upgrade your existing deployment by
+using the current name:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">helm</span> <span class="n">upgrade</span> <span class="n">bald</span><span class="o">-</span><span class="n">eel</span> <span class="n">dask</span><span class="o">/</span><span class="n">dask</span> <span class="o">-</span><span class="n">f</span> <span class="n">config</span><span class="o">.</span><span class="n">yaml</span>
+</pre></div>
+</div>
+<p>This will update those containers that need to be updated.  It may take a minute or so.</p>
+<p>As a reminder, you can list the names of deployments you have using <code class="docutils literal notranslate"><span class="pre">helm</span>
+<span class="pre">list</span></code></p>
+</div>
+<div class="section" id="check-status-and-logs">
+<h2>Check status and logs<a class="headerlink" href="#check-status-and-logs" title="Permalink to this headline">¶</a></h2>
+<p>For standard issues, you should be able to see the worker status and logs using the
+Dask dashboard (in particular, you can see the worker links from the <code class="docutils literal notranslate"><span class="pre">info/</span></code> page).
+However, if your workers aren’t starting, you can check the status of pods and
+their logs with the following commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kubectl get pods
+kubectl logs &lt;PODNAME&gt;
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mrocklin@pangeo-181919:~$ kubectl get pods
+NAME                                  READY     STATUS    RESTARTS   AGE
+bald-eel-jupyter-3805078281-n1qk2     <span class="m">1</span>/1       Running   <span class="m">0</span>          18m
+bald-eel-scheduler-3074430035-cn1dt   <span class="m">1</span>/1       Running   <span class="m">0</span>          58m
+bald-eel-worker-1931881914-1q09p      <span class="m">1</span>/1       Running   <span class="m">0</span>          18m
+bald-eel-worker-1931881914-856mm      <span class="m">1</span>/1       Running   <span class="m">0</span>          18m
+bald-eel-worker-1931881914-9lgzb      <span class="m">1</span>/1       Running   <span class="m">0</span>          18m
+bald-eel-worker-1931881914-bdn2c      <span class="m">1</span>/1       Running   <span class="m">0</span>          16m
+bald-eel-worker-1931881914-jq70m      <span class="m">1</span>/1       Running   <span class="m">0</span>          17m
+bald-eel-worker-1931881914-qsgj7      <span class="m">1</span>/1       Running   <span class="m">0</span>          18m
+bald-eel-worker-1931881914-s2phd      <span class="m">1</span>/1       Running   <span class="m">0</span>          17m
+bald-eel-worker-1931881914-srmmg      <span class="m">1</span>/1       Running   <span class="m">0</span>          17m
+
+mrocklin@pangeo-181919:~$ kubectl logs bald-eel-worker-1931881914-856mm
+EXTRA_CONDA_PACKAGES environment variable found.  Installing.
+Fetching package metadata ...........
+Solving package specifications: .
+Package plan <span class="k">for</span> installation in environment /opt/conda/envs/dask:
+The following NEW packages will be INSTALLED:
+    fasteners: <span class="m">0</span>.14.1-py36_2 conda-forge
+    monotonic: <span class="m">1</span>.3-py36_0    conda-forge
+    zarr:      <span class="m">2</span>.1.4-py36_0  conda-forge
+Proceed <span class="o">([</span>y<span class="o">]</span>/n<span class="o">)</span>?
+monotonic-1.3- <span class="m">100</span>% <span class="p">|</span><span class="c1">###############################| Time: 0:00:00  11.16 MB/s</span>
+fasteners-0.14 <span class="m">100</span>% <span class="p">|</span><span class="c1">###############################| Time: 0:00:00 576.56 kB/s</span>
+...
+</pre></div>
+</div>
+</div>
+<div class="section" id="delete-a-helm-deployment">
+<h2>Delete a Helm deployment<a class="headerlink" href="#delete-a-helm-deployment" title="Permalink to this headline">¶</a></h2>
+<p>You can always delete a helm deployment using its name:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">helm</span> <span class="n">delete</span> <span class="n">bald</span><span class="o">-</span><span class="n">eel</span> <span class="o">--</span><span class="n">purge</span>
+</pre></div>
+</div>
+<p>Note that this does not destroy any clusters that you may have allocated on a
+Cloud service (you will need to delete those explicitly).</p>
+</div>
+<div class="section" id="avoid-the-jupyter-server">
+<h2>Avoid the Jupyter Server<a class="headerlink" href="#avoid-the-jupyter-server" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes you do not need to run a Jupyter server alongside your Dask cluster.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">jupyter</span><span class="p">:</span>
+  <span class="nt">enabled</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="kubernetes-native.html" class="btn btn-neutral float-right" title="Kubernetes Native" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="kubernetes.html" class="btn btn-neutral float-left" title="Kubernetes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

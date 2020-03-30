@@ -1,0 +1,495 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Scheduling &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Understanding Performance" href="understanding-performance.html" />
+    <link rel="prev" title="API" href="api.html" />
+    <link rel="shortcut icon" href="_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="array.html">Array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bag.html">Bag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataframe.html">DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Scheduling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#local-threads">Local Threads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#local-processes">Local Processes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#single-thread">Single Thread</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dask-distributed-local">Dask Distributed (local)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dask-distributed-cluster">Dask Distributed (Cluster)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">Task Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Scheduling</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/scheduling.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="scheduling">
+<h1>Scheduling<a class="headerlink" href="#scheduling" title="Permalink to this headline">¶</a></h1>
+<p>All of the large-scale Dask collections like
+<a class="reference internal" href="array.html"><span class="doc">Dask Array</span></a>, <a class="reference internal" href="dataframe.html"><span class="doc">Dask DataFrame</span></a>, and <a class="reference internal" href="bag.html"><span class="doc">Dask Bag</span></a>
+and the fine-grained APIs like <a class="reference internal" href="delayed.html"><span class="doc">delayed</span></a> and <a class="reference internal" href="futures.html"><span class="doc">futures</span></a>
+generate task graphs where each node in the graph is a normal Python function
+and edges between nodes are normal Python objects
+that are created by one task as outputs and used as inputs in another task.
+After Dask generates these task graphs, it needs to execute them on parallel hardware.
+This is the job of a <em>task scheduler</em>.
+Different task schedulers exist, and each will consume a task graph and compute the
+same result, but with different performance characteristics.</p>
+<a class="reference internal image-reference" href="_images/collections-schedulers.png"><img alt="Dask collections and schedulers" class="align-center" src="_images/collections-schedulers.png" style="width: 80%;" /></a>
+<p>Dask has two families of task schedulers:</p>
+<ol class="arabic simple">
+<li><p><strong>Single machine scheduler</strong>: This scheduler provides basic features on a
+local process or thread pool.  This scheduler was made first and is the
+default.  It is simple and cheap to use, although it can only be used on
+a single machine and does not scale</p></li>
+<li><p><strong>Distributed scheduler</strong>: This scheduler is more sophisticated, offers
+more features, but also requires a bit more effort to set up.  It can
+run locally or distributed across a cluster</p></li>
+</ol>
+<p>For different computations you may find better performance with particular scheduler settings.
+This document helps you understand how to choose between and configure different schedulers,
+and provides guidelines on when one might be more appropriate.</p>
+<div class="section" id="local-threads">
+<h2>Local Threads<a class="headerlink" href="#local-threads" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dask</span>
+<span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">scheduler</span><span class="o">=</span><span class="s1">&#39;threads&#39;</span><span class="p">)</span>  <span class="c1"># overwrite default with threaded scheduler</span>
+</pre></div>
+</div>
+<p>The threaded scheduler executes computations with a local <code class="docutils literal notranslate"><span class="pre">multiprocessing.pool.ThreadPool</span></code>.
+It is lightweight and requires no setup.
+It introduces very little task overhead (around 50us per task)
+and, because everything occurs in the same process,
+it incurs no costs to transfer data between tasks.
+However, due to Python’s Global Interpreter Lock (GIL),
+this scheduler only provides parallelism when your computation is dominated by non-Python code,
+as is primarily the case when operating on numeric data in NumPy arrays, Pandas DataFrames,
+or using any of the other C/C++/Cython based projects in the ecosystem.</p>
+<p>The threaded scheduler is the default choice for
+<a class="reference internal" href="array.html"><span class="doc">Dask Array</span></a>, <a class="reference internal" href="dataframe.html"><span class="doc">Dask DataFrame</span></a>, and <a class="reference internal" href="delayed.html"><span class="doc">Dask Delayed</span></a>.
+However, if your computation is dominated by processing pure Python objects
+like strings, dicts, or lists,
+then you may want to try one of the process-based schedulers below
+(we currently recommend the distributed scheduler on a local machine).</p>
+</div>
+<div class="section" id="local-processes">
+<h2>Local Processes<a class="headerlink" href="#local-processes" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The distributed scheduler described a couple sections below is often a better choice today.
+We encourage readers to continue reading after this section.</p>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dask.multiprocessing</span>
+<span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">scheduler</span><span class="o">=</span><span class="s1">&#39;processes&#39;</span><span class="p">)</span>  <span class="c1"># overwrite default with multiprocessing scheduler</span>
+</pre></div>
+</div>
+<p>The multiprocessing scheduler executes computations with a local <code class="docutils literal notranslate"><span class="pre">multiprocessing.Pool</span></code>.
+It is lightweight to use and requires no setup.
+Every task and all of its dependencies are shipped to a local process,
+executed, and then their result is shipped back to the main process.
+This means that it is able to bypass issues with the GIL and provide parallelism
+even on computations that are dominated by pure Python code,
+such as those that process strings, dicts, and lists.</p>
+<p>However, moving data to remote processes and back can introduce performance penalties,
+particularly when the data being transferred between processes is large.
+The multiprocessing scheduler is an excellent choice when workflows are relatively linear,
+and so does not involve significant inter-task data transfer
+as well as when inputs and outputs are both small, like filenames and counts.</p>
+<p>This is common in basic data ingestion workloads,
+such as those are common in <a class="reference internal" href="bag.html"><span class="doc">Dask Bag</span></a>,
+where the multiprocessing scheduler is the default:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask.bag</span> <span class="k">as</span> <span class="nn">db</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="s1">&#39;*.json&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">)</span><span class="o">.</span><span class="n">pluck</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">frequencies</span><span class="p">()</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="go">{&#39;alice&#39;: 100, &#39;bob&#39;: 200, &#39;charlie&#39;: 300}</span>
+</pre></div>
+</div>
+<p>For more complex workloads,
+where large intermediate results may be depended upon by multiple downstream tasks,
+we generally recommend the use of the distributed scheduler on a local machine.
+The distributed scheduler is more intelligent about moving around large intermediate results.</p>
+</div>
+<div class="section" id="single-thread">
+<span id="single-threaded-scheduler"></span><h2>Single Thread<a class="headerlink" href="#single-thread" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dask</span>
+<span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">scheduler</span><span class="o">=</span><span class="s1">&#39;synchronous&#39;</span><span class="p">)</span>  <span class="c1"># overwrite default with single-threaded scheduler</span>
+</pre></div>
+</div>
+<p>The single-threaded synchronous scheduler executes all computations in the local thread
+with no parallelism at all.
+This is particularly valuable for debugging and profiling,
+which are more difficult when using threads or processes.</p>
+<p>For example, when using IPython or Jupyter notebooks, the <code class="docutils literal notranslate"><span class="pre">%debug</span></code>, <code class="docutils literal notranslate"><span class="pre">%pdb</span></code>, or <code class="docutils literal notranslate"><span class="pre">%prun</span></code> magics
+will not work well when using the parallel Dask schedulers
+(they were not designed to be used in a parallel computing context).
+However, if you run into an exception and want to step into the debugger,
+you may wish to rerun your computation under the single-threaded scheduler
+where these tools will function properly.</p>
+</div>
+<div class="section" id="dask-distributed-local">
+<h2>Dask Distributed (local)<a class="headerlink" href="#dask-distributed-local" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>
+<span class="c1"># or</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">processes</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The Dask distributed scheduler can either be <a class="reference internal" href="setup.html"><span class="doc">setup on a cluster</span></a>
+or run locally on a personal machine.  Despite having the name “distributed”,
+it is often pragmatic on local machines for a few reasons:</p>
+<ol class="arabic simple">
+<li><p>It provides access to asynchronous API, notably <a class="reference internal" href="futures.html"><span class="doc">Futures</span></a></p></li>
+<li><p>It provides a diagnostic dashboard that can provide valuable insight on
+performance and progress</p></li>
+<li><p>It handles data locality with more sophistication, and so can be more
+efficient than the multiprocessing scheduler on workloads that require
+multiple processes</p></li>
+</ol>
+<p>You can read more about using the Dask distributed scheduler on a single machine in
+<a class="reference internal" href="setup/single-distributed.html"><span class="doc">these docs</span></a>.</p>
+</div>
+<div class="section" id="dask-distributed-cluster">
+<h2>Dask Distributed (Cluster)<a class="headerlink" href="#dask-distributed-cluster" title="Permalink to this headline">¶</a></h2>
+<p>You can also run Dask on a distributed cluster.
+There are a variety of ways to set this up depending on your cluster.
+We recommend referring to the <a class="reference internal" href="setup.html"><span class="doc">setup documentation</span></a> for more information.</p>
+</div>
+<div class="section" id="configuration">
+<span id="scheduling-configuration"></span><h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>You can configure the global default scheduler by using the <code class="docutils literal notranslate"><span class="pre">dask.config.set(scheduler...)</span></code> command.
+This can be done globally:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">scheduler</span><span class="o">=</span><span class="s1">&#39;threads&#39;</span><span class="p">)</span>
+
+<span class="n">x</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>or as a context manager:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">scheduler</span><span class="o">=</span><span class="s1">&#39;threads&#39;</span><span class="p">):</span>
+    <span class="n">x</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>or within a single compute call:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">scheduler</span><span class="o">=</span><span class="s1">&#39;threads&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Additionally some of the scheduler support other keyword arguments.
+For example, the pool-based single-machine scheduler allows you to provide custom pools
+or specify the desired number of workers:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">multiprocessing.pool</span> <span class="kn">import</span> <span class="n">ThreadPool</span>
+<span class="k">with</span> <span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">pool</span><span class="o">=</span><span class="n">ThreadPool</span><span class="p">(</span><span class="mi">4</span><span class="p">)):</span>
+    <span class="o">...</span>
+
+<span class="k">with</span> <span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="understanding-performance.html" class="btn btn-neutral float-right" title="Understanding Performance" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="api.html" class="btn btn-neutral float-left" title="API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

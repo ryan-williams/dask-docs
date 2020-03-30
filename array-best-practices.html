@@ -1,0 +1,470 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Best Practices &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Chunks" href="array-chunks.html" />
+    <link rel="prev" title="API" href="array-api.html" />
+    <link rel="shortcut icon" href="_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="array.html">Array</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="array-api.html">API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Best Practices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#use-numpy">Use NumPy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#select-a-good-chunk-size">Select a good chunk size</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#orient-your-chunks">Orient your chunks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#avoid-oversubscribing-threads">Avoid Oversubscribing Threads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#consider-xarray">Consider Xarray</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#build-your-own-operations">Build your own Operations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="array-chunks.html">Chunks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-creation.html">Create Dask Arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-creation.html#store-dask-arrays">Store Dask Arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-creation.html#plugins">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-overlap.html">Overlapping Computations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-design.html">Internal Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-sparse.html">Sparse Arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-stats.html">Stats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-linear-operator.html">LinearOperator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-slicing.html">Slicing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-stack.html">Stack, Concatenate, and Block</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-gufunc.html">Generalized Ufuncs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array.html#design">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array.html#common-uses">Common Uses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array.html#scope">Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array.html#execution">Execution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="bag.html">Bag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataframe.html">DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">Task Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="array.html">Array</a> &raquo;</li>
+        
+      <li>Best Practices</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/array-best-practices.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="best-practices">
+<h1>Best Practices<a class="headerlink" href="#best-practices" title="Permalink to this headline">¶</a></h1>
+<p>It is easy to get started with Dask arrays, but using them <em>well</em> does require
+some experience.  This page contains suggestions for best practices, and
+includes solutions to common problems.</p>
+<div class="section" id="use-numpy">
+<h2>Use NumPy<a class="headerlink" href="#use-numpy" title="Permalink to this headline">¶</a></h2>
+<p>If your data fits comfortably in RAM and you are not performance bound, then
+using NumPy might be the right choice.  Dask adds another layer of complexity
+which may get in the way.</p>
+<p>If you are just looking for speedups rather than scalability then you may want
+to consider a project like <a class="reference external" href="https://numba.pydata.org">Numba</a></p>
+</div>
+<div class="section" id="select-a-good-chunk-size">
+<h2>Select a good chunk size<a class="headerlink" href="#select-a-good-chunk-size" title="Permalink to this headline">¶</a></h2>
+<p>A common performance problem among Dask Array users is that they have chosen a
+chunk size that is either too small (leading to lots of overhead) or poorly
+aligned with their data (leading to inefficient reading).</p>
+<p>While optimal sizes and shapes are highly problem specific, it is rare to see
+chunk sizes below 100 MB in size.  If you are dealing with float64 data then
+this is around <code class="docutils literal notranslate"><span class="pre">(4000,</span> <span class="pre">4000)</span></code> in size for a 2D array or <code class="docutils literal notranslate"><span class="pre">(100,</span> <span class="pre">400,</span> <span class="pre">400)</span></code>
+for a 3D array.</p>
+<p>You want to choose a chunk size that is large in order to reduce the number of
+chunks that Dask has to think about (which affects overhead) but also small
+enough so that many of them can fit in memory at once.  Dask will often have as
+many chunks in memory as twice the number of active threads.</p>
+</div>
+<div class="section" id="orient-your-chunks">
+<h2>Orient your chunks<a class="headerlink" href="#orient-your-chunks" title="Permalink to this headline">¶</a></h2>
+<p>When reading data you should align your chunks with your storage format.
+Most array storage formats store data in chunks themselves.  If your Dask array
+chunks aren’t multiples of these chunk shapes then you will have to read the
+same data repeatedly, which can be expensive.  Note though that often
+storage formats choose chunk sizes that are much smaller than is ideal for
+Dask, closer to 1MB than 100MB.  In these cases you should choose a Dask chunk
+size that aligns with the storage chunk size and that every Dask chunk
+dimension is a multiple of the storage chunk dimension.</p>
+<p>So for example if we have an HDF file that has chunks of size <code class="docutils literal notranslate"><span class="pre">(128,</span> <span class="pre">64)</span></code>, we
+might choose a chunk shape of <code class="docutils literal notranslate"><span class="pre">(1280,</span> <span class="pre">6400)</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">h5py</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">storage</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="s1">&#39;myfile.hdf5&#39;</span><span class="p">)[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">storage</span><span class="o">.</span><span class="n">chunks</span>
+<span class="go">(128, 64)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask.array</span> <span class="k">as</span> <span class="nn">da</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">storage</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="mi">1280</span><span class="p">,</span> <span class="mi">6400</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Note that if you provide <code class="docutils literal notranslate"><span class="pre">chunks='auto'</span></code> then Dask Array will look for a
+<code class="docutils literal notranslate"><span class="pre">.chunks</span></code> attribute and use that to provide a good chunking.</p>
+</div>
+<div class="section" id="avoid-oversubscribing-threads">
+<h2>Avoid Oversubscribing Threads<a class="headerlink" href="#avoid-oversubscribing-threads" title="Permalink to this headline">¶</a></h2>
+<p>By default Dask will run as many concurrent tasks as you have logical cores.
+It assumes that each task will consume about one core.  However, many
+array-computing libraries are themselves multi-threaded, which can cause
+contention and low performance.  In particular the BLAS/LAPACK libraries that
+back most of NumPy’s linear algebra routines are often multi-threaded, and need
+to be told to use only one thread explicitly.  You can do this with the
+following environment variables (using bash <code class="docutils literal notranslate"><span class="pre">export</span></code> command below, but this
+may vary depending on your operating system).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="m">1</span>
+<span class="nb">export</span> <span class="nv">MKL_NUM_THREADS</span><span class="o">=</span><span class="m">1</span>
+<span class="nb">export</span> <span class="nv">OPENBLAS_NUM_THREADS</span><span class="o">=</span><span class="m">1</span>
+</pre></div>
+</div>
+<p>You need to run this before you start your Python process for it to take effect.</p>
+</div>
+<div class="section" id="consider-xarray">
+<h2>Consider Xarray<a class="headerlink" href="#consider-xarray" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference external" href="http://xarray.pydata.org/en/stable/">Xarray</a> package wraps around Dask
+Array, and so offers the same scalability, but also adds convenience when
+dealing with complex datasets.  In particular Xarray can help with the
+following:</p>
+<ol class="arabic simple">
+<li><p>Manage multiple arrays together as a consistent dataset</p></li>
+<li><p>Read from a stack of HDF or NetCDF files at once</p></li>
+<li><p>Switch between Dask Array and NumPy with a consistent API</p></li>
+</ol>
+<p>Xarray is used in wide range of fields, including physics, astronomy, geoscience,
+microscopy, bioinformatics, engineering, finance, and deep learning.
+Xarray also has a thriving user community that is good at providing support.</p>
+</div>
+<div class="section" id="build-your-own-operations">
+<h2>Build your own Operations<a class="headerlink" href="#build-your-own-operations" title="Permalink to this headline">¶</a></h2>
+<p>Often we want to perform computations for which there is no exact function
+in Dask Array.  In these cases we may be able to use some of the more generic
+functions to build our own.  These include:</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="array-api.html#dask.array.blockwise" title="dask.array.blockwise"><code class="xref py py-obj docutils literal notranslate"><span class="pre">blockwise</span></code></a>(func, out_ind, *args[, name, …])</p></td>
+<td><p>Tensor operation: Generalized inner and outer products</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="array-api.html#dask.array.map_blocks" title="dask.array.map_blocks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">map_blocks</span></code></a>(func, *args[, name, token, …])</p></td>
+<td><p>Map a function across all blocks of a dask array.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="array-overlap.html#dask.array.map_overlap" title="dask.array.map_overlap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">map_overlap</span></code></a>(x, func, depth[, boundary, trim])</p></td>
+<td><p>Map a function over blocks of the array with some overlap</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="array-api.html#dask.array.reduction" title="dask.array.reduction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduction</span></code></a>(x, chunk, aggregate[, axis, …])</p></td>
+<td><p>General version of reductions</p></td>
+</tr>
+</tbody>
+</table>
+<p>These functions may help you to apply a function that you write for NumPy
+functions onto larger Dask arrays.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="array-chunks.html" class="btn btn-neutral float-right" title="Chunks" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="array-api.html" class="btn btn-neutral float-left" title="API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

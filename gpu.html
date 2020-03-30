@@ -1,0 +1,474 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>GPUs &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Citations" href="cite.html" />
+    <link rel="prev" title="Remote Data" href="remote-data-services.html" />
+    <link rel="shortcut icon" href="_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="array.html">Array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bag.html">Bag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataframe.html">DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">Task Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">GPUs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#custom-computations">Custom Computations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#high-level-collections">High Level Collections</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dataframes">DataFrames</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#arrays">Arrays</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scikit-learn">Scikit-Learn</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#setup">Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#restricting-work">Restricting Work</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#specifying-gpus-per-machine">Specifying GPUs per Machine</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#work-in-progress">Work in Progress</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>GPUs</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/gpu.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="gpus">
+<h1>GPUs<a class="headerlink" href="#gpus" title="Permalink to this headline">¶</a></h1>
+<p>Dask works with GPUs in a few ways.</p>
+<div class="section" id="custom-computations">
+<h2>Custom Computations<a class="headerlink" href="#custom-computations" title="Permalink to this headline">¶</a></h2>
+<p>Many people use Dask alongside GPU-accelerated libraries like PyTorch and
+TensorFlow to manage workloads across several machines.  They typically use
+Dask’s custom APIs, notably <a class="reference internal" href="delayed.html"><span class="doc">Delayed</span></a> and <a class="reference internal" href="futures.html"><span class="doc">Futures</span></a>.</p>
+<p>Dask doesn’t need to know that these functions use GPUs.  It just runs Python
+functions.  Whether or not those Python functions use a GPU is orthogonal to
+Dask.  It will work regardless.</p>
+<p>As a worked example, you may want to view this talk:</p>
+<video width="560" height="315" controls>
+    <source src="https://developer.download.nvidia.com/video/gputechconf/gtc/2019/video/S9198/s9198-dask-and-v100s-for-fast-distributed-batch-scoring-of-computer-vision-workloads.mp4"
+            type="video/mp4">
+</video></div>
+<div class="section" id="high-level-collections">
+<h2>High Level Collections<a class="headerlink" href="#high-level-collections" title="Permalink to this headline">¶</a></h2>
+<p>Dask can also help to scale out large array and dataframe computations by
+combining the Dask Array and DataFrame collections with a GPU-accelerated
+array or dataframe library.</p>
+<p>Recall that <a class="reference internal" href="array.html"><span class="doc">Dask Array</span></a> creates a large array out of many NumPy
+arrays and <a class="reference internal" href="dataframe.html"><span class="doc">Dask DataFrame</span></a> creates a large dataframe out of
+many Pandas dataframes.  We can use these same systems with GPUs if we swap out
+the NumPy/Pandas components with GPU-accelerated versions of those same
+libraries, as long as the GPU accelerated version looks enough like
+NumPy/Pandas in order to interoperate with Dask.</p>
+<p>Fortunately, libraries that mimic NumPy, Pandas, and Scikit-Learn on the GPU do
+exist.</p>
+<div class="section" id="dataframes">
+<h3>DataFrames<a class="headerlink" href="#dataframes" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference external" href="https://rapids.ai">RAPIDS</a> libraries provide a GPU accelerated
+Pandas-like library,
+<a class="reference external" href="https://github.com/rapidsai/cudf">cuDF</a>,
+which interoperates well and is tested against Dask DataFrame.</p>
+<p>If you have cuDF installed then you should be able to convert a Pandas-backed
+Dask DataFrame to a cuDF-backed Dask DataFrame as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cudf</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">map_partitions</span><span class="p">(</span><span class="n">cudf</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">)</span>  <span class="c1"># convert pandas partitions into cudf partitions</span>
+</pre></div>
+</div>
+<p>However, cuDF does not support the entire Pandas interface, and so a variety of
+Dask DataFrame operations will not function properly. Check the
+<a class="reference external" href="https://docs.rapids.ai/api/cudf/stable/">cuDF API Reference</a>
+for currently supported interface.</p>
+</div>
+<div class="section" id="arrays">
+<h3>Arrays<a class="headerlink" href="#arrays" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Dask’s integration with CuPy relies on features recently added to
+NumPy and CuPy, particularly in version <code class="docutils literal notranslate"><span class="pre">numpy&gt;=1.17</span></code> and <code class="docutils literal notranslate"><span class="pre">cupy&gt;=6</span></code></p>
+</div>
+<p><a class="reference external" href="https://cupy.chainer.org/">Chainer’s CuPy</a> library provides a GPU
+accelerated NumPy-like library that interoperates nicely with Dask Array.</p>
+<p>If you have CuPy installed then you should be able to convert a NumPy-backed
+Dask Array into a CuPy backed Dask Array as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cupy</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">map_blocks</span><span class="p">(</span><span class="n">cupy</span><span class="o">.</span><span class="n">asarray</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>CuPy is fairly mature and adheres closely to the NumPy API.  However, small
+differences do exist and these can cause Dask Array operations to function
+improperly. Check the
+<a class="reference external" href="https://docs-cupy.chainer.org/en/stable/reference/index.html">CuPy Reference Manual</a>
+for API compatibility.</p>
+</div>
+<div class="section" id="scikit-learn">
+<h3>Scikit-Learn<a class="headerlink" href="#scikit-learn" title="Permalink to this headline">¶</a></h3>
+<p>There are a variety of GPU accelerated machine learning libraries that follow
+the Scikit-Learn Estimator API of fit, transform, and predict.  These can
+generally be used within <a class="reference external" href="https://ml.dask.org">Dask-ML’s</a> meta estimators,
+such as <a class="reference external" href="https://ml.dask.org/hyper-parameter-search.html">hyper parameter optimization</a>.</p>
+<p>Some of these include:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://skorch.readthedocs.io/">Skorch</a></p></li>
+<li><p><a class="reference external" href="https://rapidsai.github.io/projects/cuml/en/latest/">cuML</a></p></li>
+<li><p><a class="reference external" href="https://github.com/Microsoft/LightGBM">LightGBM</a></p></li>
+<li><p><a class="reference external" href="https://xgboost.readthedocs.io/en/latest/">XGBoost</a></p></li>
+<li><p><a class="reference external" href="https://github.com/Xtra-Computing/thundersvm">Thunder SVM</a></p></li>
+<li><p><a class="reference external" href="https://github.com/Xtra-Computing/thundergbm">Thunder GBM</a></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<p>From the examples above we can see that the user experience of using Dask with
+GPU-backed libraries isn’t very different from using it with CPU-backed
+libraries.  However, there are some changes you might consider making when
+setting up your cluster.</p>
+<div class="section" id="restricting-work">
+<h3>Restricting Work<a class="headerlink" href="#restricting-work" title="Permalink to this headline">¶</a></h3>
+<p>By default Dask allows as many tasks as you have CPU cores to run concurrently.
+However if your tasks primarily use a GPU then you probably want far fewer
+tasks running at once.  There are a few ways to limit parallelism here:</p>
+<ul class="simple">
+<li><p>Limit the number of threads explicitly on your workers using the
+<code class="docutils literal notranslate"><span class="pre">--nthreads</span></code> keyword in the CLI or the <code class="docutils literal notranslate"><span class="pre">ncores=</span></code> keyword the
+Cluster constructor.</p></li>
+<li><p>Use <a class="reference external" href="https://distributed.dask.org/en/latest/resources.html">worker resources</a> and tag certain
+tasks as GPU tasks so that the scheduler will limit them, while leaving the
+rest of your CPU cores for other work</p></li>
+</ul>
+</div>
+<div class="section" id="specifying-gpus-per-machine">
+<h3>Specifying GPUs per Machine<a class="headerlink" href="#specifying-gpus-per-machine" title="Permalink to this headline">¶</a></h3>
+<p>Some configurations may have many GPU devices per node.  Dask is often used to
+balance and coordinate work between these devices.</p>
+<p>In these situations it is common to start one Dask worker per device, and use
+the CUDA environment variable <code class="docutils literal notranslate"><span class="pre">CUDA_VISIBLE_DEVICES</span></code> to pin each worker to
+prefer one device.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># If we have four GPUs on one machine</span>
+<span class="nv">CUDA_VISIBLE_DEVICES</span><span class="o">=</span><span class="m">0</span> dask-worker ...
+<span class="nv">CUDA_VISIBLE_DEVICES</span><span class="o">=</span><span class="m">1</span> dask-worker ...
+<span class="nv">CUDA_VISIBLE_DEVICES</span><span class="o">=</span><span class="m">2</span> dask-worker ...
+<span class="nv">CUDA_VISIBLE_DEVICES</span><span class="o">=</span><span class="m">3</span> dask-worker ...
+</pre></div>
+</div>
+<p>The <a class="reference external" href="https://github.com/rapidsai/dask-cuda">Dask CUDA</a> project contains some
+convenience CLI and Python utilities to automate this process.</p>
+</div>
+</div>
+<div class="section" id="work-in-progress">
+<h2>Work in Progress<a class="headerlink" href="#work-in-progress" title="Permalink to this headline">¶</a></h2>
+<p>GPU computing is a quickly moving field today and as a result the information
+in this page is likely to go out of date quickly.  We encourage interested
+readers to check out <a class="reference external" href="https://blog.dask.org">Dask’s Blog</a> which has more
+timely updates on ongoing work.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="cite.html" class="btn btn-neutral float-right" title="Citations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="remote-data-services.html" class="btn btn-neutral float-left" title="Remote Data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

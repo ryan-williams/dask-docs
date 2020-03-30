@@ -1,0 +1,624 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Chunks &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Create Dask Arrays" href="array-creation.html" />
+    <link rel="prev" title="Best Practices" href="array-best-practices.html" />
+    <link rel="shortcut icon" href="_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="array.html">Array</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="array-api.html">API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-best-practices.html">Best Practices</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Chunks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#specifying-chunk-shapes">Specifying Chunk shapes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#unknown-chunks">Unknown Chunks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#chunks-examples">Chunks Examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#loading-chunked-data">Loading Chunked Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rechunking">Rechunking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#automatic-chunking">Automatic Chunking</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="array-creation.html">Create Dask Arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-creation.html#store-dask-arrays">Store Dask Arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-creation.html#plugins">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-overlap.html">Overlapping Computations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-design.html">Internal Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-sparse.html">Sparse Arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-stats.html">Stats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-linear-operator.html">LinearOperator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-slicing.html">Slicing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-stack.html">Stack, Concatenate, and Block</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-gufunc.html">Generalized Ufuncs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array.html#design">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array.html#common-uses">Common Uses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array.html#scope">Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array.html#execution">Execution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="bag.html">Bag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataframe.html">DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">Task Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="array.html">Array</a> &raquo;</li>
+        
+      <li>Chunks</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/array-chunks.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="chunks">
+<h1>Chunks<a class="headerlink" href="#chunks" title="Permalink to this headline">¶</a></h1>
+<p>Dask arrays are composed of many NumPy arrays.  How these arrays are arranged
+can significantly affect performance.  For example, for a square array you might
+arrange your chunks along rows, along columns, or in a more square-like
+fashion.  Different arrangements of NumPy arrays will be faster or slower for
+different algorithms.</p>
+<p>Thinking about and controlling chunking is important to optimize advanced
+algorithms.</p>
+<div class="section" id="specifying-chunk-shapes">
+<h2>Specifying Chunk shapes<a class="headerlink" href="#specifying-chunk-shapes" title="Permalink to this headline">¶</a></h2>
+<p>We always specify a <code class="docutils literal notranslate"><span class="pre">chunks</span></code> argument to tell dask.array how to break up the
+underlying array into chunks.  We can specify <code class="docutils literal notranslate"><span class="pre">chunks</span></code> in a variety of ways:</p>
+<ol class="arabic simple">
+<li><p>A uniform dimension size like <code class="docutils literal notranslate"><span class="pre">1000</span></code>, meaning chunks of size <code class="docutils literal notranslate"><span class="pre">1000</span></code> in each dimension</p></li>
+<li><p>A uniform chunk shape like <code class="docutils literal notranslate"><span class="pre">(1000,</span> <span class="pre">2000,</span> <span class="pre">3000)</span></code>, meaning chunks of size <code class="docutils literal notranslate"><span class="pre">1000</span></code> in the
+first axis, <code class="docutils literal notranslate"><span class="pre">2000</span></code> in the second axis, and <code class="docutils literal notranslate"><span class="pre">3000</span></code> in the third</p></li>
+<li><p>Fully explicit sizes of all blocks along all dimensions,
+like <code class="docutils literal notranslate"><span class="pre">((1000,</span> <span class="pre">1000,</span> <span class="pre">500),</span> <span class="pre">(400,</span> <span class="pre">400),</span> <span class="pre">(5,</span> <span class="pre">5,</span> <span class="pre">5,</span> <span class="pre">5,</span> <span class="pre">5))</span></code></p></li>
+<li><p>A dictionary specifying chunk size per dimension like <code class="docutils literal notranslate"><span class="pre">{0:</span> <span class="pre">1000,</span> <span class="pre">1:</span> <span class="pre">2000,</span>
+<span class="pre">2:</span> <span class="pre">3000}</span></code>.  This is just another way of writing the forms 2 and 3 above</p></li>
+</ol>
+<p>Your chunks input will be normalized and stored in the third and most explicit
+form.  Note that <code class="docutils literal notranslate"><span class="pre">chunks</span></code> stands for “chunk shape” rather than “number of
+chunks”, so specifying <code class="docutils literal notranslate"><span class="pre">chunks=1</span></code> means that you will have many chunks,
+each with exactly one element.</p>
+<p>For performance, a good choice of <code class="docutils literal notranslate"><span class="pre">chunks</span></code> follows the following rules:</p>
+<ol class="arabic">
+<li><p>A chunk should be small enough to fit comfortably in memory.  We’ll
+have many chunks in memory at once</p></li>
+<li><p>A chunk must be large enough so that computations on that chunk take
+significantly longer than the 1ms overhead per task that Dask scheduling
+incurs.  A task should take longer than 100ms</p></li>
+<li><p>Chunk sizes between 10MB-1GB are common, depending on the availability of
+RAM and the duration of computations</p></li>
+<li><p>Chunks should align with the computation that you want to do.</p>
+<p>For example, if you plan to frequently slice along a particular dimension,
+then it’s more efficient if your chunks are aligned so that you have to
+touch fewer chunks.  If you want to add two arrays, then its convenient if
+those arrays have matching chunks patterns</p>
+</li>
+<li><p>Chunks should align with your storage, if applicable.</p>
+<p>Array data formats are often chunked as well.  When loading or saving data,
+if is useful to have Dask array chunks that are aligned with the chunking
+of your storage, often an even multiple times larger in each direction</p>
+</li>
+</ol>
+</div>
+<div class="section" id="unknown-chunks">
+<h2>Unknown Chunks<a class="headerlink" href="#unknown-chunks" title="Permalink to this headline">¶</a></h2>
+<p>Some arrays have unknown chunk sizes.  This arises whenever the size of an
+array depends on lazy computations that we haven’t yet performed like the
+following:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span> <span class="n">chunks</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">+=</span> <span class="mf">0.1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>  <span class="c1"># don&#39;t know how many values are greater than 0 ahead of time</span>
+</pre></div>
+</div>
+<p>Operations like the above result in arrays with unknown shapes and unknown
+chunk sizes.  Unknown values within shape or chunks are designated using
+<code class="docutils literal notranslate"><span class="pre">np.nan</span></code> rather than an integer.  These arrays support many (but not all)
+operations.  In particular, operations like slicing are not possible and will
+result in an error.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(np.nan,)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+<span class="gp">...</span>
+<span class="go">ValueError: Array chunk sizes unknown</span>
+
+<span class="go">A possible solution: https://docs.dask.org/en/latest/array-chunks.html#unknown-chunks.</span>
+<span class="go">Summary: to compute chunks sizes, use</span>
+
+<span class="go">    x.compute_chunk_sizes()  # for Dask Array</span>
+<span class="go">    ddf.to_dask_array(lengths=True)  # for Dask DataFrame ddf</span>
+</pre></div>
+</div>
+<p>Using <a class="reference internal" href="array-api.html#dask.array.Array.compute_chunk_sizes" title="dask.array.Array.compute_chunk_sizes"><code class="xref py py-func docutils literal notranslate"><span class="pre">compute_chunk_sizes()</span></code></a>  allows this example run:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">compute_chunk_sizes</span><span class="p">()</span>
+<span class="go">dask.array&lt;..., chunksize=(19,), ...&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(44,)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="go">0.78621774046566</span>
+</pre></div>
+</div>
+<p>Note that <a class="reference internal" href="array-api.html#dask.array.Array.compute_chunk_sizes" title="dask.array.Array.compute_chunk_sizes"><code class="xref py py-func docutils literal notranslate"><span class="pre">compute_chunk_sizes()</span></code></a> immediately performs computation and
+modifies the array in-place.</p>
+<p>Unknown chunksizes also occur when using a Dask DataFrame to create a Dask array:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ddf</span> <span class="o">=</span> <span class="n">dask</span><span class="o">.</span><span class="n">dataframe</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ddf</span><span class="o">.</span><span class="n">to_dask_array</span><span class="p">()</span>
+<span class="go">dask.array&lt;..., shape=(nan, 2), ..., chunksize=(nan, 2)&gt;</span>
+</pre></div>
+</div>
+<p>Using <a class="reference internal" href="dataframe-api.html#dask.dataframe.DataFrame.to_dask_array" title="dask.dataframe.DataFrame.to_dask_array"><code class="xref py py-func docutils literal notranslate"><span class="pre">to_dask_array()</span></code></a> resolves this issue:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ddf</span><span class="o">.</span><span class="n">to_dask_array</span><span class="p">(</span><span class="n">lengths</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">dask.array&lt;..., shape=(100, 2), ..., chunksize=(20, 2)&gt;</span>
+</pre></div>
+</div>
+<p>More details on <a class="reference internal" href="dataframe-api.html#dask.dataframe.DataFrame.to_dask_array" title="dask.dataframe.DataFrame.to_dask_array"><code class="xref py py-func docutils literal notranslate"><span class="pre">to_dask_array()</span></code></a> are in mentioned in how to create a Dask
+array from a Dask DataFrame in the <a class="reference internal" href="array-creation.html"><span class="doc">documentation on Dask array creation</span></a>.</p>
+</div>
+<div class="section" id="chunks-examples">
+<h2>Chunks Examples<a class="headerlink" href="#chunks-examples" title="Permalink to this headline">¶</a></h2>
+<p>In this example we show how different inputs for <code class="docutils literal notranslate"><span class="pre">chunks=</span></code> cut up the following array:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span>
+<span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span>
+<span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span>
+<span class="mi">9</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span>
+<span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span> <span class="mi">0</span>
+<span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span>
+</pre></div>
+</div>
+<p>Here, we show how different <code class="docutils literal notranslate"><span class="pre">chunks=</span></code> arguments split the array into different blocks</p>
+<p><strong>chunks=3</strong>: Symmetric blocks of size 3:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span>  <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span>
+<span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span>  <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span>
+<span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span>  <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span>
+
+<span class="mi">9</span> <span class="mi">0</span> <span class="mi">1</span>  <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span>
+<span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span>  <span class="mi">8</span> <span class="mi">9</span> <span class="mi">0</span>
+<span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span>  <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span>
+</pre></div>
+</div>
+<p><strong>chunks=2</strong>: Symmetric blocks of size 2:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span> <span class="mi">2</span>  <span class="mi">3</span> <span class="mi">4</span>  <span class="mi">5</span> <span class="mi">6</span>
+<span class="mi">7</span> <span class="mi">8</span>  <span class="mi">9</span> <span class="mi">0</span>  <span class="mi">1</span> <span class="mi">2</span>
+
+<span class="mi">3</span> <span class="mi">4</span>  <span class="mi">5</span> <span class="mi">6</span>  <span class="mi">7</span> <span class="mi">8</span>
+<span class="mi">9</span> <span class="mi">0</span>  <span class="mi">1</span> <span class="mi">2</span>  <span class="mi">3</span> <span class="mi">4</span>
+
+<span class="mi">5</span> <span class="mi">6</span>  <span class="mi">7</span> <span class="mi">8</span>  <span class="mi">9</span> <span class="mi">0</span>
+<span class="mi">1</span> <span class="mi">2</span>  <span class="mi">3</span> <span class="mi">4</span>  <span class="mi">5</span> <span class="mi">6</span>
+</pre></div>
+</div>
+<p><strong>chunks=(3, 2)</strong>: Asymmetric but repeated blocks of size <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">2)</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span> <span class="mi">2</span>  <span class="mi">3</span> <span class="mi">4</span>  <span class="mi">5</span> <span class="mi">6</span>
+<span class="mi">7</span> <span class="mi">8</span>  <span class="mi">9</span> <span class="mi">0</span>  <span class="mi">1</span> <span class="mi">2</span>
+<span class="mi">3</span> <span class="mi">4</span>  <span class="mi">5</span> <span class="mi">6</span>  <span class="mi">7</span> <span class="mi">8</span>
+
+<span class="mi">9</span> <span class="mi">0</span>  <span class="mi">1</span> <span class="mi">2</span>  <span class="mi">3</span> <span class="mi">4</span>
+<span class="mi">5</span> <span class="mi">6</span>  <span class="mi">7</span> <span class="mi">8</span>  <span class="mi">9</span> <span class="mi">0</span>
+<span class="mi">1</span> <span class="mi">2</span>  <span class="mi">3</span> <span class="mi">4</span>  <span class="mi">5</span> <span class="mi">6</span>
+</pre></div>
+</div>
+<p><strong>chunks=(1, 6)</strong>: Asymmetric but repeated blocks of size <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">6)</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span>
+
+<span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span>
+
+<span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span>
+
+<span class="mi">9</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span>
+
+<span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span> <span class="mi">0</span>
+
+<span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span>
+</pre></div>
+</div>
+<p><strong>chunks=((2, 4), (3, 3))</strong>: Asymmetric and non-repeated blocks:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span>  <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span>
+<span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span>  <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span>
+
+<span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span>  <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span>
+<span class="mi">9</span> <span class="mi">0</span> <span class="mi">1</span>  <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span>
+<span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span>  <span class="mi">8</span> <span class="mi">9</span> <span class="mi">0</span>
+<span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span>  <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span>
+</pre></div>
+</div>
+<p><strong>chunks=((2, 2, 1, 1), (3, 2, 1))</strong>: Asymmetric and non-repeated blocks:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span>  <span class="mi">4</span> <span class="mi">5</span>  <span class="mi">6</span>
+<span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span>  <span class="mi">0</span> <span class="mi">1</span>  <span class="mi">2</span>
+
+<span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span>  <span class="mi">6</span> <span class="mi">7</span>  <span class="mi">8</span>
+<span class="mi">9</span> <span class="mi">0</span> <span class="mi">1</span>  <span class="mi">2</span> <span class="mi">3</span>  <span class="mi">4</span>
+
+<span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span>  <span class="mi">8</span> <span class="mi">9</span>  <span class="mi">0</span>
+
+<span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span>  <span class="mi">4</span> <span class="mi">5</span>  <span class="mi">6</span>
+</pre></div>
+</div>
+<p><strong>Discussion</strong></p>
+<p>The latter examples are rarely provided by users on original data but arise from complex slicing and broadcasting operations.  Generally people use the simplest form until they need more complex forms.  The choice of chunks should align with the computations you want to do.</p>
+<p>For example, if you plan to take out thin slices along the first dimension, then you might want to make that dimension skinnier than the others.  If you plan to do linear algebra, then you might want more symmetric blocks.</p>
+</div>
+<div class="section" id="loading-chunked-data">
+<h2>Loading Chunked Data<a class="headerlink" href="#loading-chunked-data" title="Permalink to this headline">¶</a></h2>
+<p>Modern NDArray storage formats like HDF5, NetCDF, TIFF, and Zarr, allow arrays
+to be stored in chunks or tiles so that blocks of data can be pulled out
+efficiently without having to seek through a linear data stream.  It is best to
+align the chunks of your Dask array with the chunks of your underlying data
+store.</p>
+<p>However, data stores often chunk more finely than is ideal for Dask array, so
+it is common to choose a chunking that is a multiple of your storage chunk
+size, otherwise you might incur high overhead.</p>
+<p>For example, if you are loading a data store that is chunked in blocks of
+<code class="docutils literal notranslate"><span class="pre">(100,</span> <span class="pre">100)</span></code>, then you might choose a chunking more like <code class="docutils literal notranslate"><span class="pre">(1000,</span> <span class="pre">2000)</span></code> that
+is larger, but still evenly divisible by <code class="docutils literal notranslate"><span class="pre">(100,</span> <span class="pre">100)</span></code>.  Data storage
+technologies will be able to tell you how their data is chunked.</p>
+</div>
+<div class="section" id="rechunking">
+<h2>Rechunking<a class="headerlink" href="#rechunking" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="array-api.html#dask.array.rechunk" title="dask.array.rechunk"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rechunk</span></code></a>(x[, chunks, threshold, block_size_limit])</p></td>
+<td><p>Convert blocks in dask array x for new chunks.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Sometimes you need to change the chunking layout of your data.  For example,
+perhaps it comes to you chunked row-wise, but you need to do an operation that
+is much faster if done across columns.  You can change the chunking with the
+<code class="docutils literal notranslate"><span class="pre">rechunk</span></code> method.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">rechunk</span><span class="p">((</span><span class="mi">50</span><span class="p">,</span> <span class="mi">1000</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Rechunking across axes can be expensive and incur a lot of communication, but
+Dask array has fairly efficient algorithms to accomplish this.</p>
+<p>You can pass rechunk any valid chunking form:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">rechunk</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">rechunk</span><span class="p">((</span><span class="mi">50</span><span class="p">,</span> <span class="mi">1000</span><span class="p">))</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">rechunk</span><span class="p">({</span><span class="mi">0</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="mi">1000</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="automatic-chunking">
+<h2>Automatic Chunking<a class="headerlink" href="#automatic-chunking" title="Permalink to this headline">¶</a></h2>
+<p>Chunks also includes three special values:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-1</span></code>: no chunking along this dimension</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code>: no change to the chunking along this dimension (useful for rechunk)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;auto&quot;</span></code>: allow the chunking in this dimension to accommodate ideal chunk sizes</p></li>
+</ol>
+<p>So, for example, one could rechunk a 3D array to have no chunking along the zeroth
+dimension, but still have sensible chunk sizes as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">rechunk</span><span class="p">({</span><span class="mi">0</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;auto&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>Or one can allow <em>all</em> dimensions to be auto-scaled to get to a good chunk
+size:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">rechunk</span><span class="p">(</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Automatic chunking expands or contracts all dimensions marked with <code class="docutils literal notranslate"><span class="pre">&quot;auto&quot;</span></code>
+to try to reach chunk sizes with a number of bytes equal to the config value
+<code class="docutils literal notranslate"><span class="pre">array.chunk-size</span></code>, which is set to 128MiB by default, but which you can
+change in your <a class="reference internal" href="configuration.html"><span class="doc">configuration</span></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;array.chunk-size&#39;</span><span class="p">)</span>
+<span class="go">&#39;128MiB&#39;</span>
+</pre></div>
+</div>
+<p>Automatic rechunking tries to respect the median chunk shape of the
+auto-rescaled dimensions, but will modify this to accommodate the shape of the
+full array (can’t have larger chunks than the array itself) and to find
+chunk shapes that nicely divide the shape.</p>
+<p>These values can also be used when creating arrays with operations like
+<code class="docutils literal notranslate"><span class="pre">dask.array.ones</span></code> or <code class="docutils literal notranslate"><span class="pre">dask.array.from_array</span></code></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dask</span><span class="o">.</span><span class="n">array</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">),</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">))</span>
+<span class="go">dask.array&lt;wrapped, shape=(10000, 10000), dtype=float64, chunksize=(10000, 1250), chunktype=numpy.ndarray&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="array-creation.html" class="btn btn-neutral float-right" title="Create Dask Arrays" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="array-best-practices.html" class="btn btn-neutral float-left" title="Best Practices" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

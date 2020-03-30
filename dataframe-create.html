@@ -1,0 +1,529 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Create and Store Dask DataFrames &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Best Practices" href="dataframe-best-practices.html" />
+    <link rel="prev" title="API" href="dataframe-api.html" />
+    <link rel="shortcut icon" href="_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="array.html">Array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bag.html">Bag</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="dataframe.html">DataFrame</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dataframe-api.html">API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Create and Store Dask DataFrames</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#api">API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#locations">Locations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dask-delayed">Dask Delayed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#from-raw-dask-graphs">From Raw Dask Graphs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-best-practices.html">Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-design.html">Internal Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-groupby.html">Shuffling for GroupBy and Join</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-groupby.html#aggregate">Aggregate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-joins.html">Joins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-indexing.html">Indexing into Dask DataFrames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-categoricals.html">Categoricals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-extend.html">Extending DataFrames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html#design">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html#dask-dataframe-copies-the-pandas-api">Dask DataFrame copies the Pandas API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html#common-uses-and-anti-uses">Common Uses and Anti-Uses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html#scope">Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html#execution">Execution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">Task Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="dataframe.html">DataFrame</a> &raquo;</li>
+        
+      <li>Create and Store Dask DataFrames</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/dataframe-create.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="create-and-store-dask-dataframes">
+<h1>Create and Store Dask DataFrames<a class="headerlink" href="#create-and-store-dask-dataframes" title="Permalink to this headline">¶</a></h1>
+<p>Dask can create DataFrames from various data storage formats like CSV, HDF,
+Apache Parquet, and others.  For most formats, this data can live on various
+storage systems including local disk, network file systems (NFS), the Hadoop
+File System (HDFS), and Amazon’s S3 (excepting HDF, which is only available on
+POSIX like file systems).</p>
+<p>See the <a class="reference internal" href="dataframe.html"><span class="doc">DataFrame overview page</span></a> for an in depth
+discussion of <code class="docutils literal notranslate"><span class="pre">dask.dataframe</span></code> scope, use, and limitations.</p>
+<div class="section" id="api">
+<h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<p>The following functions provide access to convert between Dask DataFrames,
+file formats, and other Dask or Python collections.</p>
+<p>File Formats:</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="dataframe-api.html#dask.dataframe.read_csv" title="dask.dataframe.read_csv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_csv</span></code></a>(urlpath[, blocksize, collection, …])</p></td>
+<td><p>Read CSV files into a Dask.DataFrame</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="dataframe-api.html#dask.dataframe.read_parquet" title="dask.dataframe.read_parquet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_parquet</span></code></a>(path[, columns, filters, …])</p></td>
+<td><p>Read a Parquet file into a Dask DataFrame</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="dataframe-api.html#dask.dataframe.read_hdf" title="dask.dataframe.read_hdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_hdf</span></code></a>(pattern, key[, start, stop, …])</p></td>
+<td><p>Read HDF files into a Dask DataFrame</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="dataframe-api.html#dask.dataframe.read_orc" title="dask.dataframe.read_orc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_orc</span></code></a>(path[, columns, storage_options])</p></td>
+<td><p>Read dataframe from ORC file(s)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="dataframe-api.html#dask.dataframe.read_json" title="dask.dataframe.read_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_json</span></code></a>(url_path[, orient, lines, …])</p></td>
+<td><p>Create a dataframe from a set of JSON files</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="dataframe-api.html#dask.dataframe.read_sql_table" title="dask.dataframe.read_sql_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_sql_table</span></code></a>(table, uri, index_col[, …])</p></td>
+<td><p>Create dataframe from an SQL table.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="dataframe-api.html#dask.dataframe.read_table" title="dask.dataframe.read_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_table</span></code></a>(urlpath[, blocksize, collection, …])</p></td>
+<td><p>Read delimited files into a Dask.DataFrame</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="dataframe-api.html#dask.dataframe.read_fwf" title="dask.dataframe.read_fwf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_fwf</span></code></a>(urlpath[, blocksize, collection, …])</p></td>
+<td><p>Read fixed-width files into a Dask.DataFrame</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="dataframe-api.html#dask.dataframe.from_bcolz" title="dask.dataframe.from_bcolz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_bcolz</span></code></a>(x[, chunksize, categorize, …])</p></td>
+<td><p>Read BColz CTable into a Dask Dataframe</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="dataframe-api.html#dask.dataframe.from_array" title="dask.dataframe.from_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_array</span></code></a>(x[, chunksize, columns])</p></td>
+<td><p>Read any slicable array into a Dask Dataframe</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="dataframe-api.html#dask.dataframe.to_csv" title="dask.dataframe.to_csv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_csv</span></code></a>(df, filename[, single_file, …])</p></td>
+<td><p>Store Dask DataFrame to CSV files</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="dataframe-api.html#dask.dataframe.to_parquet" title="dask.dataframe.to_parquet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_parquet</span></code></a>(df, path[, engine, compression, …])</p></td>
+<td><p>Store Dask.dataframe to Parquet files</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="dataframe-api.html#dask.dataframe.to_hdf" title="dask.dataframe.to_hdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_hdf</span></code></a>(df, path, key[, mode, append, …])</p></td>
+<td><p>Store Dask Dataframe to Hierarchical Data Format (HDF) files</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="dataframe-api.html#dask.dataframe.to_sql" title="dask.dataframe.to_sql"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_sql</span></code></a>(df, name, con[, schema, if_exists, …])</p></td>
+<td><p>Store Dask Dataframe to a SQL table</p></td>
+</tr>
+</tbody>
+</table>
+<p>Dask Collections:</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="dataframe-api.html#dask.dataframe.from_delayed" title="dask.dataframe.from_delayed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_delayed</span></code></a>(dfs[, meta, divisions, prefix, …])</p></td>
+<td><p>Create Dask DataFrame from many Dask Delayed objects</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="dataframe-api.html#dask.dataframe.from_dask_array" title="dask.dataframe.from_dask_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_dask_array</span></code></a>(x[, columns, index])</p></td>
+<td><p>Create a Dask DataFrame from a Dask Array.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="bag-creation.html#dask.bag.core.Bag.to_dataframe" title="dask.bag.core.Bag.to_dataframe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dask.bag.core.Bag.to_dataframe</span></code></a>([meta, columns])</p></td>
+<td><p>Create Dask Dataframe from a Dask Bag.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="dataframe-api.html#dask.dataframe.DataFrame.to_delayed" title="dask.dataframe.DataFrame.to_delayed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataFrame.to_delayed</span></code></a>([optimize_graph])</p></td>
+<td><p>Convert into a list of <code class="docutils literal notranslate"><span class="pre">dask.delayed</span></code> objects, one per partition.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="dataframe-api.html#dask.dataframe.to_records" title="dask.dataframe.to_records"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_records</span></code></a>(df)</p></td>
+<td><p>Create Dask Array from a Dask Dataframe</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="dataframe-api.html#dask.dataframe.to_bag" title="dask.dataframe.to_bag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_bag</span></code></a>(df[, index])</p></td>
+<td><p>Create Dask Bag from a Dask DataFrame</p></td>
+</tr>
+</tbody>
+</table>
+<p>Pandas:</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="dataframe-api.html#dask.dataframe.from_pandas" title="dask.dataframe.from_pandas"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_pandas</span></code></a>(data[, npartitions, chunksize, …])</p></td>
+<td><p>Construct a Dask DataFrame from a Pandas DataFrame</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="locations">
+<h2>Locations<a class="headerlink" href="#locations" title="Permalink to this headline">¶</a></h2>
+<p>For text, CSV, and Apache Parquet formats, data can come from local disk,
+the Hadoop File System, S3FS, or other sources, by prepending the filenames with
+a protocol:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;my-data-*.csv&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;hdfs:///path/to/my-data-*.csv&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;s3://bucket-name/my-data-*.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For remote systems like HDFS or S3, credentials may be an issue.  Usually, these
+are handled by configuration files on disk (such as a <code class="docutils literal notranslate"><span class="pre">.boto</span></code> file for S3),
+but in some cases you may want to pass storage-specific options through to the
+storage backend.  You can do this with the <code class="docutils literal notranslate"><span class="pre">storage_options=</span></code> keyword:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;s3://bucket-name/my-data-*.csv&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                 <span class="n">storage_options</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;anon&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="dask-delayed">
+<h2>Dask Delayed<a class="headerlink" href="#dask-delayed" title="Permalink to this headline">¶</a></h2>
+<p>For more complex situations not covered by the functions above, you may want to
+use <a class="reference internal" href="delayed.html"><span class="doc">dask.delayed</span></a>, which lets you construct Dask DataFrames out
+of arbitrary Python function calls that load DataFrames.  This can allow you to
+handle new formats easily or bake in particular logic around loading data if,
+for example, your data is stored with some special format.</p>
+<p>See <a class="reference internal" href="delayed-collections.html"><span class="doc">documentation on using dask.delayed with
+collections</span></a> or an <a class="reference external" href="https://gist.github.com/mrocklin/e7b7b3a65f2835cda813096332ec73ca">example notebook</a> showing
+how to create a Dask DataFrame from a nested directory structure of Feather
+files (as a stand in for any custom file format).</p>
+<p>Dask delayed is particularly useful when simple <code class="docutils literal notranslate"><span class="pre">map</span></code> operations aren’t
+sufficient to capture the complexity of your data layout.</p>
+</div>
+<div class="section" id="from-raw-dask-graphs">
+<h2>From Raw Dask Graphs<a class="headerlink" href="#from-raw-dask-graphs" title="Permalink to this headline">¶</a></h2>
+<p>This section is mainly for developers wishing to extend <code class="docutils literal notranslate"><span class="pre">dask.dataframe</span></code>.  It
+discusses internal API not normally needed by users.  Everything below can be
+done just as effectively with <a class="reference internal" href="delayed.html"><span class="doc">dask.delayed</span></a>  described
+just above.  You should never need to create a DataFrame object by hand.</p>
+<p>To construct a DataFrame manually from a dask graph you need the following
+information:</p>
+<ol class="arabic simple">
+<li><p>Dask: a Dask graph with keys like <code class="docutils literal notranslate"><span class="pre">{(name,</span> <span class="pre">0):</span> <span class="pre">...,</span> <span class="pre">(name,</span> <span class="pre">1):</span> <span class="pre">...}</span></code> as
+well as any other tasks on which those tasks depend.  The tasks
+corresponding to <code class="docutils literal notranslate"><span class="pre">(name,</span> <span class="pre">i)</span></code> should produce <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> objects
+that correspond to the columns and divisions information discussed below</p></li>
+<li><p>Name: the special name used above</p></li>
+<li><p>Columns: a list of column names</p></li>
+<li><p>Divisions: a list of index values that separate the different partitions.
+Alternatively, if you don’t know the divisions (this is common), you can
+provide a list of <code class="docutils literal notranslate"><span class="pre">[None,</span> <span class="pre">None,</span> <span class="pre">None,</span> <span class="pre">...]</span></code> with as many partitions as
+you have plus one.  For more information, see the Partitions section in the
+<a class="reference internal" href="dataframe.html"><span class="doc">DataFrame documentation</span></a></p></li>
+</ol>
+<p>As an example, we build a DataFrame manually that reads several CSV files that
+have a datetime index separated by day.  Note that you should <strong>never</strong> do this.
+The <code class="docutils literal notranslate"><span class="pre">dd.read_csv</span></code> function does this for you:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">dsk</span> <span class="o">=</span> <span class="p">{(</span><span class="s1">&#39;mydf&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">,</span> <span class="s1">&#39;data/2000-01-01.csv&#39;</span><span class="p">),</span>
+       <span class="p">(</span><span class="s1">&#39;mydf&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">,</span> <span class="s1">&#39;data/2000-01-02.csv&#39;</span><span class="p">),</span>
+       <span class="p">(</span><span class="s1">&#39;mydf&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">,</span> <span class="s1">&#39;data/2000-01-03.csv&#39;</span><span class="p">)}</span>
+<span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;mydf&#39;</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;price&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">]</span>
+<span class="n">divisions</span> <span class="o">=</span> <span class="p">[</span><span class="n">Timestamp</span><span class="p">(</span><span class="s1">&#39;2000-01-01 00:00:00&#39;</span><span class="p">),</span>
+             <span class="n">Timestamp</span><span class="p">(</span><span class="s1">&#39;2000-01-02 00:00:00&#39;</span><span class="p">),</span>
+             <span class="n">Timestamp</span><span class="p">(</span><span class="s1">&#39;2000-01-03 00:00:00&#39;</span><span class="p">),</span>
+             <span class="n">Timestamp</span><span class="p">(</span><span class="s1">&#39;2000-01-03 23:59:59&#39;</span><span class="p">)]</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">dsk</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">divisions</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="dataframe-best-practices.html" class="btn btn-neutral float-right" title="Best Practices" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dataframe-api.html" class="btn btn-neutral float-left" title="API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

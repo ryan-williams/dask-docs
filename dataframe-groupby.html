@@ -1,0 +1,534 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Shuffling for GroupBy and Join &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Joins" href="dataframe-joins.html" />
+    <link rel="prev" title="Internal Design" href="dataframe-design.html" />
+    <link rel="shortcut icon" href="_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="array.html">Array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bag.html">Bag</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="dataframe.html">DataFrame</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dataframe-api.html">API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-create.html">Create and Store Dask DataFrames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-best-practices.html">Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-design.html">Internal Design</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Shuffling for GroupBy and Join</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#easy-case">Easy Case</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#difficult-cases">Difficult Cases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#shuffle-methods">Shuffle Methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#shuffle-on-disk">Shuffle on Disk</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#shuffle-over-the-network">Shuffle over the Network</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#selecting-methods">Selecting methods</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#aggregate">Aggregate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-joins.html">Joins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-indexing.html">Indexing into Dask DataFrames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-categoricals.html">Categoricals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-extend.html">Extending DataFrames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html#design">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html#dask-dataframe-copies-the-pandas-api">Dask DataFrame copies the Pandas API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html#common-uses-and-anti-uses">Common Uses and Anti-Uses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html#scope">Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html#execution">Execution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">Task Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="dataframe.html">DataFrame</a> &raquo;</li>
+        
+      <li>Shuffling for GroupBy and Join</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/dataframe-groupby.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="shuffling-for-groupby-and-join">
+<h1>Shuffling for GroupBy and Join<a class="headerlink" href="#shuffling-for-groupby-and-join" title="Permalink to this headline">¶</a></h1>
+<p>Operations like <code class="docutils literal notranslate"><span class="pre">groupby</span></code>, <code class="docutils literal notranslate"><span class="pre">join</span></code>, and <code class="docutils literal notranslate"><span class="pre">set_index</span></code> have special
+performance considerations that are different from normal Pandas due to the
+parallel, larger-than-memory, and distributed nature of Dask DataFrame.</p>
+<div class="section" id="easy-case">
+<h2>Easy Case<a class="headerlink" href="#easy-case" title="Permalink to this headline">¶</a></h2>
+<p>To start off, common groupby operations like
+<code class="docutils literal notranslate"><span class="pre">df.groupby(columns).reduction()</span></code> for known reductions like <code class="docutils literal notranslate"><span class="pre">mean,</span> <span class="pre">sum,</span> <span class="pre">std,</span>
+<span class="pre">var,</span> <span class="pre">count,</span> <span class="pre">nunique</span></code> are all quite fast and efficient, even if partitions are
+not cleanly divided with known divisions.  This is the common case.</p>
+<p>Additionally, if divisions are known, then applying an arbitrary function to
+groups is efficient when the grouping columns include the index.</p>
+<p>Joins are also quite fast when joining a Dask DataFrame to a Pandas DataFrame
+or when joining two Dask DataFrames along their index.  No special
+considerations need to be made when operating in these common cases.</p>
+<p>So, if you’re doing common groupby and join operations, then you can stop reading
+this.  Everything will scale nicely.  Fortunately, this is true most of the
+time:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span><span class="o">.</span><span class="n">known_reduction</span><span class="p">()</span>             <span class="c1"># Fast and common case</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">columns_with_index</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">user_fn</span><span class="p">)</span>     <span class="c1"># Fast and common case</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dask_df</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pandas_df</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="n">column</span><span class="p">)</span>                <span class="c1"># Fast and common case</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lhs</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rhs</span><span class="p">)</span>                                     <span class="c1"># Fast and common case</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lhs</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">rhs</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="n">columns_with_index</span><span class="p">)</span>             <span class="c1"># Fast and common case</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="difficult-cases">
+<h2>Difficult Cases<a class="headerlink" href="#difficult-cases" title="Permalink to this headline">¶</a></h2>
+<p>In some cases, such as when applying an arbitrary function to groups (when not
+grouping on index with known divisions), when joining along non-index columns,
+or when explicitly setting an unsorted column to be the index, we may need to
+trigger a full dataset shuffle:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">columns_no_index</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">user_fn</span><span class="p">)</span>   <span class="c1"># Requires shuffle</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lhs</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rhs</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="n">columns_no_index</span><span class="p">)</span>            <span class="c1"># Requires shuffle</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>                          <span class="c1"># Requires shuffle</span>
+</pre></div>
+</div>
+<p>A shuffle is necessary when we need to re-sort our data along a new index.  For
+example, if we have banking records that are organized by time and we now want
+to organize them by user ID, then we’ll need to move a lot of data around.  In
+Pandas all of this data fits in memory, so this operation was easy.  Now that we
+don’t assume that all data fits in memory, we must be a bit more careful.</p>
+<p>Re-sorting the data can be avoided by restricting yourself to the easy cases
+mentioned above.</p>
+</div>
+<div class="section" id="shuffle-methods">
+<h2>Shuffle Methods<a class="headerlink" href="#shuffle-methods" title="Permalink to this headline">¶</a></h2>
+<p>There are currently two strategies to shuffle data depending on whether you are
+on a single machine or on a distributed cluster: shuffle on disk and shuffle
+over the network.</p>
+<div class="section" id="shuffle-on-disk">
+<h3>Shuffle on Disk<a class="headerlink" href="#shuffle-on-disk" title="Permalink to this headline">¶</a></h3>
+<p>When operating on larger-than-memory data on a single machine, we shuffle by
+dumping intermediate results to disk.  This is done using the <a class="reference external" href="https://github.com/dask/partd">partd</a> project
+for on-disk shuffles.</p>
+</div>
+<div class="section" id="shuffle-over-the-network">
+<h3>Shuffle over the Network<a class="headerlink" href="#shuffle-over-the-network" title="Permalink to this headline">¶</a></h3>
+<p>When operating on a distributed cluster, the Dask workers may not have access to
+a shared hard drive.  In this case, we shuffle data by breaking input partitions
+into many pieces based on where they will end up and moving these pieces
+throughout the network.  This prolific expansion of intermediate partitions
+can stress the task scheduler.  To manage for many-partitioned datasets we
+sometimes shuffle in stages, causing undue copies but reducing the <code class="docutils literal notranslate"><span class="pre">n**2</span></code>
+effect of shuffling to something closer to <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">log(n)</span></code> with <code class="docutils literal notranslate"><span class="pre">log(n)</span></code> copies.</p>
+</div>
+<div class="section" id="selecting-methods">
+<h3>Selecting methods<a class="headerlink" href="#selecting-methods" title="Permalink to this headline">¶</a></h3>
+<p>Dask will use on-disk shuffling by default, but will switch to task-based
+distributed shuffling if the default scheduler is set to use a
+<code class="docutils literal notranslate"><span class="pre">dask.distributed.Client</span></code>, such as would be the case if the user sets the
+Client as default:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s1">&#39;scheduler:8786&#39;</span><span class="p">,</span> <span class="n">set_as_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Alternatively, if you prefer to avoid defaults, you can configure the global
+shuffling method by using the <code class="docutils literal notranslate"><span class="pre">dask.config.set(shuffle=...)</span></code> command.
+This can be done globally:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">shuffle</span><span class="o">=</span><span class="s1">&#39;tasks&#39;</span><span class="p">)</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="o">...</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>or as a context manager:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">shuffle</span><span class="o">=</span><span class="s1">&#39;tasks&#39;</span><span class="p">):</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="o">...</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In addition, <code class="docutils literal notranslate"><span class="pre">set_index</span></code> also accepts a <code class="docutils literal notranslate"><span class="pre">shuffle</span></code> keyword argument that
+can be used to select either on-disk or task-based shuffling:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="s1">&#39;disk&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="s1">&#39;tasks&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="aggregate">
+<span id="dataframe-groupby-aggregate"></span><h1>Aggregate<a class="headerlink" href="#aggregate" title="Permalink to this headline">¶</a></h1>
+<p>Dask supports Pandas’ <code class="docutils literal notranslate"><span class="pre">aggregate</span></code> syntax to run multiple reductions on the
+same groups.  Common reductions such as <code class="docutils literal notranslate"><span class="pre">max</span></code>, <code class="docutils literal notranslate"><span class="pre">sum</span></code>, and <code class="docutils literal notranslate"><span class="pre">mean</span></code> are
+directly supported:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span><span class="o">.</span><span class="n">aggregate</span><span class="p">([</span><span class="s1">&#39;sum&#39;</span><span class="p">,</span> <span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Dask also supports user defined reductions.  To ensure proper performance, the
+reduction has to be formulated in terms of three independent steps. The
+<code class="docutils literal notranslate"><span class="pre">chunk</span></code> step is applied to each partition independently and reduces the data
+within a partition. The <code class="docutils literal notranslate"><span class="pre">aggregate</span></code> combines the within partition results.
+The optional <code class="docutils literal notranslate"><span class="pre">finalize</span></code> step combines the results returned from the
+<code class="docutils literal notranslate"><span class="pre">aggregate</span></code> step and should return a single final column. For Dask to
+recognize the reduction, it has to be passed as an instance of
+<code class="docutils literal notranslate"><span class="pre">dask.dataframe.Aggregation</span></code>.</p>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">sum</span></code> could be implemented as:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">custom_sum</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">Aggregation</span><span class="p">(</span><span class="s1">&#39;custom_sum&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="k">lambda</span> <span class="n">s0</span><span class="p">:</span> <span class="n">s0</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;g&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">custom_sum</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The name argument should be different from existing reductions to avoid data
+corruption.  The arguments to each function are pre-grouped series objects,
+similar to <code class="docutils literal notranslate"><span class="pre">df.groupby('g')['value']</span></code>.</p>
+<p>Many reductions can only be implemented with multiple temporaries. To implement
+these reductions, the steps should return tuples and expect multiple arguments.
+A mean function can be implemented as:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">custom_mean</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">Aggregation</span><span class="p">(</span>
+    <span class="s1">&#39;custom_mean&#39;</span><span class="p">,</span>
+    <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span> <span class="n">s</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span>
+    <span class="k">lambda</span> <span class="n">count</span><span class="p">,</span> <span class="nb">sum</span><span class="p">:</span> <span class="p">(</span><span class="n">count</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="nb">sum</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span>
+    <span class="k">lambda</span> <span class="n">count</span><span class="p">,</span> <span class="nb">sum</span><span class="p">:</span> <span class="nb">sum</span> <span class="o">/</span> <span class="n">count</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;g&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">custom_mean</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For example, let’s compute the group-wise extent (maximum - minimum)
+for a DataFrame.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+<span class="gp">... </span>  <span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">],</span>
+<span class="gp">... </span>  <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ddf</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We define the building blocks to find the maximum and minimum of each chunk, and then
+the maximum and minimum over all the chunks. We finalize by taking the difference between
+the Series with the maxima and minima</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">chunk</span><span class="p">(</span><span class="n">grouped</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">grouped</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">grouped</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">agg</span><span class="p">(</span><span class="n">chunk_maxes</span><span class="p">,</span> <span class="n">chunk_mins</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">chunk_maxes</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">chunk_mins</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">finalize</span><span class="p">(</span><span class="n">maxima</span><span class="p">,</span> <span class="n">minima</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">maxima</span> <span class="o">-</span> <span class="n">minima</span>
+</pre></div>
+</div>
+<p>Finally, we create and use the aggregation</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">extent</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">Aggregation</span><span class="p">(</span><span class="s1">&#39;extent&#39;</span><span class="p">,</span> <span class="n">chunk</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">finalize</span><span class="o">=</span><span class="n">finalize</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ddf</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">extent</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="go">   b</span>
+<span class="go">a</span>
+<span class="go">a  2</span>
+<span class="go">b  4</span>
+</pre></div>
+</div>
+<p>Another example of a custom aggregation is the Dask DataFrame version of
+Pandas’ <code class="docutils literal notranslate"><span class="pre">groupby('g').agg(list)</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">itertools</span> <span class="k">as</span> <span class="nn">it</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collect_list</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">Aggregation</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;collect_list&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">chunk</span><span class="o">=</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="nb">list</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">agg</span><span class="o">=</span><span class="k">lambda</span> <span class="n">s0</span><span class="p">:</span> <span class="n">s0</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">chunks</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">it</span><span class="o">.</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">chunks</span><span class="p">))),</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;g&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">collect_list</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="dataframe-joins.html" class="btn btn-neutral float-right" title="Joins" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dataframe-design.html" class="btn btn-neutral float-left" title="Internal Design" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

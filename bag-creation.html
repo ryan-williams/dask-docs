@@ -1,0 +1,659 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Create Dask Bags &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API" href="bag-api.html" />
+    <link rel="prev" title="Bag" href="bag.html" />
+    <link rel="shortcut icon" href="_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="array.html">Array</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="bag.html">Bag</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Create Dask Bags</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#db-from-sequence"><code class="docutils literal notranslate"><span class="pre">db.from_sequence</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#db-read-text"><code class="docutils literal notranslate"><span class="pre">db.read_text</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#db-read-avro"><code class="docutils literal notranslate"><span class="pre">db.read_avro</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#db-from-delayed"><code class="docutils literal notranslate"><span class="pre">db.from_delayed</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#store-dask-bags">Store Dask Bags</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#in-memory">In Memory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#to-text-files">To Text Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#to-avro">To Avro</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#to-dataframes">To DataFrames</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#to-delayed-values">To Delayed Values</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="bag-api.html">API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bag.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bag.html#design">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bag.html#common-uses">Common Uses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bag.html#execution">Execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bag.html#known-limitations">Known Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bag.html#name">Name</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dataframe.html">DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">Task Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="bag.html">Bag</a> &raquo;</li>
+        
+      <li>Create Dask Bags</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/bag-creation.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="create-dask-bags">
+<h1>Create Dask Bags<a class="headerlink" href="#create-dask-bags" title="Permalink to this headline">¶</a></h1>
+<p>There are several ways to create Dask bags around your data:</p>
+<div class="section" id="db-from-sequence">
+<h2><code class="docutils literal notranslate"><span class="pre">db.from_sequence</span></code><a class="headerlink" href="#db-from-sequence" title="Permalink to this headline">¶</a></h2>
+<p>You can create a bag from an existing Python iterable:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask.bag</span> <span class="k">as</span> <span class="nn">db</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">from_sequence</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>You can control the number of partitions into which this data is binned:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">from_sequence</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="n">npartitions</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This controls the granularity of the parallelism that you expose.  By default,
+Dask will try to partition your data into about 100 partitions.</p>
+<p>IMPORTANT: do not load your data into Python and then load that data into a
+Dask bag.  Instead, use Dask Bag to load your data.  This
+parallelizes the loading step and reduces inter-worker communication:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">from_sequence</span><span class="p">([</span><span class="s1">&#39;1.dat&#39;</span><span class="p">,</span> <span class="s1">&#39;2.dat&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">load_from_filename</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="db-read-text">
+<h2><code class="docutils literal notranslate"><span class="pre">db.read_text</span></code><a class="headerlink" href="#db-read-text" title="Permalink to this headline">¶</a></h2>
+<p>Dask Bag can load data directly from text files.  You can pass either a
+single file name, a list of file names, or a globstring.  The resulting
+bag will have one item per line and one file per partition:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="s1">&#39;myfile.txt&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">read_text</span><span class="p">([</span><span class="s1">&#39;myfile.1.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;myfile.2.txt&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="s1">&#39;myfile.*.txt&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This handles standard compression libraries like <code class="docutils literal notranslate"><span class="pre">gzip</span></code>, <code class="docutils literal notranslate"><span class="pre">bz2</span></code>, <code class="docutils literal notranslate"><span class="pre">xz</span></code>, or
+any easily installed compression library that has a file-like object.
+Compression will be inferred by the file name extension, or by using the
+<code class="docutils literal notranslate"><span class="pre">compression='gzip'</span></code> keyword:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="s1">&#39;myfile.*.txt.gz&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The resulting items in the bag are strings. If you have encoded data like
+line-delimited JSON, then you may want to map a decoding or load function across
+the bag:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">json</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="s1">&#39;myfile.*.json&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Or do string munging tasks.  For convenience, there is a string namespace
+attached directly to bags with <code class="docutils literal notranslate"><span class="pre">.str.methodname</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="s1">&#39;myfile.*.csv&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="db-read-avro">
+<h2><code class="docutils literal notranslate"><span class="pre">db.read_avro</span></code><a class="headerlink" href="#db-read-avro" title="Permalink to this headline">¶</a></h2>
+<p>Dask Bag can read binary files in the <a class="reference external" href="https://avro.apache.org/docs/1.8.2/">Avro</a> format if <a class="reference external" href="https://fastavro.readthedocs.io">fastavro</a> is installed.
+A bag can be made from one or more files, with optional chunking within files.
+The resulting bag will have one item per Avro record, which will be a dictionary
+of the form given by the Avro schema.  There will be at least one partition per
+input file:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">read_avro</span><span class="p">(</span><span class="s1">&#39;datafile.avro&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">read_avro</span><span class="p">(</span><span class="s1">&#39;data.*.avro&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>By default, Dask will split data files into chunks of approximately <code class="docutils literal notranslate"><span class="pre">blocksize</span></code>
+bytes in size.  The actual blocks you would get depend on the internal blocking
+of the file.</p>
+<p>For files that are compressed after creation (this is not the same as the internal
+“codec” used by Avro), no chunking should be used, and there will be exactly one
+partition per file:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="n">bd</span><span class="o">.</span><span class="n">read_avro</span><span class="p">(</span><span class="s1">&#39;compressed.*.avro.gz&#39;</span><span class="p">,</span> <span class="n">blocksize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s1">&#39;gzip&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="db-from-delayed">
+<h2><code class="docutils literal notranslate"><span class="pre">db.from_delayed</span></code><a class="headerlink" href="#db-from-delayed" title="Permalink to this headline">¶</a></h2>
+<p>You can construct a Dask bag from <a class="reference internal" href="delayed.html"><span class="doc">dask.delayed</span></a> values using the
+<code class="docutils literal notranslate"><span class="pre">db.from_delayed</span></code> function.  For more information, see
+<a class="reference internal" href="delayed-collections.html"><span class="doc">documentation on using dask.delayed with collections</span></a>.</p>
+</div>
+</div>
+<div class="section" id="store-dask-bags">
+<h1>Store Dask Bags<a class="headerlink" href="#store-dask-bags" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="in-memory">
+<h2>In Memory<a class="headerlink" href="#in-memory" title="Permalink to this headline">¶</a></h2>
+<p>You can convert a Dask bag to a list or Python iterable by calling <code class="docutils literal notranslate"><span class="pre">compute()</span></code>
+or by converting the object into a list:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="go">or</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="to-text-files">
+<h2>To Text Files<a class="headerlink" href="#to-text-files" title="Permalink to this headline">¶</a></h2>
+<p>You can convert a Dask bag into a sequence of files on disk by calling the
+<code class="docutils literal notranslate"><span class="pre">.to_textfiles()</span></code> method:</p>
+<dl class="function">
+<dt id="dask.bag.core.to_textfiles">
+<code class="sig-prename descclassname">dask.bag.core.</code><code class="sig-name descname">to_textfiles</code><span class="sig-paren">(</span><em class="sig-param">b</em>, <em class="sig-param">path</em>, <em class="sig-param">name_function=None</em>, <em class="sig-param">compression='infer'</em>, <em class="sig-param">encoding='utf-8'</em>, <em class="sig-param">compute=True</em>, <em class="sig-param">storage_options=None</em>, <em class="sig-param">last_endline=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.core.to_textfiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write dask Bag to disk, one filename per partition, one line per element.</p>
+<p><strong>Paths</strong>: This will create one file for each partition in your bag. You
+can specify the filenames in a variety of ways.</p>
+<p>Use a globstring</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">to_textfiles</span><span class="p">(</span><span class="s1">&#39;/path/to/data/*.json.gz&#39;</span><span class="p">)</span>  
+</pre></div>
+</div>
+<p>The * will be replaced by the increasing sequence 1, 2, …</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="mf">0.</span><span class="n">json</span><span class="o">.</span><span class="n">gz</span>
+<span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="mf">1.</span><span class="n">json</span><span class="o">.</span><span class="n">gz</span>
+</pre></div>
+</div>
+<p>Use a globstring and a <code class="docutils literal notranslate"><span class="pre">name_function=</span></code> keyword argument.  The
+name_function function should expect an integer and produce a string.
+Strings produced by name_function must preserve the order of their
+respective partition indices.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">2015</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">name</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">&#39;2015-01-01&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span>
+<span class="go">&#39;2015-01-16&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">to_textfiles</span><span class="p">(</span><span class="s1">&#39;/path/to/data/*.json.gz&#39;</span><span class="p">,</span> <span class="n">name_function</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>  
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="mi">2015</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mf">01.</span><span class="n">json</span><span class="o">.</span><span class="n">gz</span>
+<span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="mi">2015</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mf">02.</span><span class="n">json</span><span class="o">.</span><span class="n">gz</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>You can also provide an explicit list of paths.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">paths</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/path/to/data/alice.json.gz&#39;</span><span class="p">,</span> <span class="s1">&#39;/path/to/data/bob.json.gz&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">to_textfiles</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span> 
+</pre></div>
+</div>
+<p><strong>Compression</strong>: Filenames with extensions corresponding to known
+compression algorithms (gz, bz2) will be compressed accordingly.</p>
+<p><strong>Bag Contents</strong>: The bag calling <code class="docutils literal notranslate"><span class="pre">to_textfiles</span></code> must be a bag of
+text strings. For example, a bag of dictionaries could be written to
+JSON text files by mapping <code class="docutils literal notranslate"><span class="pre">json.dumps</span></code> on to the bag first, and
+then calling <code class="docutils literal notranslate"><span class="pre">to_textfiles</span></code> :</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b_dict</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">)</span><span class="o">.</span><span class="n">to_textfiles</span><span class="p">(</span><span class="s2">&quot;/path/to/data/*.json&quot;</span><span class="p">)</span>  
+</pre></div>
+</div>
+<p><strong>Last endline</strong>: By default the last line does not end with a newline
+character. Pass <code class="docutils literal notranslate"><span class="pre">last_endline=True</span></code> to invert the default.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="to-avro">
+<h2>To Avro<a class="headerlink" href="#to-avro" title="Permalink to this headline">¶</a></h2>
+<p>Dask bags can be written directly to Avro binary format using <a class="reference external" href="https://fastavro.readthedocs.io">fastavro</a>. One file
+will be written per bag partition. This requires the user to provide a fully-specified
+schema dictionary (see the docstring of the <code class="docutils literal notranslate"><span class="pre">.to_avro()</span></code> method).</p>
+<dl class="function">
+<dt id="dask.bag.avro.to_avro">
+<code class="sig-prename descclassname">dask.bag.avro.</code><code class="sig-name descname">to_avro</code><span class="sig-paren">(</span><em class="sig-param">b</em>, <em class="sig-param">filename</em>, <em class="sig-param">schema</em>, <em class="sig-param">name_function=None</em>, <em class="sig-param">storage_options=None</em>, <em class="sig-param">codec='null'</em>, <em class="sig-param">sync_interval=16000</em>, <em class="sig-param">metadata=None</em>, <em class="sig-param">compute=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.avro.to_avro" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write bag to set of avro files</p>
+<p>The schema is a complex dictionary describing the data, see
+<a class="reference external" href="https://avro.apache.org/docs/1.8.2/gettingstartedpython.html#Defining+a+schema">https://avro.apache.org/docs/1.8.2/gettingstartedpython.html#Defining+a+schema</a>
+and <a class="reference external" href="https://fastavro.readthedocs.io/en/latest/writer.html">https://fastavro.readthedocs.io/en/latest/writer.html</a> .
+It’s structure is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Test&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;namespace&#39;</span><span class="p">:</span> <span class="s1">&#39;Test&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;doc&#39;</span><span class="p">:</span> <span class="s1">&#39;Descriptive text&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;record&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;int&#39;</span><span class="p">},</span>
+ <span class="p">]}</span>
+</pre></div>
+</div>
+<p>where the “name” field is required, but “namespace” and “doc” are optional
+descriptors; “type” must always be “record”. The list of fields should
+have an entry for every key of the input records, and the types are
+like the primitive, complex or logical types of the Avro spec
+( <a class="reference external" href="https://avro.apache.org/docs/1.8.2/spec.html">https://avro.apache.org/docs/1.8.2/spec.html</a> ).</p>
+<p>Results in one avro file per input partition.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>b: dask.bag.Bag</strong></dt><dd></dd>
+<dt><strong>filename: list of str or str</strong></dt><dd><p>Filenames to write to. If a list, number must match the number of
+partitions. If a string, must include a glob character “*”, which will
+be expanded using name_function</p>
+</dd>
+<dt><strong>schema: dict</strong></dt><dd><p>Avro schema dictionary, see above</p>
+</dd>
+<dt><strong>name_function: None or callable</strong></dt><dd><p>Expands integers into strings, see
+<code class="docutils literal notranslate"><span class="pre">dask.bytes.utils.build_name_function</span></code></p>
+</dd>
+<dt><strong>storage_options: None or dict</strong></dt><dd><p>Extra key/value options to pass to the backend file-system</p>
+</dd>
+<dt><strong>codec: ‘null’, ‘deflate’, or ‘snappy’</strong></dt><dd><p>Compression algorithm</p>
+</dd>
+<dt><strong>sync_interval: int</strong></dt><dd><p>Number of records to include in each block within a file</p>
+</dd>
+<dt><strong>metadata: None or dict</strong></dt><dd><p>Included in the file header</p>
+</dd>
+<dt><strong>compute: bool</strong></dt><dd><p>If True, files are written immediately, and function blocks. If False,
+returns delayed objects, which can be computed by the user where
+convenient.</p>
+</dd>
+<dt><strong>kwargs: passed to compute(), if compute=True</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask.bag</span> <span class="k">as</span> <span class="nn">db</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">from_sequence</span><span class="p">([{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">},</span>
+<span class="gp">... </span>                      <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">}])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">schema</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;People&#39;</span><span class="p">,</span> <span class="s1">&#39;doc&#39;</span><span class="p">:</span> <span class="s2">&quot;Set of people&#39;s scores&quot;</span><span class="p">,</span>
+<span class="gp">... </span>          <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;record&#39;</span><span class="p">,</span>
+<span class="gp">... </span>          <span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="p">[</span>
+<span class="gp">... </span>              <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;string&#39;</span><span class="p">},</span>
+<span class="gp">... </span>              <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;int&#39;</span><span class="p">}]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">to_avro</span><span class="p">(</span><span class="s1">&#39;my-data.*.avro&#39;</span><span class="p">,</span> <span class="n">schema</span><span class="p">)</span>  
+<span class="go">[&#39;my-data.0.avro&#39;, &#39;my-data.1.avro&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="to-dataframes">
+<h2>To DataFrames<a class="headerlink" href="#to-dataframes" title="Permalink to this headline">¶</a></h2>
+<p>You can convert a Dask bag into a <a class="reference internal" href="dataframe.html"><span class="doc">Dask DataFrame</span></a> and use
+those storage solutions.</p>
+<dl class="method">
+<dt id="dask.bag.core.Bag.to_dataframe">
+<code class="sig-prename descclassname">Bag.</code><code class="sig-name descname">to_dataframe</code><span class="sig-paren">(</span><em class="sig-param">meta=None</em>, <em class="sig-param">columns=None</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.core.Bag.to_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create Dask Dataframe from a Dask Bag.</p>
+<p>Bag should contain tuples, dict records, or scalars.</p>
+<p>Index will not be particularly meaningful.  Use <code class="docutils literal notranslate"><span class="pre">reindex</span></code> afterwards
+if necessary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>meta</strong><span class="classifier">pd.DataFrame, dict, iterable, optional</span></dt><dd><p>An empty <code class="docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> that matches the dtypes and column names
+of the output. This metadata is necessary for many algorithms in
+dask dataframe to work.  For ease of use, some alternative inputs
+are also available. Instead of a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>, a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of
+<code class="docutils literal notranslate"><span class="pre">{name:</span> <span class="pre">dtype}</span></code> or iterable of <code class="docutils literal notranslate"><span class="pre">(name,</span> <span class="pre">dtype)</span></code> can be provided.
+If not provided or a list, a single element from the first
+partition will be computed, triggering a potentially expensive call
+to <code class="docutils literal notranslate"><span class="pre">compute</span></code>. This may lead to unexpected results, so providing
+<code class="docutils literal notranslate"><span class="pre">meta</span></code> is recommended. For more information, see
+<code class="docutils literal notranslate"><span class="pre">dask.dataframe.utils.make_meta</span></code>.</p>
+</dd>
+<dt><strong>columns</strong><span class="classifier">sequence, optional</span></dt><dd><p>Column names to use. If the passed data do not have names
+associated with them, this argument provides names for the columns.
+Otherwise this argument indicates the order of the columns in the
+result (any names not found in the data will become all-NA
+columns).  Note that if <code class="docutils literal notranslate"><span class="pre">meta</span></code> is provided, column names will be
+taken from there and this parameter is invalid.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask.bag</span> <span class="k">as</span> <span class="nn">db</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">from_sequence</span><span class="p">([{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span>   <span class="s1">&#39;balance&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">},</span>
+<span class="gp">... </span>                      <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span>     <span class="s1">&#39;balance&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">},</span>
+<span class="gp">... </span>                      <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Charlie&#39;</span><span class="p">,</span> <span class="s1">&#39;balance&#39;</span><span class="p">:</span> <span class="mi">300</span><span class="p">}],</span>
+<span class="gp">... </span>                     <span class="n">npartitions</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="go">      name  balance</span>
+<span class="go">0    Alice      100</span>
+<span class="go">1      Bob      200</span>
+<span class="go">0  Charlie      300</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="to-delayed-values">
+<h2>To Delayed Values<a class="headerlink" href="#to-delayed-values" title="Permalink to this headline">¶</a></h2>
+<p>You can convert a Dask bag into a list of <a class="reference internal" href="delayed.html"><span class="doc">Dask delayed values</span></a>
+and custom storage solutions from there.</p>
+<dl class="method">
+<dt id="dask.bag.core.Bag.to_delayed">
+<code class="sig-prename descclassname">Bag.</code><code class="sig-name descname">to_delayed</code><span class="sig-paren">(</span><em class="sig-param">optimize_graph=True</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.bag.core.Bag.to_delayed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert into a list of <code class="docutils literal notranslate"><span class="pre">dask.delayed</span></code> objects, one per partition.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>optimize_graph</strong><span class="classifier">bool, optional</span></dt><dd><p>If True [default], the graph is optimized before converting into
+<code class="docutils literal notranslate"><span class="pre">dask.delayed</span></code> objects.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="bag-api.html#dask.bag.from_delayed" title="dask.bag.from_delayed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dask.bag.from_delayed</span></code></a></p>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="bag-api.html" class="btn btn-neutral float-right" title="API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="bag.html" class="btn btn-neutral float-left" title="Bag" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

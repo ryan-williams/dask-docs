@@ -1,0 +1,541 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Debugging &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Development Guidelines" href="develop.html" />
+    <link rel="prev" title="Diagnostics (distributed)" href="diagnostics-distributed.html" />
+    <link rel="shortcut icon" href="_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="array.html">Array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bag.html">Bag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataframe.html">DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Debugging</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#exceptions">Exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#inspect-exceptions-and-tracebacks">Inspect Exceptions and Tracebacks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#use-the-single-threaded-scheduler">Use the Single-Threaded Scheduler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rerun-failed-task-locally">Rerun Failed Task Locally</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#remove-failed-futures-manually">Remove Failed Futures Manually</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#inspect-scheduling-state">Inspect Scheduling State</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#web-diagnostics">Web Diagnostics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#logs">Logs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#localcluster">LocalCluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inspect-state-with-ipython">Inspect state with IPython</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">Task Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Debugging</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/debugging.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="debugging">
+<h1>Debugging<a class="headerlink" href="#debugging" title="Permalink to this headline">¶</a></h1>
+<p>Debugging parallel programs is hard.  Normal debugging tools like logging and
+using <code class="docutils literal notranslate"><span class="pre">pdb</span></code> to interact with tracebacks stop working normally when exceptions
+occur in far-away machines, different processes, or threads.</p>
+<p>Dask has a variety of mechanisms to make this process easier.  Depending on
+your situation, some of these approaches may be more appropriate than others.</p>
+<p>These approaches are ordered from lightweight or easy solutions to more
+involved solutions.</p>
+<div class="section" id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
+<p>When a task in your computation fails, the standard way of understanding what
+went wrong is to look at the exception and traceback.  Often people do this
+with the <code class="docutils literal notranslate"><span class="pre">pdb</span></code> module, IPython <code class="docutils literal notranslate"><span class="pre">%debug</span></code> or <code class="docutils literal notranslate"><span class="pre">%pdb</span></code> magics, or by just
+looking at the traceback and investigating where in their code the exception
+occurred.</p>
+<p>Normally when a computation executes in a separate thread or a different
+machine, these approaches break down.  To address this, Dask provides a few
+mechanisms to recreate the normal Python debugging experience.</p>
+<div class="section" id="inspect-exceptions-and-tracebacks">
+<h3>Inspect Exceptions and Tracebacks<a class="headerlink" href="#inspect-exceptions-and-tracebacks" title="Permalink to this headline">¶</a></h3>
+<p>By default, Dask already copies the exception and traceback wherever they
+occur and reraises that exception locally.  If your task failed with a
+<code class="docutils literal notranslate"><span class="pre">ZeroDivisionError</span></code> remotely, then you’ll get a <code class="docutils literal notranslate"><span class="pre">ZeroDivisionError</span></code> in your
+interactive session.  Similarly you’ll see a full traceback of where this error
+occurred, which, just like in normal Python, can help you to identify the
+troublesome spot in your code.</p>
+<p>However, you cannot use the <code class="docutils literal notranslate"><span class="pre">pdb</span></code> module or <code class="docutils literal notranslate"><span class="pre">%debug</span></code> IPython magics with
+these tracebacks to look at the value of variables during failure.  You can
+only inspect things visually.  Additionally, the top of the traceback may be
+filled with functions that are Dask-specific and not relevant to your
+problem, so you can safely ignore these.</p>
+<p>Both the single-machine and distributed schedulers do this.</p>
+</div>
+<div class="section" id="use-the-single-threaded-scheduler">
+<h3>Use the Single-Threaded Scheduler<a class="headerlink" href="#use-the-single-threaded-scheduler" title="Permalink to this headline">¶</a></h3>
+<p>Dask ships with a simple single-threaded scheduler.  This doesn’t offer any
+parallel performance improvements but does run your Dask computation
+faithfully in your local thread, allowing you to use normal tools like <code class="docutils literal notranslate"><span class="pre">pdb</span></code>,
+<code class="docutils literal notranslate"><span class="pre">%debug</span></code> IPython magics, the profiling tools like the <code class="docutils literal notranslate"><span class="pre">cProfile</span></code> module, and
+<a class="reference external" href="https://jiffyclub.github.io/snakeviz/">snakeviz</a>.  This allows you to use
+all of your normal Python debugging tricks in Dask computations, as long as you
+don’t need parallelism.</p>
+<p>The single-threaded scheduler can be used, for example, by setting
+<code class="docutils literal notranslate"><span class="pre">scheduler='single-threaded'</span></code> in a compute call:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">scheduler</span><span class="o">=</span><span class="s1">&#39;single-threaded&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For more ways to configure schedulers, see the <a class="reference internal" href="scheduling.html#scheduling-configuration"><span class="std std-ref">scheduler configuration
+documentation</span></a>.</p>
+<p>This only works for single-machine schedulers.  It does not work with
+<code class="docutils literal notranslate"><span class="pre">dask.distributed</span></code> unless you are comfortable using the Tornado API (look at the
+<a class="reference external" href="https://distributed.dask.org/en/latest/develop.html#writing-tests">testing infrastructure</a>
+docs, which accomplish this).  Also, because this operates on a single machine,
+it assumes that your computation can run on a single machine without exceeding
+memory limits.  It may be wise to use this approach on smaller versions of your
+problem if possible.</p>
+</div>
+<div class="section" id="rerun-failed-task-locally">
+<h3>Rerun Failed Task Locally<a class="headerlink" href="#rerun-failed-task-locally" title="Permalink to this headline">¶</a></h3>
+<p>If a remote task fails, we can collect the function and all inputs, bring them
+to the local thread, and then rerun the function in hopes of triggering the
+same exception locally where normal debugging tools can be used.</p>
+<p>With the single machine schedulers, use the <code class="docutils literal notranslate"><span class="pre">rerun_exceptions_locally=True</span></code>
+keyword:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">rerun_exceptions_locally</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>On the distributed scheduler use the <code class="docutils literal notranslate"><span class="pre">recreate_error_locally</span></code> method on
+anything that contains <code class="docutils literal notranslate"><span class="pre">Futures</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="go">ZeroDivisionError(...)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">pdb</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">future</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">recreate_error_locally</span><span class="p">(</span><span class="n">future</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="remove-failed-futures-manually">
+<h3>Remove Failed Futures Manually<a class="headerlink" href="#remove-failed-futures-manually" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes only parts of your computations fail, for example, if some rows of a
+CSV dataset are faulty in some way.  When running with the distributed
+scheduler, you can remove chunks of your data that have produced bad results if
+you switch to dealing with Futures:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask.dataframe</span> <span class="k">as</span> <span class="nn">dd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="o">...</span>           <span class="c1"># create dataframe</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">persist</span><span class="p">()</span>  <span class="c1"># start computing on the cluster</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">distributed.client</span> <span class="kn">import</span> <span class="n">futures_of</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">futures</span> <span class="o">=</span> <span class="n">futures_of</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>  <span class="c1"># get futures behind dataframe</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">futures</span>
+<span class="go">[&lt;Future: status: finished, type: pd.DataFrame, key: load-1&gt;</span>
+<span class="go"> &lt;Future: status: finished, type: pd.DataFrame, key: load-2&gt;</span>
+<span class="go"> &lt;Future: status: error, key: load-3&gt;</span>
+<span class="go"> &lt;Future: status: pending, key: load-4&gt;</span>
+<span class="go"> &lt;Future: status: error, key: load-5&gt;]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># wait until computation is done</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="nb">any</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s1">&#39;pending&#39;</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">futures</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># pick out only the successful futures and reconstruct the dataframe</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">good_futures</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">futures</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s1">&#39;finished&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">from_delayed</span><span class="p">(</span><span class="n">good_futures</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">_meta</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is a bit of a hack, but often practical when first exploring messy data.
+If you are using the concurrent.futures API (map, submit, gather), then this
+approach is more natural.</p>
+</div>
+</div>
+<div class="section" id="inspect-scheduling-state">
+<h2>Inspect Scheduling State<a class="headerlink" href="#inspect-scheduling-state" title="Permalink to this headline">¶</a></h2>
+<p>Not all errors present themselves as exceptions.  For example, in a distributed
+system workers may die unexpectedly, your computation may be unreasonably
+slow due to inter-worker communication or scheduler overhead, or one of several
+other issues.  Getting feedback about what’s going on can help to identify
+both failures and general performance bottlenecks.</p>
+<p>For the single-machine scheduler, see <a class="reference internal" href="understanding-performance.html"><span class="doc">diagnostics</span></a> documentation.  The rest of the section will
+assume that you are using the <a class="reference external" href="https://distributed.dask.org/en/latest/">distributed scheduler</a> where these issues arise more
+commonly.</p>
+<div class="section" id="web-diagnostics">
+<h3>Web Diagnostics<a class="headerlink" href="#web-diagnostics" title="Permalink to this headline">¶</a></h3>
+<p>First, the distributed scheduler has a number of <a class="reference external" href="https://distributed.dask.org/en/latest/web.html">diagnostic web pages</a> showing dozens of
+recorded metrics like CPU, memory, network, and disk use, a history of previous
+tasks, allocation of tasks to workers, worker memory pressure, work stealing,
+open file handle limits, etc.  <em>Many</em> problems can be correctly diagnosed by
+inspecting these pages.  By default, these are available at
+<code class="docutils literal notranslate"><span class="pre">http://scheduler:8787/</span></code>, <code class="docutils literal notranslate"><span class="pre">http://scheduler:8788/</span></code>, and <code class="docutils literal notranslate"><span class="pre">http://worker:8789/</span></code>,
+where <code class="docutils literal notranslate"><span class="pre">scheduler</span></code> and <code class="docutils literal notranslate"><span class="pre">worker</span></code> should be replaced by the addresses of the
+scheduler and each of the workers. See <a class="reference external" href="https://distributed.dask.org/en/latest/web.html">web diagnostic docs</a> for more information.</p>
+</div>
+<div class="section" id="logs">
+<h3>Logs<a class="headerlink" href="#logs" title="Permalink to this headline">¶</a></h3>
+<p>The scheduler, workers, and client all emits logs using <a class="reference external" href="https://docs.python.org/3/library/logging.html">Python’s standard
+logging module</a>.  By default,
+these emit to standard error.  When Dask is launched by a cluster job scheduler
+(SGE/SLURM/YARN/Mesos/Marathon/Kubernetes/whatever), that system will track
+these logs and will have an interface to help you access them.  If you are
+launching Dask on your own, they will probably dump to the screen unless you
+<a class="reference external" href="https://en.wikipedia.org/wiki/Redirection_(computing)#Redirecting_to_and_from_the_standard_file_handles">redirect stderr to a file</a>
+.</p>
+<p>You can control the logging verbosity in the <code class="docutils literal notranslate"><span class="pre">~/.dask/config.yaml</span></code> file.
+Defaults currently look like the following:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">logging</span><span class="p">:</span>
+  <span class="nt">distributed</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">info</span>
+  <span class="nt">distributed.client</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">warning</span>
+  <span class="nt">bokeh</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">error</span>
+</pre></div>
+</div>
+<p>So, for example, you could add a line like <code class="docutils literal notranslate"><span class="pre">distributed.worker:</span> <span class="pre">debug</span></code> to get
+<em>very</em> verbose output from the workers.</p>
+</div>
+</div>
+<div class="section" id="localcluster">
+<h2>LocalCluster<a class="headerlink" href="#localcluster" title="Permalink to this headline">¶</a></h2>
+<p>If you are using the distributed scheduler from a single machine, you may be
+setting up workers manually using the command line interface or you may be
+using <a class="reference external" href="https://distributed.dask.org/en/latest/local-cluster.html">LocalCluster</a>
+which is what runs when you just call <code class="docutils literal notranslate"><span class="pre">Client()</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">LocalCluster</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>  <span class="c1"># This is actually the following two commands</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cluster</span> <span class="o">=</span> <span class="n">LocalCluster</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">cluster</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>LocalCluster is useful because the scheduler and workers are in the same
+process with you, so you can easily inspect their <a class="reference external" href="https://distributed.dask.org/en/latest/scheduling-state.html">state</a> while
+they run (they are running in a separate thread):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cluster</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">processing</span>
+<span class="go">{&#39;worker-one:59858&#39;: {&#39;inc-123&#39;, &#39;add-443&#39;},</span>
+<span class="go"> &#39;worker-two:48248&#39;: {&#39;inc-456&#39;}}</span>
+</pre></div>
+</div>
+<p>You can also do this for the workers <em>if</em> you run them without nanny processes:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cluster</span> <span class="o">=</span> <span class="n">LocalCluster</span><span class="p">(</span><span class="n">nanny</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">cluster</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This can be very helpful if you want to use the Dask distributed API and still
+want to investigate what is going on directly within the workers.  Information
+is not distilled for you like it is in the web diagnostics, but you have full
+low-level access.</p>
+</div>
+<div class="section" id="inspect-state-with-ipython">
+<h2>Inspect state with IPython<a class="headerlink" href="#inspect-state-with-ipython" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes you want to inspect the state of your cluster but you don’t have the
+luxury of operating on a single machine.  In these cases you can launch an
+IPython kernel on the scheduler and on every worker, which lets you inspect
+state on the scheduler and workers as computations are completing.</p>
+<p>This does not give you the ability to run <code class="docutils literal notranslate"><span class="pre">%pdb</span></code> or <code class="docutils literal notranslate"><span class="pre">%debug</span></code> on remote
+machines. The tasks are still running in separate threads, and so are not
+easily accessible from an interactive IPython session.</p>
+<p>For more details, see the <a class="reference external" href="https://distributed.dask.org/en/latest/ipython.html">Dask distributed IPython docs</a>.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="develop.html" class="btn btn-neutral float-right" title="Development Guidelines" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="diagnostics-distributed.html" class="btn btn-neutral float-left" title="Diagnostics (distributed)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

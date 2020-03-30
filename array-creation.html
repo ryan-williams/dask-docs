@@ -1,0 +1,871 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Create Dask Arrays &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Overlapping Computations" href="array-overlap.html" />
+    <link rel="prev" title="Chunks" href="array-chunks.html" />
+    <link rel="shortcut icon" href="_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="array.html">Array</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="array-api.html">API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-best-practices.html">Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-chunks.html">Chunks</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Create Dask Arrays</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#numpy-slicing">NumPy Slicing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#random-data">Random Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#concatenation-and-stacking">Concatenation and Stacking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-dask-delayed">Using <code class="docutils literal notranslate"><span class="pre">dask.delayed</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#from-dask-dataframe">From Dask DataFrame</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#interactions-with-numpy-arrays">Interactions with NumPy arrays</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#chunks">Chunks</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#store-dask-arrays">Store Dask Arrays</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#in-memory">In Memory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#numpy-style-slicing">NumPy style slicing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hdf5">HDF5</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#zarr">Zarr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tiledb">TileDB</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#intermediate-storage">Intermediate storage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#plugins">Plugins</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#automatically-compute">Automatically compute</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#warn-on-large-chunks">Warn on large chunks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#combine">Combine</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="array-overlap.html">Overlapping Computations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-design.html">Internal Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-sparse.html">Sparse Arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-stats.html">Stats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-linear-operator.html">LinearOperator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-slicing.html">Slicing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-stack.html">Stack, Concatenate, and Block</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array-gufunc.html">Generalized Ufuncs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array.html#design">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array.html#common-uses">Common Uses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array.html#scope">Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="array.html#execution">Execution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="bag.html">Bag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataframe.html">DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">Task Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="array.html">Array</a> &raquo;</li>
+        
+      <li>Create Dask Arrays</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/array-creation.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="create-dask-arrays">
+<h1>Create Dask Arrays<a class="headerlink" href="#create-dask-arrays" title="Permalink to this headline">¶</a></h1>
+<p>You can load or store Dask arrays from a variety of common sources like HDF5,
+NetCDF, <a class="reference external" href="https://zarr.readthedocs.io/en/stable/">Zarr</a>, or any format that supports NumPy-style slicing.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="array-api.html#dask.array.from_array" title="dask.array.from_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_array</span></code></a>(x[, chunks, name, lock, asarray, …])</p></td>
+<td><p>Create dask array from something that looks like an array</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="array-api.html#dask.array.from_delayed" title="dask.array.from_delayed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_delayed</span></code></a>(value, shape[, dtype, meta, name])</p></td>
+<td><p>Create a dask array from a dask delayed value</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="array-api.html#dask.array.from_npy_stack" title="dask.array.from_npy_stack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_npy_stack</span></code></a>(dirname[, mmap_mode])</p></td>
+<td><p>Load dask array from stack of npy files</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="array-api.html#dask.array.from_zarr" title="dask.array.from_zarr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_zarr</span></code></a>(url[, component, storage_options, …])</p></td>
+<td><p>Load array from the zarr storage format</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="array-api.html#dask.array.stack" title="dask.array.stack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stack</span></code></a>(seq[, axis])</p></td>
+<td><p>Stack arrays along a new axis</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="array-api.html#dask.array.concatenate" title="dask.array.concatenate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concatenate</span></code></a>(seq[, axis, …])</p></td>
+<td><p>Concatenate arrays along an existing axis</p></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="numpy-slicing">
+<h2>NumPy Slicing<a class="headerlink" href="#numpy-slicing" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="array-api.html#dask.array.from_array" title="dask.array.from_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_array</span></code></a>(x[, chunks, name, lock, asarray, …])</p></td>
+<td><p>Create dask array from something that looks like an array</p></td>
+</tr>
+</tbody>
+</table>
+<p>Many storage formats have Python projects that expose storage using NumPy
+slicing syntax.  These include HDF5, NetCDF, BColz, Zarr, GRIB, etc.  For
+example, we can load a Dask array from an HDF5 file using <a class="reference external" href="https://www.h5py.org/">h5py</a>:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">h5py</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="s1">&#39;myfile.hdf5&#39;</span><span class="p">)</span> <span class="c1"># HDF5 file</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s1">&#39;/data/path&#39;</span><span class="p">]</span>          <span class="c1"># Pointer on on-disk array</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span><span class="o">.</span><span class="n">shape</span>                      <span class="c1"># d can be very large</span>
+<span class="p">(</span><span class="mi">1000000</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="n">d</span><span class="p">[:</span><span class="mi">5</span><span class="p">,</span> <span class="p">:</span><span class="mi">5</span><span class="p">]</span>                <span class="c1"># We slice to get numpy arrays</span>
+</pre></div>
+</div>
+<p>Given an object like <code class="docutils literal notranslate"><span class="pre">d</span></code> above that has <code class="docutils literal notranslate"><span class="pre">dtype</span></code> and <code class="docutils literal notranslate"><span class="pre">shape</span></code> properties
+and that supports NumPy style slicing, we can construct a lazy Dask array:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">dask.array</span> <span class="k">as</span> <span class="nn">da</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>This process is entirely lazy.  Neither creating the h5py object nor wrapping
+it with <code class="docutils literal notranslate"><span class="pre">da.from_array</span></code> have loaded any data.</p>
+</div>
+<div class="section" id="random-data">
+<h2>Random Data<a class="headerlink" href="#random-data" title="Permalink to this headline">¶</a></h2>
+<p>For experimentation or benchmarking it is common to create arrays of random
+data.  The <code class="docutils literal notranslate"><span class="pre">dask.array.random</span></code> module implements most of the functions in the
+<code class="docutils literal notranslate"><span class="pre">numpy.random</span></code> module.  We list some common functions below but for a full
+list see the <a class="reference internal" href="array-api.html"><span class="doc">Array API</span></a>:</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="array-api.html#dask.array.random.binomial" title="dask.array.random.binomial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">random.binomial</span></code></a>(n, p[, size])</p></td>
+<td><p>This docstring was copied from numpy.random.mtrand.RandomState.binomial.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="array-api.html#dask.array.random.normal" title="dask.array.random.normal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">random.normal</span></code></a>([loc, scale, size])</p></td>
+<td><p>This docstring was copied from numpy.random.mtrand.RandomState.normal.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="array-api.html#dask.array.random.poisson" title="dask.array.random.poisson"><code class="xref py py-obj docutils literal notranslate"><span class="pre">random.poisson</span></code></a>([lam, size])</p></td>
+<td><p>This docstring was copied from numpy.random.mtrand.RandomState.poisson.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="array-api.html#dask.array.random.random" title="dask.array.random.random"><code class="xref py py-obj docutils literal notranslate"><span class="pre">random.random</span></code></a>([size])</p></td>
+<td><p>This docstring was copied from numpy.random.mtrand.RandomState.random_sample.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask.array</span> <span class="k">as</span> <span class="nn">da</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">),</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="concatenation-and-stacking">
+<h2>Concatenation and Stacking<a class="headerlink" href="#concatenation-and-stacking" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="array-api.html#dask.array.stack" title="dask.array.stack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stack</span></code></a>(seq[, axis])</p></td>
+<td><p>Stack arrays along a new axis</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="array-api.html#dask.array.concatenate" title="dask.array.concatenate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concatenate</span></code></a>(seq[, axis, …])</p></td>
+<td><p>Concatenate arrays along an existing axis</p></td>
+</tr>
+</tbody>
+</table>
+<p>Often we store data in several different locations and want to stitch them together:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">dask_arrays</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s1">&#39;/data&#39;</span><span class="p">]</span>
+    <span class="n">array</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">))</span>
+    <span class="n">dask_arrays</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">dask_arrays</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># concatenate arrays along first axis</span>
+</pre></div>
+</div>
+<p>For more information, see <a class="reference internal" href="array-stack.html"><span class="doc">concatenation and stacking</span></a> docs.</p>
+</div>
+<div class="section" id="using-dask-delayed">
+<h2>Using <code class="docutils literal notranslate"><span class="pre">dask.delayed</span></code><a class="headerlink" href="#using-dask-delayed" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="array-api.html#dask.array.from_delayed" title="dask.array.from_delayed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_delayed</span></code></a>(value, shape[, dtype, meta, name])</p></td>
+<td><p>Create a dask array from a dask delayed value</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="array-api.html#dask.array.stack" title="dask.array.stack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stack</span></code></a>(seq[, axis])</p></td>
+<td><p>Stack arrays along a new axis</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="array-api.html#dask.array.concatenate" title="dask.array.concatenate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concatenate</span></code></a>(seq[, axis, …])</p></td>
+<td><p>Concatenate arrays along an existing axis</p></td>
+</tr>
+</tbody>
+</table>
+<p>Sometimes NumPy-style data resides in formats that do not support NumPy-style
+slicing.  We can still construct Dask arrays around this data if we have a
+Python function that can generate pieces of the full array if we use
+<a class="reference internal" href="delayed.html"><span class="doc">dask.delayed</span></a>.  Dask delayed lets us delay a single function
+call that would create a NumPy array.  We can then wrap this delayed object
+with <code class="docutils literal notranslate"><span class="pre">da.from_delayed</span></code>, providing a dtype and shape to produce a
+single-chunked Dask array.  Furthermore, we can use <code class="docutils literal notranslate"><span class="pre">stack</span></code> or <code class="docutils literal notranslate"><span class="pre">concatenate</span></code> from
+before to construct a larger lazy array.</p>
+<p>As an example, consider loading a stack of images using <code class="docutils literal notranslate"><span class="pre">skimage.io.imread</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">skimage.io</span>
+<span class="kn">import</span> <span class="nn">dask.array</span> <span class="k">as</span> <span class="nn">da</span>
+<span class="kn">import</span> <span class="nn">dask</span>
+
+<span class="n">imread</span> <span class="o">=</span> <span class="n">dask</span><span class="o">.</span><span class="n">delayed</span><span class="p">(</span><span class="n">skimage</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">imread</span><span class="p">,</span> <span class="n">pure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Lazy version of imread</span>
+
+<span class="n">filenames</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;*.jpg&#39;</span><span class="p">))</span>
+
+<span class="n">lazy_images</span> <span class="o">=</span> <span class="p">[</span><span class="n">imread</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">]</span>   <span class="c1"># Lazily evaluate imread on each path</span>
+<span class="n">sample</span> <span class="o">=</span> <span class="n">lazy_images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>  <span class="c1"># load the first image (assume rest are same shape/dtype)</span>
+
+<span class="n">arrays</span> <span class="o">=</span> <span class="p">[</span><span class="n">da</span><span class="o">.</span><span class="n">from_delayed</span><span class="p">(</span><span class="n">lazy_image</span><span class="p">,</span>           <span class="c1"># Construct a small Dask array</span>
+                          <span class="n">dtype</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>   <span class="c1"># for every lazy value</span>
+                          <span class="n">shape</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+          <span class="k">for</span> <span class="n">lazy_image</span> <span class="ow">in</span> <span class="n">lazy_images</span><span class="p">]</span>
+
+<span class="n">stack</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">arrays</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>                <span class="c1"># Stack all small Dask arrays into one</span>
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="delayed-collections.html"><span class="doc">documentation on using dask.delayed with collections</span></a>.</p>
+</div>
+<div class="section" id="from-dask-dataframe">
+<h2>From Dask DataFrame<a class="headerlink" href="#from-dask-dataframe" title="Permalink to this headline">¶</a></h2>
+<p>There are several ways to create a Dask array from a Dask DataFrame. Dask DataFrames have a <code class="docutils literal notranslate"><span class="pre">to_dask_array</span></code> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">dask</span><span class="o">.</span><span class="n">dataframes</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">to_dask_array</span><span class="p">()</span>
+<span class="go">dask.array&lt;values, shape=(nan, 3), dtype=float64, chunksize=(nan, 3), chunktype=numpy.ndarray&gt;</span>
+</pre></div>
+</div>
+<p>This mirrors the <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_numpy.html">to_numpy</a>
+function in Pandas. The <code class="docutils literal notranslate"><span class="pre">values</span></code> attribute is also supported:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">values</span>
+<span class="go">dask.array&lt;values, shape=(nan, 3), dtype=float64, chunksize=(nan, 3), chunktype=numpy.ndarray&gt;</span>
+</pre></div>
+</div>
+<p>However, these arrays do not have known chunk sizes because dask.dataframe does
+not track the number of rows in each partition. This means that some operations
+like slicing will not operate correctly.</p>
+<p>The chunk sizes can be computed:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">to_dask_array</span><span class="p">(</span><span class="n">lengths</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">dask.array&lt;array, shape=(100, 3), dtype=float64, chunksize=(50, 3), chunktype=numpy.ndarray&gt;</span>
+</pre></div>
+</div>
+<p>Specifying <code class="docutils literal notranslate"><span class="pre">lengths=True</span></code> triggers immediate computation of the chunk sizes.
+This enables downstream computations that rely on having known chunk sizes
+(e.g., slicing).</p>
+<p>The Dask DataFrame <code class="docutils literal notranslate"><span class="pre">to_records</span></code> method also returns a Dask Array, but does not compute the shape
+information:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">to_records</span><span class="p">()</span>
+<span class="go">dask.array&lt;to_records, shape=(nan,), dtype=(numpy.record, [(&#39;index&#39;, &#39;&lt;i8&#39;), (&#39;x&#39;, &#39;&lt;f8&#39;), (&#39;y&#39;, &#39;&lt;f8&#39;), (&#39;z&#39;, &#39;&lt;f8&#39;)]), chunksize=(nan,), chunktype=numpy.ndarray&gt;</span>
+</pre></div>
+</div>
+<p>If you have a function that converts a Pandas DataFrame into a NumPy array,
+then calling <code class="docutils literal notranslate"><span class="pre">map_partitions</span></code> with that function on a Dask DataFrame will
+produce a Dask array:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">map_partitions</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">)</span>
+<span class="go">dask.array&lt;asarray, shape=(nan, 3), dtype=float64, chunksize=(nan, 3), chunktype=numpy.ndarray&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="interactions-with-numpy-arrays">
+<h2>Interactions with NumPy arrays<a class="headerlink" href="#interactions-with-numpy-arrays" title="Permalink to this headline">¶</a></h2>
+<p>Dask array operations will automatically convert NumPy arrays into single-chunk
+dask arrays:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="go">5</span>
+</pre></div>
+</div>
+<p>When NumPy and Dask arrays interact, the result will be a Dask array.  Automatic
+rechunking rules will generally slice the NumPy array into the appropriate Dask
+chunk shape:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z</span>
+<span class="go">dask.array&lt;add, shape=(10,), dtype=float64, chunksize=(5,), chunktype=numpy.ndarray&gt;</span>
+</pre></div>
+</div>
+<p>These interactions work not just for NumPy arrays but for any object that has
+shape and dtype attributes and implements NumPy slicing syntax.</p>
+</div>
+<div class="section" id="chunks">
+<h2>Chunks<a class="headerlink" href="#chunks" title="Permalink to this headline">¶</a></h2>
+<p>See <a class="reference internal" href="array-chunks.html"><span class="doc">documentation on Array Chunks</span></a> for more information.</p>
+</div>
+</div>
+<div class="section" id="store-dask-arrays">
+<h1>Store Dask Arrays<a class="headerlink" href="#store-dask-arrays" title="Permalink to this headline">¶</a></h1>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="array-api.html#dask.array.store" title="dask.array.store"><code class="xref py py-obj docutils literal notranslate"><span class="pre">store</span></code></a>(sources, targets[, lock, regions, …])</p></td>
+<td><p>Store dask arrays in array-like objects, overwrite data in target</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="array-api.html#dask.array.to_hdf5" title="dask.array.to_hdf5"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_hdf5</span></code></a>(filename, *args, **kwargs)</p></td>
+<td><p>Store arrays in HDF5 file</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="array-api.html#dask.array.to_npy_stack" title="dask.array.to_npy_stack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_npy_stack</span></code></a>(dirname, x[, axis])</p></td>
+<td><p>Write dask array to a stack of .npy files</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="array-api.html#dask.array.to_zarr" title="dask.array.to_zarr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_zarr</span></code></a>(arr, url[, component, …])</p></td>
+<td><p>Save array to the zarr storage format</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute</span></code>(*args, **kwargs)</p></td>
+<td><p>Compute several dask collections at once.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="in-memory">
+<h2>In Memory<a class="headerlink" href="#in-memory" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute</span></code>(*args, **kwargs)</p></td>
+<td><p>Compute several dask collections at once.</p></td>
+</tr>
+</tbody>
+</table>
+<p>If you have a small amount of data, you can call <code class="docutils literal notranslate"><span class="pre">np.array</span></code> or <code class="docutils literal notranslate"><span class="pre">.compute()</span></code>
+on your Dask array to turn in to a normal NumPy array:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">25</span><span class="p">])</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">y</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">25</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="numpy-style-slicing">
+<h2>NumPy style slicing<a class="headerlink" href="#numpy-style-slicing" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="array-api.html#dask.array.store" title="dask.array.store"><code class="xref py py-obj docutils literal notranslate"><span class="pre">store</span></code></a>(sources, targets[, lock, regions, …])</p></td>
+<td><p>Store dask arrays in array-like objects, overwrite data in target</p></td>
+</tr>
+</tbody>
+</table>
+<p>You can store Dask arrays in any object that supports NumPy-style slice
+assignment like <code class="docutils literal notranslate"><span class="pre">h5py.Dataset</span></code>:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">h5py</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="s1">&#39;myfile.hdf5&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">require_dataset</span><span class="p">(</span><span class="s1">&#39;/data&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">da</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Also, you can store several arrays in one computation by passing lists of sources and
+destinations:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">da</span><span class="o">.</span><span class="n">store</span><span class="p">([</span><span class="n">array1</span><span class="p">,</span> <span class="n">array2</span><span class="p">],</span> <span class="p">[</span><span class="n">output1</span><span class="p">,</span> <span class="n">output2</span><span class="p">])</span>  <span class="c1"># doctest: +SKIP</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="hdf5">
+<h2>HDF5<a class="headerlink" href="#hdf5" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="array-api.html#dask.array.to_hdf5" title="dask.array.to_hdf5"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_hdf5</span></code></a>(filename, *args, **kwargs)</p></td>
+<td><p>Store arrays in HDF5 file</p></td>
+</tr>
+</tbody>
+</table>
+<p>HDF5 is sufficiently common that there is a special function <code class="docutils literal notranslate"><span class="pre">to_hdf5</span></code> to
+store data into HDF5 files using <code class="docutils literal notranslate"><span class="pre">h5py</span></code>:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">da</span><span class="o">.</span><span class="n">to_hdf5</span><span class="p">(</span><span class="s1">&#39;myfile.hdf5&#39;</span><span class="p">,</span> <span class="s1">&#39;/y&#39;</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>  <span class="c1"># doctest: +SKIP</span>
+</pre></div>
+</div>
+<p>You can store several arrays in one computation with the function
+<code class="docutils literal notranslate"><span class="pre">da.to_hdf5</span></code> by passing in a dictionary:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">da</span><span class="o">.</span><span class="n">to_hdf5</span><span class="p">(</span><span class="s1">&#39;myfile.hdf5&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;/x&#39;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s1">&#39;/y&#39;</span><span class="p">:</span> <span class="n">y</span><span class="p">})</span>  <span class="c1"># doctest: +SKIP</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="zarr">
+<h2>Zarr<a class="headerlink" href="#zarr" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference external" href="https://zarr.readthedocs.io/en/stable/">Zarr</a> format is a chunk-wise binary array
+storage file format with a good selection of encoding and compression options.
+Due to each chunk being stored in a separate file, it is ideal for parallel
+access in both reading and writing (for the latter, if the Dask array
+chunks are aligned with the target). Furthermore, storage in
+<a class="reference internal" href="remote-data-services.html"><span class="doc">remote data services</span></a> such as S3 and GCS is
+supported.</p>
+<p>For example, to save data to a local zarr dataset you would do:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">arr</span><span class="o">.</span><span class="n">to_zarr</span><span class="p">(</span><span class="s1">&#39;output.zarr&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>or to save to a particular bucket on S3:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">arr</span><span class="o">.</span><span class="n">to_zarr</span><span class="p">(</span><span class="s1">&#39;s3://mybucket/output.zarr&#39;</span><span class="p">,</span> <span class="n">storage_option</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="s1">&#39;mykey&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;secret&#39;</span><span class="p">:</span> <span class="s1">&#39;mysecret&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>or your own custom zarr Array:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">z</span> <span class="o">=</span> <span class="n">zarr</span><span class="o">.</span><span class="n">create</span><span class="p">((</span><span class="mi">10</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">store</span><span class="o">=</span><span class="n">zarr</span><span class="o">.</span><span class="n">ZipStore</span><span class="p">(</span><span class="s2">&quot;output.zarr&quot;</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">arr</span><span class="o">.</span><span class="n">to_zarr</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To retrieve those data, you would do <code class="docutils literal notranslate"><span class="pre">da.from_zarr</span></code> with exactly the same arguments. The
+chunking of the resultant Dask array is defined by how the files were saved, unless
+otherwise specified.</p>
+</div>
+<div class="section" id="tiledb">
+<h2>TileDB<a class="headerlink" href="#tiledb" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://docs.tiledb.io">TileDB</a>  is a binary array format and storage manager with
+tunable chunking, layout, and compression options. The TileDB storage manager library
+includes support for scalable storage backends such as S3 API compatible object stores
+and HDFS, with automatic scaling, and supports multi-threaded and multi-process
+reads (consistent) and writes (eventually-consistent).</p>
+<p>To save data to a local TileDB array:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">arr</span><span class="o">.</span><span class="n">to_tiledb</span><span class="p">(</span><span class="s1">&#39;output.tdb&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>or to save to a bucket on S3:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">arr</span><span class="o">.</span><span class="n">to_tiledb</span><span class="p">(</span><span class="s1">&#39;s3://mybucket/output.tdb&#39;</span><span class="p">,</span>
+<span class="go">                  storage_options={&#39;vfs.s3.aws_access_key_id&#39;: &#39;mykey&#39;,</span>
+<span class="go">                                   &#39;vfs.s3.aws_secret_access_key&#39;: &#39;mysecret&#39;})</span>
+</pre></div>
+</div>
+<p>Files may be retrieved by running <cite>da.from_tiledb</cite> with the same URI, and any
+necessary arguments.</p>
+</div>
+<div class="section" id="intermediate-storage">
+<h2>Intermediate storage<a class="headerlink" href="#intermediate-storage" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="array-api.html#dask.array.store" title="dask.array.store"><code class="xref py py-obj docutils literal notranslate"><span class="pre">store</span></code></a>(sources, targets[, lock, regions, …])</p></td>
+<td><p>Store dask arrays in array-like objects, overwrite data in target</p></td>
+</tr>
+</tbody>
+</table>
+<p>In some cases, one may wish to store an intermediate result in long term
+storage. This differs from <code class="docutils literal notranslate"><span class="pre">persist</span></code>, which is mainly used to manage
+intermediate results within Dask that don’t necessarily have longevity.
+Also it differs from storing final results as these mark the end of the Dask
+graph. Thus intermediate results are easier to reuse without reloading data.
+Intermediate storage is mainly useful in cases where the data is needed
+outside of Dask (e.g. on disk, in a database, in the cloud, etc.). It can
+be useful as a checkpoint for long running or error-prone computations.</p>
+<p>The intermediate storage use case differs from the typical storage use case as
+a Dask Array is returned to the user that represents the result of that
+storage operation. This is typically done by setting the <code class="docutils literal notranslate"><span class="pre">store</span></code> function’s
+<code class="docutils literal notranslate"><span class="pre">return_stored</span></code> flag to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">.</span><span class="n">store</span><span class="p">()</span>  <span class="c1"># stores data, returns nothing</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">return_stored</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># stores data, returns new dask array backed by that data</span>
+</pre></div>
+</div>
+<p>The user can then decide whether the
+storage operation happens immediately (by setting the <code class="docutils literal notranslate"><span class="pre">compute</span></code> flag to
+<code class="docutils literal notranslate"><span class="pre">True</span></code>) or later (by setting the <code class="docutils literal notranslate"><span class="pre">compute</span></code> flag to <code class="docutils literal notranslate"><span class="pre">False</span></code>). In all
+other ways, this behaves the same as a normal call to <code class="docutils literal notranslate"><span class="pre">store</span></code>. Some examples
+are shown below.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">dask.array</span> <span class="k">as</span> <span class="nn">da</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">zarr</span> <span class="k">as</span> <span class="nn">zr</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="n">chunks</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">z1</span> <span class="o">=</span> <span class="n">zr</span><span class="o">.</span><span class="n">open_array</span><span class="p">(</span><span class="s1">&#39;lazy.zarr&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">z2</span> <span class="o">=</span> <span class="n">zr</span><span class="o">.</span><span class="n">open_array</span><span class="p">(</span><span class="s1">&#39;eager.zarr&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d1</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">z1</span><span class="p">,</span> <span class="n">compute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_stored</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d2</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">z2</span><span class="p">,</span> <span class="n">compute</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_stored</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This can be combined with any other storage strategies either noted above, in
+the docs or for any specialized storage types.</p>
+</div>
+</div>
+<div class="section" id="plugins">
+<h1>Plugins<a class="headerlink" href="#plugins" title="Permalink to this headline">¶</a></h1>
+<p>We can run arbitrary user-defined functions on Dask arrays whenever they are
+constructed.  This allows us to build a variety of custom behaviors that improve
+debugging, user warning, etc.  You can register a list of functions to run on
+all Dask arrays to the global <code class="docutils literal notranslate"><span class="pre">array_plugins=</span></code> value:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">nbytes</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">array_plugins</span><span class="o">=</span><span class="p">[</span><span class="n">f</span><span class="p">]):</span>
+<span class="gp">... </span>    <span class="n">x</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+<span class="go">80</span>
+<span class="go">80</span>
+<span class="go">800</span>
+<span class="go">800</span>
+</pre></div>
+</div>
+<p>If the plugin function returns None, then the input Dask array will be returned
+without change.  If the plugin function returns something else, then that value
+will be the result of the constructor.</p>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="automatically-compute">
+<h3>Automatically compute<a class="headerlink" href="#automatically-compute" title="Permalink to this headline">¶</a></h3>
+<p>We may wish to turn some Dask array code into normal NumPy code.  This is
+useful, for example, to track down errors immediately that would otherwise be
+hidden by Dask’s lazy semantics:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">array_plugins</span><span class="o">=</span><span class="p">[</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">compute</span><span class="p">()]):</span>
+<span class="gp">... </span>    <span class="n">x</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span>  <span class="c1"># this was automatically converted into a numpy array</span>
+<span class="go">array([0, 1, 2, 3, 4])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="warn-on-large-chunks">
+<h3>Warn on large chunks<a class="headerlink" href="#warn-on-large-chunks" title="Permalink to this headline">¶</a></h3>
+<p>We may wish to warn users if they are creating chunks that are too large:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">warn_on_large_chunks</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">shapes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="o">.</span><span class="n">chunks</span><span class="p">))</span>
+    <span class="n">nbytes</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">itemsize</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="k">for</span> <span class="n">shape</span> <span class="ow">in</span> <span class="n">shapes</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">nb</span> <span class="o">&gt;</span> <span class="mf">1e9</span> <span class="k">for</span> <span class="n">nb</span> <span class="ow">in</span> <span class="n">nbytes</span><span class="p">):</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Array contains very large chunks&quot;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">array_plugins</span><span class="o">=</span><span class="p">[</span><span class="n">warn_on_large_chunks</span><span class="p">]):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="combine">
+<h3>Combine<a class="headerlink" href="#combine" title="Permalink to this headline">¶</a></h3>
+<p>You can also combine these plugins into a list.  They will run one after the
+other, chaining results through them:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">array_plugins</span><span class="o">=</span><span class="p">[</span><span class="n">warn_on_large_chunks</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">compute</span><span class="p">()]):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="array-overlap.html" class="btn btn-neutral float-right" title="Overlapping Computations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="array-chunks.html" class="btn btn-neutral float-left" title="Chunks" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,564 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Best Practices &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Internal Design" href="dataframe-design.html" />
+    <link rel="prev" title="Create and Store Dask DataFrames" href="dataframe-create.html" />
+    <link rel="shortcut icon" href="_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="array.html">Array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bag.html">Bag</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="dataframe.html">DataFrame</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dataframe-api.html">API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-create.html">Create and Store Dask DataFrames</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Best Practices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#use-pandas">Use Pandas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reduce-and-then-use-pandas">Reduce, and then use Pandas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pandas-performance-tips-apply-to-dask-dataframe">Pandas Performance Tips Apply to Dask DataFrame</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#use-the-index">Use the Index</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#avoid-full-data-shuffling">Avoid Full-Data Shuffling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#persist-intelligently">Persist Intelligently</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#repartition-to-reduce-overhead">Repartition to Reduce Overhead</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#joins">Joins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#store-data-in-apache-parquet-format">Store Data in Apache Parquet Format</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-design.html">Internal Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-groupby.html">Shuffling for GroupBy and Join</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-groupby.html#aggregate">Aggregate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-joins.html">Joins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-indexing.html">Indexing into Dask DataFrames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-categoricals.html">Categoricals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-extend.html">Extending DataFrames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html#design">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html#dask-dataframe-copies-the-pandas-api">Dask DataFrame copies the Pandas API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html#common-uses-and-anti-uses">Common Uses and Anti-Uses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html#scope">Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html#execution">Execution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">Task Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="dataframe.html">DataFrame</a> &raquo;</li>
+        
+      <li>Best Practices</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/dataframe-best-practices.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="best-practices">
+<span id="dataframe-performance"></span><h1>Best Practices<a class="headerlink" href="#best-practices" title="Permalink to this headline">¶</a></h1>
+<p>It is easy to get started with Dask DataFrame, but using it <em>well</em> does require
+some experience.  This page contains suggestions for best practices, and
+includes solutions to common problems.</p>
+<div class="section" id="use-pandas">
+<h2>Use Pandas<a class="headerlink" href="#use-pandas" title="Permalink to this headline">¶</a></h2>
+<p>For data that fits into RAM, Pandas can often be faster and easier to use than
+Dask DataFrame.  While “Big Data” tools can be exciting, they are almost always
+worse than normal data tools while those remain appropriate.</p>
+</div>
+<div class="section" id="reduce-and-then-use-pandas">
+<h2>Reduce, and then use Pandas<a class="headerlink" href="#reduce-and-then-use-pandas" title="Permalink to this headline">¶</a></h2>
+<p>Similar to above, even if you have a large dataset there may be a point in your
+computation where you’ve reduced things to a more manageable level.  You may
+want to switch to Pandas at this point.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s1">&#39;my-giant-file.parquet&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;Alice&#39;</span><span class="p">]</span>              <span class="c1"># Select a subsection</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>   <span class="c1"># Reduce to a smaller size</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>                <span class="c1"># Convert to Pandas dataframe</span>
+<span class="n">result</span><span class="o">...</span>                                <span class="c1"># Continue working with Pandas</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pandas-performance-tips-apply-to-dask-dataframe">
+<h2>Pandas Performance Tips Apply to Dask DataFrame<a class="headerlink" href="#pandas-performance-tips-apply-to-dask-dataframe" title="Permalink to this headline">¶</a></h2>
+<p>Usual Pandas performance tips like avoiding apply, using vectorized
+operations, using categoricals, etc., all apply equally to Dask DataFrame.  See
+<a class="reference external" href="https://tomaugspurger.github.io/modern-1-intro">Modern Pandas</a> by <a class="reference external" href="https://github.com/TomAugspurger">Tom
+Augspurger</a> for a good read on this topic.</p>
+</div>
+<div class="section" id="use-the-index">
+<h2>Use the Index<a class="headerlink" href="#use-the-index" title="Permalink to this headline">¶</a></h2>
+<p>Dask DataFrame can be optionally sorted along a single index column.  Some
+operations against this column can be very fast.  For example, if your dataset
+is sorted by time, you can quickly select data for a particular day, perform
+time series joins, etc.  You can check if your data is sorted by looking at the
+<code class="docutils literal notranslate"><span class="pre">df.known_divisions</span></code> attribute.  You can set an index column using the
+<code class="docutils literal notranslate"><span class="pre">.set_index(column_name)</span></code> method.  This operation is expensive though, so use
+it sparingly (see below):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;timestamp&#39;</span><span class="p">)</span>  <span class="c1"># set the index to make some operations fast</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;2001-01-05&#39;</span><span class="p">:</span><span class="s1">&#39;2001-01-12&#39;</span><span class="p">]</span>  <span class="c1"># this is very fast if you have an index</span>
+<span class="n">df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="n">left_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># this is also very fast</span>
+</pre></div>
+</div>
+<p>For more information, see documentation on <a class="reference internal" href="dataframe-design.html#dataframe-design-partitions"><span class="std std-ref">dataframe partitions</span></a>.</p>
+</div>
+<div class="section" id="avoid-full-data-shuffling">
+<h2>Avoid Full-Data Shuffling<a class="headerlink" href="#avoid-full-data-shuffling" title="Permalink to this headline">¶</a></h2>
+<p>Setting an index is an important but expensive operation (see above).  You
+should do it infrequently and you should persist afterwards (see below).</p>
+<p>Some operations like <code class="docutils literal notranslate"><span class="pre">set_index</span></code> and <code class="docutils literal notranslate"><span class="pre">merge/join</span></code> are harder to do in a
+parallel or distributed setting than if they are in-memory on a single machine.
+In particular, <em>shuffling operations</em> that rearrange data become much more
+communication intensive.  For example, if your data is arranged by customer ID
+but now you want to arrange it by time, all of your partitions will have to talk
+to each other to exchange shards of data.  This can be an intensive process,
+particularly on a cluster.</p>
+<p>So, definitely set the index but try do so infrequently.  After you set the
+index, you may want to <code class="docutils literal notranslate"><span class="pre">persist</span></code> your data if you are on a cluster:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;column_name&#39;</span><span class="p">)</span>  <span class="c1"># do this infrequently</span>
+</pre></div>
+</div>
+<p>Additionally, <code class="docutils literal notranslate"><span class="pre">set_index</span></code> has a few options that can accelerate it in some
+situations.  For example, if you know that your dataset is sorted or you already
+know the values by which it is divided, you can provide these to accelerate the
+<code class="docutils literal notranslate"><span class="pre">set_index</span></code> operation.  For more information, see the <a class="reference external" href="https://docs.dask.org/en/latest/dataframe-api.html#dask.dataframe.DataFrame.set_index">set_index docstring</a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df2</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">timestamp</span><span class="p">,</span> <span class="nb">sorted</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="persist-intelligently">
+<h2>Persist Intelligently<a class="headerlink" href="#persist-intelligently" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This section is only relevant to users on distributed systems.</p>
+</div>
+<p>Often DataFrame workloads look like the following:</p>
+<ol class="arabic simple">
+<li><p>Load data from files</p></li>
+<li><p>Filter data to a particular subset</p></li>
+<li><p>Shuffle data to set an intelligent index</p></li>
+<li><p>Several complex queries on top of this indexed data</p></li>
+</ol>
+<p>It is often ideal to load, filter, and shuffle data once and keep this result in
+memory.  Afterwards, each of the several complex queries can be based off of
+this in-memory data rather than have to repeat the full load-filter-shuffle
+process each time.  To do this, use the <a class="reference external" href="https://distributed.dask.org/en/latest/api.html#distributed.client.Client.persist">client.persist</a>
+method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;s3://bucket/path/to/*.csv&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">balance</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">persist</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;timestamp&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">persist</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span><span class="o">.</span><span class="n">customer_id</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="mi">18452844</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">city</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>Persist is important because Dask DataFrame is <em>lazy by default</em>.  It is a
+way of telling the cluster that it should start executing the computations
+that you have defined so far, and that it should try to keep those results in
+memory.  You will get back a new DataFrame that is semantically equivalent to
+your old DataFrame, but now points to running data.  Your old DataFrame still
+points to lazy computations:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Don&#39;t do this</span>
+<span class="n">client</span><span class="o">.</span><span class="n">persist</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>  <span class="c1"># persist doesn&#39;t change the input in-place</span>
+
+<span class="c1"># Do this instead</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">persist</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>  <span class="c1"># replace your old lazy DataFrame</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="repartition-to-reduce-overhead">
+<h2>Repartition to Reduce Overhead<a class="headerlink" href="#repartition-to-reduce-overhead" title="Permalink to this headline">¶</a></h2>
+<p>Your Dask DataFrame is split up into many Pandas DataFrames.  We sometimes call
+these “partitions”, and often the number of partitions is decided for you. For
+example, it might be the number of CSV files from which you are reading. However,
+over time, as you reduce or increase the size of your pandas DataFrames by
+filtering or joining, it may be wise to reconsider how many partitions you need.
+There is a cost to having too many or having too few.</p>
+<p>Partitions should fit comfortably in memory (smaller than a gigabyte) but also
+not be too many.  Every operation on every partition takes the central
+scheduler a few hundred microseconds to process.  If you have a few thousand
+tasks this is barely noticeable, but it is nice to reduce the number if
+possible.</p>
+<p>A common situation is that you load lots of data into reasonably sized
+partitions (Dask’s defaults make decent choices), but then you filter down your
+dataset to only a small fraction of the original.  At this point, it is wise to
+regroup your many small partitions into a few larger ones.  You can do this by
+using the <code class="docutils literal notranslate"><span class="pre">repartition</span></code> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;s3://bucket/path/to/*.csv&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;Alice&#39;</span><span class="p">]</span>  <span class="c1"># only 1/100th of the data</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">repartition</span><span class="p">(</span><span class="n">npartitions</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">npartitions</span> <span class="o">//</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">persist</span><span class="p">()</span>  <span class="c1"># if on a distributed system</span>
+</pre></div>
+</div>
+<p>This helps to reduce overhead and increase the effectiveness of vectorized
+Pandas operations.  You should aim for partitions that have around 100MB of
+data each.</p>
+<p>Additionally, reducing partitions is very helpful just before shuffling, which
+creates <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">log(n)</span></code> tasks relative to the number of partitions.  DataFrames
+with less than 100 partitions are much easier to shuffle than DataFrames with
+tens of thousands.</p>
+</div>
+<div class="section" id="joins">
+<h2>Joins<a class="headerlink" href="#joins" title="Permalink to this headline">¶</a></h2>
+<p>Joining two DataFrames can be either very expensive or very cheap depending on
+the situation.  It is cheap in the following cases:</p>
+<ol class="arabic simple">
+<li><p>Joining a Dask DataFrame with a Pandas DataFrame</p></li>
+<li><p>Joining a Dask DataFrame with another Dask DataFrame of a single partition</p></li>
+<li><p>Joining Dask DataFrames along their indexes</p></li>
+</ol>
+<p>Also, it is expensive in the following case:</p>
+<ol class="arabic simple">
+<li><p>Joining Dask DataFrames along columns that are not their index</p></li>
+</ol>
+<p>The expensive case requires a shuffle.  This is fine, and Dask DataFrame will
+complete the job well, but it will be more expensive than a typical linear-time
+operation:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">pandas_df</span><span class="p">)</span>  <span class="c1"># fast</span>
+<span class="n">dd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">left_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># fast</span>
+<span class="n">dd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">left_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>  <span class="c1"># half-fast, half-slow</span>
+<span class="n">dd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>  <span class="c1"># slow</span>
+</pre></div>
+</div>
+<p>For more information see <a class="reference internal" href="dataframe-joins.html"><span class="doc">Joins</span></a>.</p>
+</div>
+<div class="section" id="store-data-in-apache-parquet-format">
+<h2>Store Data in Apache Parquet Format<a class="headerlink" href="#store-data-in-apache-parquet-format" title="Permalink to this headline">¶</a></h2>
+<p>HDF5 is a popular choice for Pandas users with high performance needs.  We
+encourage Dask DataFrame users to <a class="reference internal" href="dataframe-create.html"><span class="doc">store and load data</span></a>
+using Parquet instead.  <a class="reference external" href="https://parquet.apache.org/">Apache Parquet</a> is a
+columnar binary format that is easy to split into multiple files (easier for
+parallel loading) and is generally much simpler to deal with than HDF5 (from
+the library’s perspective).  It is also a common format used by other big data
+systems like <a class="reference external" href="https://spark.apache.org/">Apache Spark</a> and <a class="reference external" href="https://impala.apache.org/">Apache Impala</a>, and so it is useful to interchange with other
+systems:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="s1">&#39;path/to/my-results/&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s1">&#39;path/to/my-results/&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Dask supports reading parquet files with different engine implementations of
+the Apache Parquet format for Python:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df1</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s1">&#39;path/to/my-results/&#39;</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;fastparquet&#39;</span><span class="p">)</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s1">&#39;path/to/my-results/&#39;</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;pyarrow&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>These libraries can be installed using:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>conda install fastparquet pyarrow -c conda-forge
+</pre></div>
+</div>
+<p><a class="reference external" href="https://github.com/dask/fastparquet/">fastparquet</a> is a Python-based
+implementation that uses the <a class="reference external" href="https://numba.pydata.org/">Numba</a>
+Python-to-LLVM compiler. PyArrow is part of the
+<a class="reference external" href="https://arrow.apache.org/">Apache Arrow</a> project and uses the <a class="reference external" href="https://github.com/apache/parquet-cpp">C++
+implementation of Apache Parquet</a>.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="dataframe-design.html" class="btn btn-neutral float-right" title="Internal Design" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dataframe-create.html" class="btn btn-neutral float-left" title="Create and Store Dask DataFrames" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

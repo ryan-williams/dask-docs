@@ -1,0 +1,578 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>SSH &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="High Performance Computers" href="hpc.html" />
+    <link rel="prev" title="Command Line" href="cli.html" />
+    <link rel="shortcut icon" href="../_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="../_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Install Dask</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../setup.html">Setup</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="single-machine.html">Single-Machine Scheduler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="single-distributed.html">Single Machine: dask.distributed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html">Command Line</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">SSH</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#python-interface">Python Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#command-line">Command Line</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dask-ssh">dask-ssh</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="hpc.html">High Performance Computers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kubernetes.html">Kubernetes</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://yarn.dask.org/en/latest/">YARN / Hadoop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python-advanced.html">Python API (advanced)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud.html">Cloud Deployments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adaptive.html">Adaptive Deployments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docker.html">Docker Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom-startup.html">Custom Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prometheus.html">Prometheus Monitoring</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../array.html">Array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bag.html">Bag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dataframe.html">DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphs.html">Task Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gpu.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../setup.html">Setup</a> &raquo;</li>
+        
+      <li>SSH</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/setup/ssh.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ssh">
+<h1>SSH<a class="headerlink" href="#ssh" title="Permalink to this headline">¶</a></h1>
+<p>It is easy to set up Dask on informally managed networks of machines using SSH.
+This can be done manually using SSH and the
+Dask <a class="reference internal" href="cli.html"><span class="doc">command line interface</span></a>,
+or automatically using either the <code class="docutils literal notranslate"><span class="pre">SSHCluster</span></code> Python command or the
+<code class="docutils literal notranslate"><span class="pre">dask-ssh</span></code> command line tool. This document describes both of these options.</p>
+<div class="section" id="python-interface">
+<h2>Python Interface<a class="headerlink" href="#python-interface" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="distributed.deploy.ssh.SSHCluster">
+<code class="sig-prename descclassname">distributed.deploy.ssh.</code><code class="sig-name descname">SSHCluster</code><span class="sig-paren">(</span><em class="sig-param">hosts: List[str] = None</em>, <em class="sig-param">connect_options: dict = {}</em>, <em class="sig-param">worker_options: dict = {}</em>, <em class="sig-param">scheduler_options: dict = {}</em>, <em class="sig-param">worker_module: str = 'distributed.cli.dask_worker'</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.deploy.ssh.SSHCluster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deploy a Dask cluster using SSH</p>
+<p>The SSHCluster function deploys a Dask Scheduler and Workers for you on a
+set of machine addresses that you provide.  The first address will be used
+for the scheduler while the rest will be used for the workers (feel free to
+repeat the first hostname if you want to have the scheduler and worker
+co-habitate one machine.)</p>
+<p>You may configure the scheduler and workers by passing
+<code class="docutils literal notranslate"><span class="pre">scheduler_options</span></code> and <code class="docutils literal notranslate"><span class="pre">worker_options</span></code> dictionary keywords.  See the
+<code class="docutils literal notranslate"><span class="pre">dask.distributed.Scheduler</span></code> and <code class="docutils literal notranslate"><span class="pre">dask.distributed.Worker</span></code> classes for
+details on the available options, but the defaults should work in most
+situations.</p>
+<p>You may configure your use of SSH itself using the <code class="docutils literal notranslate"><span class="pre">connect_options</span></code>
+keyword, which passes values to the <code class="docutils literal notranslate"><span class="pre">asyncssh.connect</span></code> function.  For
+more information on these see the documentation for the <code class="docutils literal notranslate"><span class="pre">asyncssh</span></code>
+library <a class="reference external" href="https://asyncssh.readthedocs.io">https://asyncssh.readthedocs.io</a> .</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>hosts: List[str]</strong></dt><dd><p>List of hostnames or addresses on which to launch our cluster.
+The first will be used for the scheduler and the rest for workers.</p>
+</dd>
+<dt><strong>connect_options: dict, optional</strong></dt><dd><p>Keywords to pass through to <code class="docutils literal notranslate"><span class="pre">asyncssh.connect</span></code>.</p>
+</dd>
+<dt><strong>worker_options: dict, optional</strong></dt><dd><p>Keywords to pass on to workers.</p>
+</dd>
+<dt><strong>scheduler_options: dict, optional</strong></dt><dd><p>Keywords to pass on to scheduler.</p>
+</dd>
+<dt><strong>worker_module: str, optional</strong></dt><dd><p>Python module to call to start the worker.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dask.distributed.Scheduler</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">dask.distributed.Worker</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">asyncssh.connect</span></code></p>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">SSHCluster</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cluster</span> <span class="o">=</span> <span class="n">SSHCluster</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">connect_options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;known_hosts&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="n">worker_options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;nthreads&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="n">scheduler_options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;port&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;dashboard_address&quot;</span><span class="p">:</span> <span class="s2">&quot;:8797&quot;</span><span class="p">}</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">cluster</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>An example using a different worker module, in particular the
+<code class="docutils literal notranslate"><span class="pre">dask-cuda-worker</span></code> command from the <code class="docutils literal notranslate"><span class="pre">dask-cuda</span></code> project.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">SSHCluster</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cluster</span> <span class="o">=</span> <span class="n">SSHCluster</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="s2">&quot;hostwithgpus&quot;</span><span class="p">,</span> <span class="s2">&quot;anothergpuhost&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">connect_options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;known_hosts&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="n">scheduler_options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;port&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;dashboard_address&quot;</span><span class="p">:</span> <span class="s2">&quot;:8797&quot;</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="n">worker_module</span><span class="o">=</span><span class="s1">&#39;dask_cuda.dask_cuda_worker&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">cluster</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="command-line">
+<h2>Command Line<a class="headerlink" href="#command-line" title="Permalink to this headline">¶</a></h2>
+<p>The convenience script <code class="docutils literal notranslate"><span class="pre">dask-ssh</span></code> opens several SSH connections to your
+target computers and initializes the network accordingly. You can
+give it a list of hostnames or IP addresses:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dask-ssh 192.168.0.1 192.168.0.2 192.168.0.3 192.168.0.4
+</pre></div>
+</div>
+<p>Or you can use normal UNIX grouping:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dask-ssh 192.168.0.{1,2,3,4}
+</pre></div>
+</div>
+<p>Or you can specify a hostfile that includes a list of hosts:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cat hostfile.txt
+192.168.0.1
+192.168.0.2
+192.168.0.3
+192.168.0.4
+
+$ dask-ssh --hostfile hostfile.txt
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">dask-ssh</span></code> utility depends on the <code class="docutils literal notranslate"><span class="pre">paramiko</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">paramiko</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The command line documentation here may differ depending on your installed
+version. We recommend referring to the output of <code class="docutils literal notranslate"><span class="pre">dask-ssh</span> <span class="pre">--help</span></code>.</p>
+</div>
+<div class="section" id="dask-ssh">
+<h3>dask-ssh<a class="headerlink" href="#dask-ssh" title="Permalink to this headline">¶</a></h3>
+<p>Launch a distributed cluster over SSH. A ‘dask-scheduler’ process will run on the
+first host specified in [HOSTNAMES] or in the hostfile (unless –scheduler is specified
+explicitly). One or more ‘dask-worker’ processes will be run each host in [HOSTNAMES] or
+in the hostfile. Use command line flags to adjust how many dask-worker process are run on
+each host (–nprocs) and how many cpus are used by each dask-worker process (–nthreads).</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>dask-ssh <span class="o">[</span>OPTIONS<span class="o">]</span> <span class="o">[</span>HOSTNAMES<span class="o">]</span>...
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="option">
+<dt id="cmdoption-dask-ssh-scheduler">
+<code class="sig-name descname">--scheduler</code><code class="sig-prename descclassname"> &lt;scheduler&gt;</code><a class="headerlink" href="#cmdoption-dask-ssh-scheduler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify scheduler node.  Defaults to first address.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-dask-ssh-scheduler-port">
+<code class="sig-name descname">--scheduler-port</code><code class="sig-prename descclassname"> &lt;scheduler_port&gt;</code><a class="headerlink" href="#cmdoption-dask-ssh-scheduler-port" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify scheduler port number.  [default: 8786]</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-dask-ssh-nthreads">
+<code class="sig-name descname">--nthreads</code><code class="sig-prename descclassname"> &lt;nthreads&gt;</code><a class="headerlink" href="#cmdoption-dask-ssh-nthreads" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of threads per worker process. Defaults to number of cores divided by the number of processes per host.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-dask-ssh-nprocs">
+<code class="sig-name descname">--nprocs</code><code class="sig-prename descclassname"> &lt;nprocs&gt;</code><a class="headerlink" href="#cmdoption-dask-ssh-nprocs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of worker processes per host.  [default: 1]</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-dask-ssh-hostfile">
+<code class="sig-name descname">--hostfile</code><code class="sig-prename descclassname"> &lt;hostfile&gt;</code><a class="headerlink" href="#cmdoption-dask-ssh-hostfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Textfile with hostnames/IP addresses</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-dask-ssh-ssh-username">
+<code class="sig-name descname">--ssh-username</code><code class="sig-prename descclassname"> &lt;ssh_username&gt;</code><a class="headerlink" href="#cmdoption-dask-ssh-ssh-username" title="Permalink to this definition">¶</a></dt>
+<dd><p>Username to use when establishing SSH connections.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-dask-ssh-ssh-port">
+<code class="sig-name descname">--ssh-port</code><code class="sig-prename descclassname"> &lt;ssh_port&gt;</code><a class="headerlink" href="#cmdoption-dask-ssh-ssh-port" title="Permalink to this definition">¶</a></dt>
+<dd><p>Port to use for SSH connections.  [default: 22]</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-dask-ssh-ssh-private-key">
+<code class="sig-name descname">--ssh-private-key</code><code class="sig-prename descclassname"> &lt;ssh_private_key&gt;</code><a class="headerlink" href="#cmdoption-dask-ssh-ssh-private-key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private key file to use for SSH connections.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-dask-ssh-nohost">
+<code class="sig-name descname">--nohost</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-dask-ssh-nohost" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do not pass the hostname to the worker.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-dask-ssh-log-directory">
+<code class="sig-name descname">--log-directory</code><code class="sig-prename descclassname"> &lt;log_directory&gt;</code><a class="headerlink" href="#cmdoption-dask-ssh-log-directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Directory to use on all cluster nodes for the output of dask-scheduler and dask-worker commands.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-dask-ssh-local-directory">
+<code class="sig-name descname">--local-directory</code><code class="sig-prename descclassname"> &lt;local_directory&gt;</code><a class="headerlink" href="#cmdoption-dask-ssh-local-directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Directory to use on all cluster nodes to place workers and scheduler files.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-dask-ssh-remote-python">
+<code class="sig-name descname">--remote-python</code><code class="sig-prename descclassname"> &lt;remote_python&gt;</code><a class="headerlink" href="#cmdoption-dask-ssh-remote-python" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to Python on remote nodes.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-dask-ssh-memory-limit">
+<code class="sig-name descname">--memory-limit</code><code class="sig-prename descclassname"> &lt;memory_limit&gt;</code><a class="headerlink" href="#cmdoption-dask-ssh-memory-limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bytes of memory that the worker can use. This can be an integer (bytes), float (fraction of total system memory), string (like 5GB or 5000M), ‘auto’, or zero for no memory management  [default: auto]</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-dask-ssh-worker-port">
+<code class="sig-name descname">--worker-port</code><code class="sig-prename descclassname"> &lt;worker_port&gt;</code><a class="headerlink" href="#cmdoption-dask-ssh-worker-port" title="Permalink to this definition">¶</a></dt>
+<dd><p>Serving computation port, defaults to random</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-dask-ssh-nanny-port">
+<code class="sig-name descname">--nanny-port</code><code class="sig-prename descclassname"> &lt;nanny_port&gt;</code><a class="headerlink" href="#cmdoption-dask-ssh-nanny-port" title="Permalink to this definition">¶</a></dt>
+<dd><p>Serving nanny port, defaults to random</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-dask-ssh-remote-dask-worker">
+<code class="sig-name descname">--remote-dask-worker</code><code class="sig-prename descclassname"> &lt;remote_dask_worker&gt;</code><a class="headerlink" href="#cmdoption-dask-ssh-remote-dask-worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Worker to run.  [default: distributed.cli.dask_worker]</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-dask-ssh-version">
+<code class="sig-name descname">--version</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-dask-ssh-version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show the version and exit.</p>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="option">
+<dt id="cmdoption-dask-ssh-arg-hostnames">
+<code class="sig-name descname">HOSTNAMES</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-dask-ssh-arg-hostnames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optional argument(s)</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="hpc.html" class="btn btn-neutral float-right" title="High Performance Computers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="cli.html" class="btn btn-neutral float-left" title="Command Line" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

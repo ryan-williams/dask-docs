@@ -1,0 +1,548 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Why Dask? &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Institutional FAQ" href="institutional-faq.html" />
+    <link rel="prev" title="Community" href="support.html" />
+    <link rel="shortcut icon" href="_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Community</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Why Dask?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#python-s-role-in-data-science">Python’s role in Data Science</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dask-has-a-familiar-api">Dask has a Familiar API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dask-scales-out-to-clusters">Dask Scales out to Clusters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dask-scales-down-to-single-computers">Dask Scales Down to Single Computers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dask-integrates-natively-with-python-code">Dask Integrates Natively with Python Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dask-supports-complex-applications">Dask Supports Complex Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dask-delivers-responsive-feedback">Dask Delivers Responsive Feedback</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#links-and-more-information">Links and More Information</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="array.html">Array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bag.html">Bag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataframe.html">DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">Task Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Why Dask?</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/why.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="why-dask">
+<h1>Why Dask?<a class="headerlink" href="#why-dask" title="Permalink to this headline">¶</a></h1>
+<p>This document gives high-level motivation on why people choose to adopt Dask.</p>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#python-s-role-in-data-science" id="id3">Python’s role in Data Science</a></p></li>
+<li><p><a class="reference internal" href="#dask-has-a-familiar-api" id="id4">Dask has a Familiar API</a></p></li>
+<li><p><a class="reference internal" href="#dask-scales-out-to-clusters" id="id5">Dask Scales out to Clusters</a></p></li>
+<li><p><a class="reference internal" href="#dask-scales-down-to-single-computers" id="id6">Dask Scales Down to Single Computers</a></p></li>
+<li><p><a class="reference internal" href="#dask-integrates-natively-with-python-code" id="id7">Dask Integrates Natively with Python Code</a></p></li>
+<li><p><a class="reference internal" href="#dask-supports-complex-applications" id="id8">Dask Supports Complex Applications</a></p></li>
+<li><p><a class="reference internal" href="#dask-delivers-responsive-feedback" id="id9">Dask Delivers Responsive Feedback</a></p></li>
+<li><p><a class="reference internal" href="#links-and-more-information" id="id10">Links and More Information</a></p></li>
+</ul>
+</div>
+<div class="section" id="python-s-role-in-data-science">
+<h2><a class="toc-backref" href="#id3">Python’s role in Data Science</a><a class="headerlink" href="#python-s-role-in-data-science" title="Permalink to this headline">¶</a></h2>
+<p>Python has grown to become the dominant language both in data analytics and
+general programming:</p>
+<a class="reference internal image-reference" href="_images/growth_of_languages.png"><img alt="Growth of major programming languages" src="_images/growth_of_languages.png" style="width: 75%;" /></a>
+<p>This is fueled both by computational libraries like Numpy, Pandas, and
+Scikit-Learn and by a wealth of libraries for visualization, interactive
+notebooks, collaboration, and so forth.</p>
+<a class="reference internal image-reference" href="_images/growth_of_libraries.png"><img alt="Stack overflow traffic to various packages" src="_images/growth_of_libraries.png" style="width: 75%;" /></a>
+<p>However, these packages were not designed to scale beyond a single machine.
+Dask was developed to scale these packages and the surrounding ecosystem.
+It works with the existing Python ecosystem to scale it to multi-core
+machines and distributed clusters.</p>
+<p><em>Image credit to Stack Overflow blogposts</em>
+<a class="reference external" href="https://stackoverflow.blog/2017/09/06/incredible-growth-python">#1</a>
+<em>and</em>
+<a class="reference external" href="https://stackoverflow.blog/2017/09/14/python-growing-quickly/">#2</a>.</p>
+</div>
+<div class="section" id="dask-has-a-familiar-api">
+<h2><a class="toc-backref" href="#id4">Dask has a Familiar API</a><a class="headerlink" href="#dask-has-a-familiar-api" title="Permalink to this headline">¶</a></h2>
+<p>Analysts often use tools like Pandas, Scikit-Learn, Numpy, and the rest of the
+Python ecosystem to analyze data on their personal computer.  They like these
+tools because they are efficient, intuitive, and widely trusted.  However, when
+they choose to apply their analyses to larger datasets, they find that these
+tools were not designed to scale beyond a single machine. And so, the analyst
+rewrites their computation using a more scalable tool, often in another
+language altogether.  This rewrite process slows down discovery and causes
+frustration.</p>
+<p>Dask provides ways to scale Pandas, Scikit-Learn, and Numpy workflows more
+natively, with minimal rewriting.  It integrates well with these tools so that it copies
+most of their API and uses their data structures internally.  Moreover, Dask is
+co-developed with these libraries to ensure that they evolve consistently,
+minimizing friction when transitioning from a local laptop,
+to a multi-core workstation, and then to a distributed cluster.  Analysts
+familiar with Pandas/Scikit-Learn/Numpy will be immediately familiar with their
+Dask equivalents, and have much of their intuition carry over to a scalable
+context.</p>
+</div>
+<div class="section" id="dask-scales-out-to-clusters">
+<h2><a class="toc-backref" href="#id5">Dask Scales out to Clusters</a><a class="headerlink" href="#dask-scales-out-to-clusters" title="Permalink to this headline">¶</a></h2>
+<p>As datasets and computations scale faster than CPUs and RAM, we need to find
+ways to scale our computations across multiple machines.  This introduces many
+new concerns:</p>
+<ul class="simple">
+<li><p>How to have computers talk to each other over the network?</p></li>
+<li><p>How and when to move data between machines?</p></li>
+<li><p>How to recover from machine failures?</p></li>
+<li><p>How to deploy on an in-house cluster?</p></li>
+<li><p>How to deploy on the cloud?</p></li>
+<li><p>How to deploy on an HPC super-computer?</p></li>
+<li><p>How to provide an API to this system that users find intuitive?</p></li>
+<li><p>…</p></li>
+</ul>
+<p>While it is possible to build these systems in-house (and indeed, many exist),
+many organizations increasingly depend on solutions developed within the
+open source community.  These tend to be more robust, secure, and fully
+featured without being tended by in-house staff.</p>
+<p>Dask solves the problems above.  It figures out how to break up large
+computations and route parts of them efficiently onto distributed hardware.
+Dask is routinely run on thousand-machine clusters to process hundreds of
+terabytes of data efficiently within secure environments.</p>
+<p>Dask has utilities and documentation on how to deploy in-house, on
+the cloud, or on HPC super-computers.  It supports encryption and
+authentication using TLS/SSL certificates.  It is resilient and can handle the
+failure of worker nodes gracefully and is elastic, and so can take advantage of
+new nodes added on-the-fly.  Dask includes several user APIs that are used and
+smoothed over by thousands of researchers across the globe working in different
+domains.</p>
+</div>
+<div class="section" id="dask-scales-down-to-single-computers">
+<h2><a class="toc-backref" href="#id6">Dask Scales Down to Single Computers</a><a class="headerlink" href="#dask-scales-down-to-single-computers" title="Permalink to this headline">¶</a></h2>
+<p><em>But a massive cluster is not always the right choice</em></p>
+<p>Today’s laptops and workstations are surprisingly powerful and, if used
+correctly, can handle datasets and computations for which we previously
+depended on clusters.  A modern laptop has a multi-core CPU, 32GB of RAM, and
+flash-based hard drives that can stream through data several times faster than
+HDDs or SSDs of even a year or two ago.</p>
+<p>As a result, Dask can empower analysts to manipulate 100GB+ datasets on their
+laptop or 1TB+ datasets on a workstation without bothering with the cluster at
+all.  This can be preferable for the following reasons:</p>
+<ol class="arabic simple">
+<li><p>They can use their local software environment, rather than being
+constrained by what is available on the cluster or having to manage
+Docker images.</p></li>
+<li><p>They can more easily work while in transit, at a coffee shop, or at home
+away from the corporate network</p></li>
+<li><p>Debugging errors and analyzing performance is simpler and more pleasant on
+a single machine</p></li>
+<li><p>Their iteration cycles can be faster</p></li>
+<li><p>Their computations may be more efficient because all of the data is local
+and doesn’t need to flow through the network or between separate processes</p></li>
+</ol>
+<p>Dask can enable efficient parallel computations on single machines by
+leveraging their multi-core CPUs and streaming data efficiently from disk.
+It <em>can</em> run on a distributed cluster, but it doesn’t <em>have</em> to.  Dask allows
+you to swap out the cluster for single-machine schedulers which are surprisingly
+lightweight, require no setup, and can run entirely within the same process as
+the user’s session.</p>
+<p>To avoid excess memory use, Dask is good at finding ways to evaluate
+computations in a low-memory footprint when possible by pulling in chunks of
+data from disk, doing the necessary processing, and throwing away intermediate
+values as quickly as possible.  This lets analysts perform computations on
+moderately large datasets (100GB+) even on relatively low-power laptops.
+This requires no configuration and no setup, meaning that adding Dask to a
+single-machine computation adds very little cognitive overhead.</p>
+<p>Dask is installed by default with <a class="reference external" href="https://anaconda.com">Anaconda</a>
+and so is already deployed on most data science machines.</p>
+</div>
+<div class="section" id="dask-integrates-natively-with-python-code">
+<h2><a class="toc-backref" href="#id7">Dask Integrates Natively with Python Code</a><a class="headerlink" href="#dask-integrates-natively-with-python-code" title="Permalink to this headline">¶</a></h2>
+<p>Python includes computational libraries like Numpy, Pandas, and Scikit-Learn,
+and many others for data access, plotting, statistics, image and
+signal processing, and more.  These libraries work together seamlessly to
+produce a cohesive <em>ecosystem</em> of packages that co-evolve to meet the needs of
+analysts in most domains today.</p>
+<p>This ecosystem is tied together by common standards and protocols to which
+everyone adheres, which allows these packages to benefit each other in
+surprising and delightful ways.</p>
+<p>Dask evolved from within this ecosystem.  It abides by these standards and
+protocols and actively engages in community efforts to push forward new ones.
+This enables the rest of the ecosystem to benefit from parallel and distributed
+computing with minimal coordination.  Dask does not seek to disrupt or displace
+the existing ecosystem, but rather to complement and benefit it from within.</p>
+<p>As a result, Dask development is pushed forward by developer communities
+from Pandas, Numpy, Scikit-Learn, Scikit-Image, Jupyter, and others.  This
+engagement from the broader community growth helps users to trust the project
+and helps to ensure that the Python ecosystem will continue to evolve in a
+smooth and sustainable manner.</p>
+</div>
+<div class="section" id="dask-supports-complex-applications">
+<h2><a class="toc-backref" href="#id8">Dask Supports Complex Applications</a><a class="headerlink" href="#dask-supports-complex-applications" title="Permalink to this headline">¶</a></h2>
+<p>Some parallel computations are simple and just apply the same routine onto many
+inputs without any kind of coordination.  These are simple to parallelize with
+any system.</p>
+<p>Somewhat more complex computations can be expressed with the
+map-shuffle-reduce pattern popularized by Hadoop and Spark.
+This is often sufficient to do most data cleaning tasks,
+database-style queries, and some lightweight machine learning algorithms.</p>
+<p>However, more complex parallel computations exist which do not fit into these
+paradigms, and so are difficult to perform with traditional big-data
+technologies.  These include more advanced algorithms for statistics or machine
+learning, time series or local operations, or bespoke parallelism often found
+within the systems of large enterprises.</p>
+<p>Many companies and institutions today have problems which are
+clearly parallelizable, but not clearly transformable into a big DataFrame
+computation.  Today these companies tend to solve their problems either by
+writing custom code with low-level systems like MPI, ZeroMQ, or sockets and
+complex queuing systems, or by shoving their problem into a standard big-data
+technology like MapReduce or Spark, and hoping for the best.</p>
+<p>Dask helps to resolve these situations by exposing low-level APIs to its
+internal task scheduler which is capable of executing very advanced
+computations.  This gives engineers within the institution the ability to build
+their own parallel computing system using the same engine that powers Dask’s
+arrays, DataFrames, and machine learning algorithms, but now with the
+institution’s own custom logic.  This allows engineers to keep complex
+business logic in-house while still relying on Dask to handle network
+communication, load balancing, resilience, diagnostics, etc..</p>
+</div>
+<div class="section" id="dask-delivers-responsive-feedback">
+<h2><a class="toc-backref" href="#id9">Dask Delivers Responsive Feedback</a><a class="headerlink" href="#dask-delivers-responsive-feedback" title="Permalink to this headline">¶</a></h2>
+<p>Because everything happens remotely, interactive parallel computing can be
+frustrating for users.  They don’t have a good sense of how computations are
+progressing, what might be going wrong, or what parts of their code should they
+focus on for performance.  The added distance between a user and their
+computation can drastically affect how quickly they are able to identify and
+resolve bugs and performance problems, which can drastically increase their
+time to solution.</p>
+<p>Dask keeps users informed and content with a suite of helpful diagnostic and
+investigative tools including the following:</p>
+<ol class="arabic simple">
+<li><p>A <a class="reference internal" href="understanding-performance.html"><span class="doc">real-time and responsive dashboard</span></a>
+that shows current progress, communication costs, memory use, and more,
+updated every 100ms</p></li>
+<li><p>A statistical profiler installed on every worker that polls each thread
+every 10ms to determine which lines in your code are taking up the most
+time across your entire computation</p></li>
+<li><p>An embedded IPython kernel in every worker and the scheduler, allowing
+users to directly investigate the state of their computation with a pop-up
+terminal</p></li>
+<li><p>The ability to reraise errors locally, so that they can use the traditional
+debugging tools to which they are accustomed, even when the error happens
+remotely</p></li>
+</ol>
+</div>
+<div class="section" id="links-and-more-information">
+<h2><a class="toc-backref" href="#id10">Links and More Information</a><a class="headerlink" href="#links-and-more-information" title="Permalink to this headline">¶</a></h2>
+<p>From here you may want to read about some of our more common introductory
+content:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="user-interfaces.html"><span class="doc">User Interfaces</span></a></p></li>
+<li><p><a class="reference internal" href="scheduling.html"><span class="doc">Scheduling</span></a></p></li>
+<li><p><a class="reference internal" href="spark.html"><span class="doc">Comparison to Spark</span></a></p></li>
+<li><p><a class="reference external" href="https://dask.org/slides.html">Slides</a></p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="institutional-faq.html" class="btn btn-neutral float-right" title="Institutional FAQ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="support.html" class="btn btn-neutral float-left" title="Community" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

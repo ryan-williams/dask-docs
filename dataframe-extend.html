@@ -1,0 +1,546 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Extending DataFrames &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Delayed" href="delayed.html" />
+    <link rel="prev" title="Categoricals" href="dataframe-categoricals.html" />
+    <link rel="shortcut icon" href="_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="array.html">Array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bag.html">Bag</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="dataframe.html">DataFrame</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dataframe-api.html">API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-create.html">Create and Store Dask DataFrames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-best-practices.html">Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-design.html">Internal Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-groupby.html">Shuffling for GroupBy and Join</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-groupby.html#aggregate">Aggregate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-joins.html">Joins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-indexing.html">Indexing into Dask DataFrames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe-categoricals.html">Categoricals</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Extending DataFrames</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subclass-dataframes">Subclass DataFrames</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#implement-dask-name-meta-and-divisions">Implement dask, name, meta, and divisions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#extend-dispatched-methods">Extend Dispatched Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#extension-arrays">Extension Arrays</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accessors">Accessors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html#design">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html#dask-dataframe-copies-the-pandas-api">Dask DataFrame copies the Pandas API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html#common-uses-and-anti-uses">Common Uses and Anti-Uses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html#scope">Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataframe.html#execution">Execution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">Task Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="dataframe.html">DataFrame</a> &raquo;</li>
+        
+      <li>Extending DataFrames</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/dataframe-extend.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="extending-dataframes">
+<h1>Extending DataFrames<a class="headerlink" href="#extending-dataframes" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subclass-dataframes">
+<h2>Subclass DataFrames<a class="headerlink" href="#subclass-dataframes" title="Permalink to this headline">¶</a></h2>
+<p>There are a few projects that subclass or replicate the functionality of Pandas
+objects:</p>
+<ul class="simple">
+<li><p>GeoPandas: for Geospatial analytics</p></li>
+<li><p>PyGDF: for data analysis on GPUs</p></li>
+<li><p>…</p></li>
+</ul>
+<p>These projects may also want to produce parallel variants of themselves with
+Dask, and may want to reuse some of the code in Dask DataFrame. Subclassing
+Dask DataFrames is intended for maintainers of these libraries and not for
+general users.</p>
+<div class="section" id="implement-dask-name-meta-and-divisions">
+<h3>Implement dask, name, meta, and divisions<a class="headerlink" href="#implement-dask-name-meta-and-divisions" title="Permalink to this headline">¶</a></h3>
+<p>You will need to implement <code class="docutils literal notranslate"><span class="pre">._meta</span></code>, <code class="docutils literal notranslate"><span class="pre">.dask</span></code>, <code class="docutils literal notranslate"><span class="pre">.divisions</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">._name</span></code> as defined in the <a class="reference internal" href="dataframe-design.html"><span class="doc">DataFrame design docs</span></a>.</p>
+</div>
+<div class="section" id="extend-dispatched-methods">
+<h3>Extend Dispatched Methods<a class="headerlink" href="#extend-dispatched-methods" title="Permalink to this headline">¶</a></h3>
+<p>If you are going to pass around Pandas-like objects that are not normal Pandas
+objects, then we ask you to extend a few dispatched methods: <code class="docutils literal notranslate"><span class="pre">make_meta</span></code>,
+<code class="docutils literal notranslate"><span class="pre">get_parallel_type</span></code>, and <code class="docutils literal notranslate"><span class="pre">concat</span></code>.</p>
+<div class="section" id="make-meta">
+<h4>make_meta<a class="headerlink" href="#make-meta" title="Permalink to this headline">¶</a></h4>
+<p>This function returns an empty version of one of your non-Dask objects, given a
+non-empty non-Dask object:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dask.dataframe</span> <span class="kn">import</span> <span class="n">make_meta</span>
+
+<span class="nd">@make_meta</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MyDataFrame</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">make_meta_dataframe</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+
+<span class="nd">@make_meta</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MySeries</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">make_meta_series</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+
+<span class="nd">@make_meta</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MyIndex</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">make_meta_index</span><span class="p">(</span><span class="n">ind</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">ind</span><span class="p">[:</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Additionally, you should create a similar function that returns a non-empty
+version of your non-Dask DataFrame objects filled with a few rows of
+representative or random data.  This is used to guess types when they are not
+provided.  It should expect an empty version of your object with columns,
+dtypes, index name, and it should return a non-empty version:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dask.dataframe.utils</span> <span class="kn">import</span> <span class="n">meta_nonempty</span>
+
+<span class="nd">@meta_nonempty</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MyDataFrame</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">meta_nonempty_dataframe</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="o">...</span>
+    <span class="k">return</span> <span class="n">MyDataFrame</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span>
+                       <span class="n">index</span><span class="o">=</span><span class="n">MyIndex</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+
+<span class="nd">@meta_nonempty</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MySeries</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">meta_nonempty_series</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="o">...</span>
+
+
+<span class="nd">@meta_nonempty</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MyIndex</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">meta_nonempty_index</span><span class="p">(</span><span class="n">ind</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="get-parallel-type">
+<h4>get_parallel_type<a class="headerlink" href="#get-parallel-type" title="Permalink to this headline">¶</a></h4>
+<p>Given a non-Dask DataFrame object, return the Dask equivalent:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dask.dataframe.core</span> <span class="kn">import</span> <span class="n">get_parallel_type</span>
+
+<span class="nd">@get_parallel_type</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MyDataFrame</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_parallel_type_dataframe</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">MyDaskDataFrame</span>
+
+
+<span class="nd">@get_parallel_type</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MySeries</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_parallel_type_series</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">MyDaskSeries</span>
+
+
+<span class="nd">@get_parallel_type</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MyIndex</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_parallel_type_index</span><span class="p">(</span><span class="n">ind</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">MyDaskIndex</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="concat">
+<h4>concat<a class="headerlink" href="#concat" title="Permalink to this headline">¶</a></h4>
+<p>Concatenate many of your non-Dask DataFrame objects together.  It should expect
+a list of your objects (homogeneously typed):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dask.dataframe.methods</span> <span class="kn">import</span> <span class="n">concat_dispatch</span>
+
+<span class="nd">@concat_dispatch</span><span class="o">.</span><span class="n">register</span><span class="p">((</span><span class="n">MyDataFrame</span><span class="p">,</span> <span class="n">MySeries</span><span class="p">,</span> <span class="n">MyIndex</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">concat_pandas</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">join</span><span class="o">=</span><span class="s1">&#39;outer&#39;</span><span class="p">,</span> <span class="n">uniform</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">filter_warning</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="extension-arrays">
+<span id="extensionarrays"></span><h2>Extension Arrays<a class="headerlink" href="#extension-arrays" title="Permalink to this headline">¶</a></h2>
+<p>Rather than subclassing Pandas DataFrames, you may be interested in extending
+Pandas with <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/extending.html">Extension Arrays</a>.</p>
+<p>All of the first-party extension arrays (those implemented in pandas itself)
+are supported directly by dask.</p>
+<p>Developers implementing third-party extension arrays (outside of pandas) will
+need to do register their <code class="docutils literal notranslate"><span class="pre">ExtensionDtype</span></code> with Dask so that it works
+correctly in <code class="docutils literal notranslate"><span class="pre">dask.dataframe</span></code>.</p>
+<p>For example, we’ll register the <em>test-only</em> <code class="docutils literal notranslate"><span class="pre">DecimalDtype</span></code> from pandas
+test suite.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="kn">from</span> <span class="nn">dask.dataframe.extensions</span> <span class="kn">import</span> <span class="n">make_array_nonempty</span><span class="p">,</span> <span class="n">make_scalar</span>
+<span class="kn">from</span> <span class="nn">pandas.tests.extension.decimal</span> <span class="kn">import</span> <span class="n">DecimalArray</span><span class="p">,</span> <span class="n">DecimalDtype</span>
+
+<span class="nd">@make_array_nonempty</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">DecimalDtype</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_</span><span class="p">(</span><span class="n">dtype</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">DecimalArray</span><span class="o">.</span><span class="n">_from_sequence</span><span class="p">([</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">),</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;NaN&#39;</span><span class="p">)],</span>
+                                       <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+
+
+<span class="nd">@make_scalar</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Decimal</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+   <span class="k">return</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;1&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Internally, Dask will use this to create a small dummy Series for tracking
+metadata through operations.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">make_array_nonempty</span><span class="p">(</span><span class="n">DecimalDtype</span><span class="p">())</span>
+<span class="go">&lt;DecimalArray&gt;</span>
+<span class="go">[Decimal(&#39;0&#39;), Decimal(&#39;NaN&#39;)]</span>
+<span class="go">Length: 2, dtype: decimal</span>
+</pre></div>
+</div>
+<p>So you (or your users) can now create and store a dask <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> or
+<code class="docutils literal notranslate"><span class="pre">Series</span></code> with your extension array contained within.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask.dataframe</span> <span class="k">as</span> <span class="nn">dd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pandas.tests.extension.decimal</span> <span class="kn">import</span> <span class="n">DecimalArray</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ser</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">DecimalArray</span><span class="p">([</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.0&#39;</span><span class="p">)]</span> <span class="o">*</span> <span class="mi">10</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dser</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">ser</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dser</span>
+<span class="go">Dask Series Structure:</span>
+<span class="go">npartitions=3</span>
+<span class="go">0    decimal</span>
+<span class="go">4        ...</span>
+<span class="go">8        ...</span>
+<span class="go">9        ...</span>
+<span class="go">dtype: decimal</span>
+<span class="go">Dask Name: from_pandas, 3 tasks</span>
+</pre></div>
+</div>
+<p>Notice the <code class="docutils literal notranslate"><span class="pre">decimal</span></code> dtype.</p>
+</div>
+<div class="section" id="accessors">
+<span id="dataframe-accessors"></span><h2>Accessors<a class="headerlink" href="#accessors" title="Permalink to this headline">¶</a></h2>
+<p>Many extension arrays expose their functionality on Series or DataFrame objects
+using accessors. Dask provides decorators to register accessors similar to pandas. See
+<a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/development/extending.html#registering-custom-accessors">the pandas documentation on accessors</a>
+for more.</p>
+<dl class="function">
+<dt id="dask.dataframe.extensions.register_dataframe_accessor">
+<code class="sig-prename descclassname">dask.dataframe.extensions.</code><code class="sig-name descname">register_dataframe_accessor</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.dataframe.extensions.register_dataframe_accessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a custom accessor on <a class="reference internal" href="dataframe-api.html#dask.dataframe.DataFrame" title="dask.dataframe.DataFrame"><code class="xref py py-class docutils literal notranslate"><span class="pre">dask.dataframe.DataFrame</span></code></a>.</p>
+<p>See <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.api.extensions.register_dataframe_accessor.html#pandas.api.extensions.register_dataframe_accessor" title="(in pandas v1.0.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">pandas.api.extensions.register_dataframe_accessor()</span></code></a> for more.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="dask.dataframe.extensions.register_series_accessor">
+<code class="sig-prename descclassname">dask.dataframe.extensions.</code><code class="sig-name descname">register_series_accessor</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.dataframe.extensions.register_series_accessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a custom accessor on <a class="reference internal" href="dataframe-api.html#dask.dataframe.Series" title="dask.dataframe.Series"><code class="xref py py-class docutils literal notranslate"><span class="pre">dask.dataframe.Series</span></code></a>.</p>
+<p>See <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.api.extensions.register_series_accessor.html#pandas.api.extensions.register_series_accessor" title="(in pandas v1.0.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">pandas.api.extensions.register_series_accessor()</span></code></a> for more.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="dask.dataframe.extensions.register_index_accessor">
+<code class="sig-prename descclassname">dask.dataframe.extensions.</code><code class="sig-name descname">register_index_accessor</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.dataframe.extensions.register_index_accessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a custom accessor on <code class="xref py py-class docutils literal notranslate"><span class="pre">dask.dataframe.Index</span></code>.</p>
+<p>See <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.api.extensions.register_index_accessor.html#pandas.api.extensions.register_index_accessor" title="(in pandas v1.0.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">pandas.api.extensions.register_index_accessor()</span></code></a> for more.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="delayed.html" class="btn btn-neutral float-right" title="Delayed" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dataframe-categoricals.html" class="btn btn-neutral float-left" title="Categoricals" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

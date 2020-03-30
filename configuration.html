@@ -1,0 +1,960 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Configuration &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Educational Resources" href="educational-resources.html" />
+    <link rel="prev" title="Changelog" href="changelog.html" />
+    <link rel="shortcut icon" href="_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="array.html">Array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bag.html">Bag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataframe.html">DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#access-configuration">Access Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#specify-configuration">Specify Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#yaml-files">YAML files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#environment-variables">Environment Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#defaults">Defaults</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#directly-within-python">Directly within Python</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#updating-configuration">Updating Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#manipulating-configuration-dictionaries">Manipulating configuration dictionaries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#refreshing-configuration">Refreshing Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#downstream-libraries">Downstream Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">Task Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Configuration</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/configuration.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="configuration">
+<h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
+<p>Taking full advantage of Dask sometimes requires user configuration.
+This might be to control logging verbosity, specify cluster configuration,
+provide credentials for security, or any of several other options that arise in
+production.</p>
+<p>Configuration is specified in one of the following ways:</p>
+<ol class="arabic simple">
+<li><p>YAML files in <code class="docutils literal notranslate"><span class="pre">~/.config/dask/</span></code> or <code class="docutils literal notranslate"><span class="pre">/etc/dask/</span></code></p></li>
+<li><p>Environment variables like <code class="docutils literal notranslate"><span class="pre">DASK_DISTRIBUTED__SCHEDULER__WORK_STEALING=True</span></code></p></li>
+<li><p>Default settings within sub-libraries</p></li>
+</ol>
+<p>This combination makes it easy to specify configuration in a variety of
+settings ranging from personal workstations, to IT-mandated configuration, to
+docker images.</p>
+<div class="section" id="access-configuration">
+<h2>Access Configuration<a class="headerlink" href="#access-configuration" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.config.get" title="dask.config.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dask.config.get</span></code></a>(key[, default, config])</p></td>
+<td><p>Get elements from global config</p></td>
+</tr>
+</tbody>
+</table>
+<p>Configuration is usually read by using the <code class="docutils literal notranslate"><span class="pre">dask.config</span></code> module, either with
+the <code class="docutils literal notranslate"><span class="pre">config</span></code> dictionary or the <code class="docutils literal notranslate"><span class="pre">get</span></code> function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask.distributed</span>  <span class="c1"># populate config with distributed defaults</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">config</span>
+<span class="go">{</span>
+<span class="go">    &quot;array&quot;: {</span>
+<span class="go">        &quot;chunk-size&quot;: &quot;128 MiB&quot;,</span>
+<span class="go">    }</span>
+<span class="go">    &quot;distributed&quot;: {</span>
+<span class="go">        &quot;logging&quot;: {</span>
+<span class="go">            &quot;distributed&quot;: &quot;info&quot;,</span>
+<span class="go">            &quot;bokeh&quot;: &quot;critical&quot;,</span>
+<span class="go">            &quot;tornado&quot;: &quot;critical&quot;</span>
+<span class="go">         },</span>
+<span class="go">         &quot;admin&quot;: {</span>
+<span class="go">             &quot;log-format&quot;: &quot;%(name)s - %(levelname)s - %(message)s&quot;</span>
+<span class="go">         }</span>
+<span class="go">    }</span>
+<span class="go">}</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;distributed.logging&quot;</span><span class="p">)</span>
+<span class="go">{</span>
+<span class="go">    &#39;distributed&#39;: &#39;info&#39;,</span>
+<span class="go">    &#39;bokeh&#39;: &#39;critical&#39;,</span>
+<span class="go">    &#39;tornado&#39;: &#39;critical&#39;</span>
+<span class="go">}</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;distributed.logging.bokeh&#39;</span><span class="p">)</span>  <span class="c1"># use `.` for nested access</span>
+<span class="go">&#39;critical&#39;</span>
+</pre></div>
+</div>
+<p>You may wish to inspect the <code class="docutils literal notranslate"><span class="pre">dask.config.config</span></code> dictionary to get a sense
+for what configuration is being used by your current system.</p>
+<p>Note that the <code class="docutils literal notranslate"><span class="pre">get</span></code> function treats underscores and hyphens identically.
+For example, <code class="docutils literal notranslate"><span class="pre">dask.config.get('num_workers')</span></code> is equivalent to
+<code class="docutils literal notranslate"><span class="pre">dask.config.get('num-workers')</span></code>.</p>
+<p>Values like <code class="docutils literal notranslate"><span class="pre">&quot;128</span> <span class="pre">MiB&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;10s&quot;</span></code> are parsed using the functions in
+<a class="reference internal" href="api.html#api-utilities"><span class="std std-ref">Utilities</span></a>.</p>
+</div>
+<div class="section" id="specify-configuration">
+<h2>Specify Configuration<a class="headerlink" href="#specify-configuration" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="yaml-files">
+<h3>YAML files<a class="headerlink" href="#yaml-files" title="Permalink to this headline">¶</a></h3>
+<p>You can specify configuration values in YAML files like the following:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">array</span><span class="p">:</span>
+   <span class="nt">chunk-size</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">128 MiB</span>
+
+<span class="nt">distributed</span><span class="p">:</span>
+  <span class="nt">logging</span><span class="p">:</span>
+    <span class="nt">distributed</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">info</span>
+    <span class="nt">bokeh</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">critical</span>
+    <span class="nt">tornado</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">critical</span>
+
+  <span class="nt">scheduler</span><span class="p">:</span>
+    <span class="nt">work-stealing</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">True</span>
+    <span class="nt">allowed-failures</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+
+  <span class=" -Error"> </span><span class="nt">admin</span><span class="p">:</span>
+     <span class="nt">log-format</span><span class="p">:</span> <span class="s">&#39;%(name)s</span><span class="nv"> </span><span class="s">-</span><span class="nv"> </span><span class="s">%(levelname)s</span><span class="nv"> </span><span class="s">-</span><span class="nv"> </span><span class="s">%(message)s&#39;</span>
+</pre></div>
+</div>
+<p>These files can live in any of the following locations:</p>
+<ol class="arabic simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">~/.config/dask</span></code> directory in the user’s home directory</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">{sys.prefix}/etc/dask</span></code> directory local to Python</p></li>
+<li><p>The root directory (specified by the <code class="docutils literal notranslate"><span class="pre">DASK_ROOT_CONFIG</span></code> environment
+variable or <code class="docutils literal notranslate"><span class="pre">/etc/dask/</span></code> by default)</p></li>
+</ol>
+<p>Dask searches for <em>all</em> YAML files within each of these directories and merges
+them together, preferring configuration files closer to the user over system
+configuration files (preference follows the order in the list above).
+Additionally, users can specify a path with the <code class="docutils literal notranslate"><span class="pre">DASK_CONFIG</span></code> environment
+variable, which takes precedence at the top of the list above.</p>
+<p>The contents of these YAML files are merged together, allowing different
+Dask subprojects like <code class="docutils literal notranslate"><span class="pre">dask-kubernetes</span></code> or <code class="docutils literal notranslate"><span class="pre">dask-ml</span></code> to manage configuration
+files separately, but have them merge into the same global configuration.</p>
+<p><em>Note: for historical reasons we also look in the ``~/.dask`` directory for
+config files.  This is deprecated and will soon be removed.</em></p>
+</div>
+<div class="section" id="environment-variables">
+<h3>Environment Variables<a class="headerlink" href="#environment-variables" title="Permalink to this headline">¶</a></h3>
+<p>You can also specify configuration values with environment variables like
+the following:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">DASK_DISTRIBUTED__SCHEDULER__WORK_STEALING</span><span class="o">=</span>True
+<span class="nb">export</span> <span class="nv">DASK_DISTRIBUTED__SCHEDULER__ALLOWED_FAILURES</span><span class="o">=</span><span class="m">5</span>
+</pre></div>
+</div>
+<p>resulting in configuration values like the following:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;distributed&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;scheduler&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;work-stealing&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s1">&#39;allowed-failures&#39;</span><span class="p">:</span> <span class="mi">5</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Dask searches for all environment variables that start with <code class="docutils literal notranslate"><span class="pre">DASK_</span></code>, then
+transforms keys by converting to lower case and changing double-underscores to
+nested structures.</p>
+<p>Dask tries to parse all values with <a class="reference external" href="https://docs.python.org/3/library/ast.html#ast.literal_eval">ast.literal_eval</a>, letting users
+pass numeric and boolean values (such as <code class="docutils literal notranslate"><span class="pre">True</span></code> in the example above) as well
+as lists, dictionaries, and so on with normal Python syntax.</p>
+<p>Environment variables take precedence over configuration values found in YAML
+files.</p>
+</div>
+<div class="section" id="defaults">
+<h3>Defaults<a class="headerlink" href="#defaults" title="Permalink to this headline">¶</a></h3>
+<p>Additionally, individual subprojects may add their own default values when they
+are imported.  These are always added with lower priority than the YAML files
+or environment variables mentioned above:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask.config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">config</span>  <span class="c1"># no configuration by default</span>
+<span class="go">{}</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask.distributed</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">config</span>  <span class="c1"># New values have been added</span>
+<span class="go">{</span>
+<span class="go">    &#39;scheduler&#39;: ...,</span>
+<span class="go">    &#39;worker&#39;: ...,</span>
+<span class="go">    &#39;tls&#39;: ...</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="directly-within-python">
+<h3>Directly within Python<a class="headerlink" href="#directly-within-python" title="Permalink to this headline">¶</a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.config.set" title="dask.config.set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dask.config.set</span></code></a>([arg, config, lock])</p></td>
+<td><p>Temporarily set configuration values within a context manager</p></td>
+</tr>
+</tbody>
+</table>
+<p>Configuration is stored within a normal Python dictionary in
+<code class="docutils literal notranslate"><span class="pre">dask.config.config</span></code> and can be modified using normal Python operations.</p>
+<p>Additionally, you can temporarily set a configuration value using the
+<code class="docutils literal notranslate"><span class="pre">dask.config.set</span></code> function.  This function accepts a dictionary as an input
+and interprets <code class="docutils literal notranslate"><span class="pre">&quot;.&quot;</span></code> as nested access:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">({</span><span class="s1">&#39;scheduler.work-stealing&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>This function can also be used as a context manager for consistent cleanup:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">({</span><span class="s1">&#39;scheduler.work-stealing&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>Note that the <code class="docutils literal notranslate"><span class="pre">set</span></code> function treats underscores and hyphens identically.
+For example, <code class="docutils literal notranslate"><span class="pre">dask.config.set({'scheduler.work-stealing':</span> <span class="pre">True})</span></code> is
+equivalent to <code class="docutils literal notranslate"><span class="pre">dask.config.set({'scheduler.work_stealing':</span> <span class="pre">True})</span></code>.</p>
+</div>
+</div>
+<div class="section" id="updating-configuration">
+<h2>Updating Configuration<a class="headerlink" href="#updating-configuration" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="manipulating-configuration-dictionaries">
+<h3>Manipulating configuration dictionaries<a class="headerlink" href="#manipulating-configuration-dictionaries" title="Permalink to this headline">¶</a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.config.merge" title="dask.config.merge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dask.config.merge</span></code></a>(*dicts)</p></td>
+<td><p>Update a sequence of nested dictionaries</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dask.config.update" title="dask.config.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dask.config.update</span></code></a>(old, new[, priority])</p></td>
+<td><p>Update a nested dictionary with values from another</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.config.expand_environment_variables" title="dask.config.expand_environment_variables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dask.config.expand_environment_variables</span></code></a>(config)</p></td>
+<td><p>Expand environment variables in a nested config dictionary</p></td>
+</tr>
+</tbody>
+</table>
+<p>As described above, configuration can come from many places, including several
+YAML files, environment variables, and project defaults.  Each of these
+provides a configuration that is possibly nested like the following:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;d&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}}</span>
+<span class="n">y</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;e&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}}</span>
+</pre></div>
+</div>
+<p>Dask will merge these configurations respecting nested data structures, and
+respecting order:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="go">{&#39;a&#39;: 1, &#39;b&#39;: 2, &#39;c&#39;: {&#39;d&#39;: 4, &#39;e&#39;: 5}}</span>
+</pre></div>
+</div>
+<p>You can also use the <code class="docutils literal notranslate"><span class="pre">update</span></code> function to update the existing configuration
+in place with a new configuration.  This can be done with priority being given
+to either config.  This is often used to update the global configuration in
+<code class="docutils literal notranslate"><span class="pre">dask.config.config</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="n">new</span><span class="p">,</span> <span class="n">priority</span><span class="o">=</span><span class="s1">&#39;new&#39;</span><span class="p">)</span>  <span class="c1"># Give priority to new values</span>
+<span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="n">new</span><span class="p">,</span> <span class="n">priority</span><span class="o">=</span><span class="s1">&#39;old&#39;</span><span class="p">)</span>  <span class="c1"># Give priority to old values</span>
+</pre></div>
+</div>
+<p>Sometimes it is useful to expand environment variables stored within a
+configuration.  This can be done with the <code class="docutils literal notranslate"><span class="pre">expand_environment_variables</span></code>
+function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">expand_environment_variables</span><span class="p">(</span><span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="refreshing-configuration">
+<h3>Refreshing Configuration<a class="headerlink" href="#refreshing-configuration" title="Permalink to this headline">¶</a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.config.collect" title="dask.config.collect"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dask.config.collect</span></code></a>([paths, env])</p></td>
+<td><p>Collect configuration from paths and environment variables</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dask.config.refresh" title="dask.config.refresh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dask.config.refresh</span></code></a>([config, defaults])</p></td>
+<td><p>Update configuration by re-reading yaml files and env variables</p></td>
+</tr>
+</tbody>
+</table>
+<p>If you change your environment variables or YAML files, Dask will not
+immediately see the changes.  Instead, you can call <code class="docutils literal notranslate"><span class="pre">refresh</span></code> to go through
+the configuration collection process and update the default configuration:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">config</span>
+<span class="go">{}</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># make some changes to yaml files</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">config</span>
+<span class="go">{...}</span>
+</pre></div>
+</div>
+<p>This function uses <code class="docutils literal notranslate"><span class="pre">dask.config.collect</span></code>, which returns the configuration
+without modifying the global configuration.  You might use this to determine
+the configuration of particular paths not yet on the config path:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">paths</span><span class="o">=</span><span class="p">[</span><span class="o">...</span><span class="p">])</span>
+<span class="go">{...}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="downstream-libraries">
+<h2>Downstream Libraries<a class="headerlink" href="#downstream-libraries" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dask.config.ensure_file" title="dask.config.ensure_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dask.config.ensure_file</span></code></a>(source[, …])</p></td>
+<td><p>Copy file to default location if it does not already exist</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dask.config.update" title="dask.config.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dask.config.update</span></code></a>(old, new[, priority])</p></td>
+<td><p>Update a nested dictionary with values from another</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dask.config.update_defaults</span></code>(new[, config, …])</p></td>
+<td><p>Add a new set of defaults to the configuration</p></td>
+</tr>
+</tbody>
+</table>
+<p>Downstream Dask libraries often follow a standard convention to use the central
+Dask configuration.  This section provides recommendations for integration
+using a fictional project, <code class="docutils literal notranslate"><span class="pre">dask-foo</span></code>, as an example.</p>
+<p>Downstream projects typically follow the following convention:</p>
+<ol class="arabic">
+<li><p>Maintain default configuration in a YAML file within their source
+directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">setup</span><span class="o">.</span><span class="n">py</span>
+<span class="n">dask_foo</span><span class="o">/</span><span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
+<span class="n">dask_foo</span><span class="o">/</span><span class="n">config</span><span class="o">.</span><span class="n">py</span>
+<span class="n">dask_foo</span><span class="o">/</span><span class="n">core</span><span class="o">.</span><span class="n">py</span>
+<span class="n">dask_foo</span><span class="o">/</span><span class="n">foo</span><span class="o">.</span><span class="n">yaml</span>  <span class="c1"># &lt;---</span>
+</pre></div>
+</div>
+</li>
+<li><p>Place configuration in that file within a namespace for the project:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># dask_foo/foo.yaml</span>
+
+<span class="nt">foo</span><span class="p">:</span>
+  <span class="nt">color</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">red</span>
+  <span class="nt">admin</span><span class="p">:</span>
+    <span class="nt">a</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+    <span class="nt">b</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+</pre></div>
+</div>
+</li>
+<li><p>Within a config.py file (or anywhere) load that default config file and
+update it into the global configuration:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># dask_foo/config.py</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+
+<span class="kn">import</span> <span class="nn">dask.config</span>
+
+<span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;foo.yaml&#39;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">defaults</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update_defaults</span><span class="p">(</span><span class="n">defaults</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Within that same config.py file, copy the <code class="docutils literal notranslate"><span class="pre">'foo.yaml'</span></code> file to the user’s
+configuration directory if it doesn’t already exist.</p>
+<p>We also comment the file to make it easier for us to change defaults in the
+future.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># ... continued from above</span>
+
+<span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">ensure_file</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">fn</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The user can investigate <code class="docutils literal notranslate"><span class="pre">~/.config/dask/*.yaml</span></code> to see all of the
+commented out configuration files to which they have access.</p>
+</li>
+<li><p>Ensure that this file is run on import by including it in <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># dask_foo/__init__.py</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">config</span>
+</pre></div>
+</div>
+</li>
+<li><p>Within <code class="docutils literal notranslate"><span class="pre">dask_foo</span></code> code, use the <code class="docutils literal notranslate"><span class="pre">dask.config.get</span></code> function to access
+configuration values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># dask_foo/core.py</span>
+
+<span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;foo.color&#39;</span><span class="p">)):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</li>
+<li><p>You may also want to ensure that your yaml configuration files are included
+in your package.  This can be accomplished by including the following line
+in your MANIFEST.in:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">recursive</span><span class="o">-</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">PACKAGE_NAME</span><span class="o">&gt;</span> <span class="o">*.</span><span class="n">yaml</span>
+</pre></div>
+</div>
+<p>and the following in your setup.py <code class="docutils literal notranslate"><span class="pre">setup</span></code> call:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span>
+
+<span class="n">setup</span><span class="p">(</span><span class="o">...</span><span class="p">,</span>
+      <span class="n">include_package_data</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+      <span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>This process keeps configuration in a central place, but also keeps it safe
+within namespaces.  It places config files in an easy to access location
+by default (<code class="docutils literal notranslate"><span class="pre">~/.config/dask/\*.yaml</span></code>), so that users can easily discover what
+they can change, but maintains the actual defaults within the source code, so
+that they more closely track changes in the library.</p>
+<p>However, downstream libraries may choose alternative solutions, such as
+isolating their configuration within their library, rather than using the
+global dask.config system.  All functions in the <code class="docutils literal notranslate"><span class="pre">dask.config</span></code> module also
+work with parameters, and do not need to mutate global state.</p>
+</div>
+<div class="section" id="api">
+<h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="dask.config.get">
+<code class="sig-prename descclassname">dask.config.</code><code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">default='__no_default__'</em>, <em class="sig-param">config={'array': {'chunk-size': '128MiB'</em>, <em class="sig-param">'rechunk-threshold': 4</em>, <em class="sig-param">'svg': {'size': 120}}</em>, <em class="sig-param">'dataframe': {'shuffle-compression': None}</em>, <em class="sig-param">'temporary-directory': None}</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.config.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get elements from global config</p>
+<p>Use ‘.’ for nested access</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#dask.config.set" title="dask.config.set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dask.config.set</span></code></a></p>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dask</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span>  
+<span class="go">{&#39;x&#39;: 1, &#39;y&#39;: 2}</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;foo.x&#39;</span><span class="p">)</span>  
+<span class="go">1</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;foo.x.y&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>  
+<span class="go">123</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="dask.config.set">
+<code class="sig-prename descclassname">dask.config.</code><code class="sig-name descname">set</code><span class="sig-paren">(</span><em class="sig-param">arg=None</em>, <em class="sig-param">config={'array': {'chunk-size': '128MiB'</em>, <em class="sig-param">'rechunk-threshold': 4</em>, <em class="sig-param">'svg': {'size': 120}}</em>, <em class="sig-param">'dataframe': {'shuffle-compression': None}</em>, <em class="sig-param">'temporary-directory': None}</em>, <em class="sig-param">lock=&lt;unlocked _thread.lock object&gt;</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.config.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Temporarily set configuration values within a context manager</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>arg</strong><span class="classifier">mapping or None, optional</span></dt><dd><p>A mapping of configuration key-value pairs to set.</p>
+</dd>
+<dt><strong>**kwargs :</strong></dt><dd><p>Additional key-value pairs to set. If <code class="docutils literal notranslate"><span class="pre">arg</span></code> is provided, values set
+in <code class="docutils literal notranslate"><span class="pre">arg</span></code> will be applied before those in <code class="docutils literal notranslate"><span class="pre">kwargs</span></code>.
+Double-underscores (<code class="docutils literal notranslate"><span class="pre">__</span></code>) in keyword arguments will be replaced with
+<code class="docutils literal notranslate"><span class="pre">.</span></code>, allowing nested values to be easily set.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#dask.config.get" title="dask.config.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dask.config.get</span></code></a></p>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dask</span>
+</pre></div>
+</div>
+<p>Set <code class="docutils literal notranslate"><span class="pre">'foo.bar'</span></code> in a context, by providing a mapping.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">({</span><span class="s1">&#39;foo.bar&#39;</span><span class="p">:</span> <span class="mi">123</span><span class="p">}):</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>Set <code class="docutils literal notranslate"><span class="pre">'foo.bar'</span></code> in a context, by providing a keyword argument.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">foo__bar</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>Set <code class="docutils literal notranslate"><span class="pre">'foo.bar'</span></code> globally.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">foo__bar</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>  
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="dask.config.merge">
+<code class="sig-prename descclassname">dask.config.</code><code class="sig-name descname">merge</code><span class="sig-paren">(</span><em class="sig-param">*dicts</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.config.merge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update a sequence of nested dictionaries</p>
+<p>This prefers the values in the latter dictionaries to those in the former</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#dask.config.update" title="dask.config.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dask.config.update</span></code></a></p>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">merge</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>  
+<span class="go">{&#39;x&#39;: 1, &#39;y&#39;: {&#39;a&#39;: 2, &#39;b&#39;: 3}}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="dask.config.update">
+<code class="sig-prename descclassname">dask.config.</code><code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">old</em>, <em class="sig-param">new</em>, <em class="sig-param">priority='new'</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.config.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update a nested dictionary with values from another</p>
+<p>This is like dict.update except that it smoothly merges nested values</p>
+<p>This operates in-place and modifies old</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>priority: string {‘old’, ‘new’}</strong></dt><dd><p>If new (default) then the new dictionary has preference.
+Otherwise the old dictionary does.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#dask.config.merge" title="dask.config.merge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dask.config.merge</span></code></a></p>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">update</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>  
+<span class="go">{&#39;x&#39;: 2, &#39;y&#39;: {&#39;a&#39;: 2, &#39;b&#39;: 3}}</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">update</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">priority</span><span class="o">=</span><span class="s1">&#39;old&#39;</span><span class="p">)</span>  
+<span class="go">{&#39;x&#39;: 1, &#39;y&#39;: {&#39;a&#39;: 2, &#39;b&#39;: 3}}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="dask.config.collect">
+<code class="sig-prename descclassname">dask.config.</code><code class="sig-name descname">collect</code><span class="sig-paren">(</span><em class="sig-param">paths=['/etc/dask', '/Users/ryan/.pyenv/versions/3.8.1/envs/dask-3.8.1/etc/dask', '/Users/ryan/.config/dask', '/Users/ryan/.dask'], env=None</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.config.collect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collect configuration from paths and environment variables</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>paths</strong><span class="classifier">List[str]</span></dt><dd><p>A list of paths to search for yaml config files</p>
+</dd>
+<dt><strong>env</strong><span class="classifier">dict</span></dt><dd><p>The system environment variables</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>config: dict</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#dask.config.refresh" title="dask.config.refresh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dask.config.refresh</span></code></a></dt><dd><p>collect configuration and update into primary config</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="dask.config.refresh">
+<code class="sig-prename descclassname">dask.config.</code><code class="sig-name descname">refresh</code><span class="sig-paren">(</span><em class="sig-param">config={'array': {'chunk-size': '128MiB', 'rechunk-threshold': 4, 'svg': {'size': 120}}, 'dataframe': {'shuffle-compression': None}, 'temporary-directory': None}, defaults=[{'temporary-directory': None, 'dataframe': {'shuffle-compression': None}, 'array': {'svg': {'size': 120}}}, {'array': {'chunk-size': '128MiB', 'rechunk-threshold': 4}}], **kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.config.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update configuration by re-reading yaml files and env variables</p>
+<p>This mutates the global dask.config.config, or the config parameter if
+passed in.</p>
+<p>This goes through the following stages:</p>
+<ol class="arabic simple">
+<li><p>Clearing out all old configuration</p></li>
+<li><p>Updating from the stored defaults from downstream libraries
+(see update_defaults)</p></li>
+<li><p>Updating from yaml files and environment variables</p></li>
+</ol>
+<p>Note that some functionality only checks configuration once at startup and
+may not change behavior, even if configuration changes.  It is recommended
+to restart your python process if convenient to ensure that new
+configuration changes take place.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#dask.config.collect" title="dask.config.collect"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dask.config.collect</span></code></a></dt><dd><p>for parameters</p>
+</dd>
+</dl>
+<p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dask.config.update_defaults</span></code></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="dask.config.ensure_file">
+<code class="sig-prename descclassname">dask.config.</code><code class="sig-name descname">ensure_file</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">destination=None</em>, <em class="sig-param">comment=True</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.config.ensure_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy file to default location if it does not already exist</p>
+<p>This tries to move a default configuration file to a default location if
+if does not already exist.  It also comments out that file by default.</p>
+<p>This is to be used by downstream modules (like dask.distributed) that may
+have default configuration files that they wish to include in the default
+configuration path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>source</strong><span class="classifier">string, filename</span></dt><dd><p>Source configuration file, typically within a source directory.</p>
+</dd>
+<dt><strong>destination</strong><span class="classifier">string, directory</span></dt><dd><p>Destination directory. Configurable by <code class="docutils literal notranslate"><span class="pre">DASK_CONFIG</span></code> environment
+variable, falling back to ~/.config/dask.</p>
+</dd>
+<dt><strong>comment</strong><span class="classifier">bool, True by default</span></dt><dd><p>Whether or not to comment out the config file when copying.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="dask.config.expand_environment_variables">
+<code class="sig-prename descclassname">dask.config.</code><code class="sig-name descname">expand_environment_variables</code><span class="sig-paren">(</span><em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#dask.config.expand_environment_variables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expand environment variables in a nested config dictionary</p>
+<p>This function will recursively search through any nested dictionaries
+and/or lists.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>config</strong><span class="classifier">dict, iterable, or str</span></dt><dd><p>Input object to search for environment variables</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>config</strong><span class="classifier">same type as input</span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">expand_environment_variables</span><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;$USER&#39;</span><span class="p">]})</span>  
+<span class="go">{&#39;x&#39;: [1, 2, &#39;my-username&#39;]}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="educational-resources.html" class="btn btn-neutral float-right" title="Educational Resources" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="changelog.html" class="btn btn-neutral float-left" title="Changelog" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

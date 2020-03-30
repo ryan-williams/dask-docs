@@ -1,0 +1,1704 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Python API (advanced) &mdash; Dask 2.13.0+4.gf26bb993.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/explore.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/nbsphinx.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../_static/js/custom.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Cloud Deployments" href="cloud.html" />
+    <link rel="prev" title="Kubernetes Native" href="kubernetes-native.html" />
+    <link rel="shortcut icon" href="../_static/images/favicon.ico"/>
+  
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+    <nav id="explore-links">
+        <a href="https://docs.dask.org/">
+        <img class="caption" src="../_static/images/dask-horizontal-white.svg"/>
+        </a>
+
+        <ul>
+        <li>
+            <a>Get Started</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/install.html"> Install </a></li>
+            <li><a href="https://examples.dask.org"> Examples </a></li>
+            <li><a href="https://github.com/dask/dask-tutorial"> Tutorial </a></li>
+            <li><a href="https://docs.dask.org/en/latest/why.html"> Why Dask? </a></li>
+            <li><a href="https://stories.dask.org/en/latest"> Use Cases </a></li>
+            <li><a href="https://www.youtube.com/watch?v=RA_2qdipVng&list=PLRtz5iA93T4PQvWuoMnIyEIz1fXiJ5Pri"> Talks </a></li>
+            <li><a href="https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab"> Try Online </a></li>
+            <li><a href="https://dask.org/slides"> Slides </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="">Algorithms</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/array.html">Arrays</a></li>
+            <li><a href="https://docs.dask.org/en/latest/dataframe.html">Dataframes</a></li>
+            <li><a href="https://docs.dask.org/en/latest/bag.html">Bags</a></li>
+            <li><a href="https://docs.dask.org/en/latest/delayed.html">Delayed (custom)</a></li>
+            <li><a href="https://docs.dask.org/en/latest/futures.html">Futures (real-time)</a></li>
+            <li><a href="http://ml.dask.org">Machine Learning</a></li>
+            <li><a href="https://xarray.pydata.org/en/latest/">XArray</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="https://docs.dask.org/en/latest/setup.html">Setup</a>
+            <ul>
+            <li><a href="https://docs.dask.org/en/latest/setup/single-machine.html"> Local </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/cloud.html"> Cloud </a></li>
+            <li><a href="https://docs.dask.org/en/latest/setup/hpc.html"> HPC </a></li>
+            <li><a href="https://kubernetes.dask.org/en/latest/"> Kubernetes </a></li>
+            <li><a href="https://yarn.dask.org/en/latest/"> Hadoop / Yarn </a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a>Community</a>
+            <ul>
+            <li><a href="http://docs.dask.org/en/latest/support.html">Ask for Help</a></li>
+            <li><a href="https://github.com/dask">Github</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/dask">Stack Overflow</a></li>
+            <li><a href="https://twitter.com/dask_dev">Twitter</a></li>
+            <li><a href="https://blog.dask.org/"> Developer Blog </a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </nav>
+  
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Dask
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.13.0+4.gf26bb993.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Install Dask</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../setup.html">Setup</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="single-machine.html">Single-Machine Scheduler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="single-distributed.html">Single Machine: dask.distributed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html">Command Line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssh.html">SSH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hpc.html">High Performance Computers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kubernetes.html">Kubernetes</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://yarn.dask.org/en/latest/">YARN / Hadoop</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Python API (advanced)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#full-example">Full Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scheduler">Scheduler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#worker">Worker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#start-many-in-one-event-loop">Start many in one event loop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#use-context-managers">Use Context Managers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nanny">Nanny</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#api">API</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Scheduler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Worker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">Nanny</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cloud.html">Cloud Deployments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adaptive.html">Adaptive Deployments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docker.html">Docker Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom-startup.html">Custom Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prometheus.html">Prometheus Monitoring</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="https://stories.dask.org">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../support.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../why.html">Why Dask?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../institutional-faq.html">Institutional FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../user-interfaces.html">User Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../array.html">Array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bag.html">Bag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dataframe.html">DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../delayed.html">Delayed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../futures.html">Futures</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://ml.dask.org">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scheduling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../scheduling.html">Scheduling</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://distributed.dask.org/">Distributed Scheduling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Diagnostics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../understanding-performance.html">Understanding Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphviz.html">Visualize task graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diagnostics-local.html">Diagnostics (local)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diagnostics-distributed.html">Diagnostics (distributed)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../debugging.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../develop.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../educational-resources.html">Educational Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../presentations.html">Presentations On Dask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cheatsheet.html">Dask Cheat Sheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spark.html">Comparison to Spark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../caching.html">Opportunistic Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphs.html">Task Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../remote-data-services.html">Remote Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gpu.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cite.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logos.html">Images and Logos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Dask</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../setup.html">Setup</a> &raquo;</li>
+        
+      <li>Python API (advanced)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/setup/python-advanced.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="python-api-advanced">
+<h1>Python API (advanced)<a class="headerlink" href="#python-api-advanced" title="Permalink to this headline">¶</a></h1>
+<p>In some rare cases, experts may want to create <code class="docutils literal notranslate"><span class="pre">Scheduler</span></code>, <code class="docutils literal notranslate"><span class="pre">Worker</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">Nanny</span></code>  objects explicitly in Python.  This is often necessary when making
+tools to automatically deploy Dask in custom settings.</p>
+<p>It is more common to create a <a class="reference internal" href="single-distributed.html"><span class="doc">Local cluster with Client() on a single
+machine</span></a> or use the <a class="reference internal" href="cli.html"><span class="doc">Command Line Interface (CLI)</span></a>.
+New readers are recommended to start there.</p>
+<p>If you do want to start Scheduler and Worker objects yourself you should be a
+little familiar with <code class="docutils literal notranslate"><span class="pre">async</span></code>/<code class="docutils literal notranslate"><span class="pre">await</span></code> style Python syntax.  These objects
+are awaitable and are commonly used within <code class="docutils literal notranslate"><span class="pre">async</span> <span class="pre">with</span></code> context managers.
+Here are a few examples to show a few ways to start and finish things.</p>
+<div class="section" id="full-example">
+<h2>Full Example<a class="headerlink" href="#full-example" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#distributed.Scheduler" title="distributed.Scheduler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Scheduler</span></code></a>([loop, delete_interval, …])</p></td>
+<td><p>Dynamic distributed task scheduler</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#distributed.Worker" title="distributed.Worker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Worker</span></code></a>([scheduler_ip, scheduler_port, …])</p></td>
+<td><p>Worker node in a Dask distributed cluster</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../futures.html#distributed.Client" title="distributed.Client"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Client</span></code></a>([address, loop, timeout, …])</p></td>
+<td><p>Connect to and submit computation to a Dask cluster</p></td>
+</tr>
+</tbody>
+</table>
+<p>We first start with a comprehensive example of setting up a Scheduler, two Workers,
+and one Client in the same event loop, running a simple computation, and then
+cleaning everything up.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Scheduler</span><span class="p">,</span> <span class="n">Worker</span><span class="p">,</span> <span class="n">Client</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">f</span><span class="p">():</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">Scheduler</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">Worker</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">address</span><span class="p">)</span> <span class="k">as</span> <span class="n">w1</span><span class="p">,</span> <span class="n">Worker</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">address</span><span class="p">)</span> <span class="k">as</span> <span class="n">w2</span><span class="p">:</span>
+            <span class="k">async</span> <span class="k">with</span> <span class="n">Client</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">asynchronous</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+                <span class="n">future</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">future</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+<span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">f</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>Now we look at simpler examples that build up to this case.</p>
+</div>
+<div class="section" id="scheduler">
+<h2>Scheduler<a class="headerlink" href="#scheduler" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#distributed.Scheduler" title="distributed.Scheduler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Scheduler</span></code></a>([loop, delete_interval, …])</p></td>
+<td><p>Dynamic distributed task scheduler</p></td>
+</tr>
+</tbody>
+</table>
+<p>We create scheduler by creating a <code class="docutils literal notranslate"><span class="pre">Scheduler()</span></code> object, and then <code class="docutils literal notranslate"><span class="pre">await</span></code>
+that object to wait for it to start up.  We can then wait on the <code class="docutils literal notranslate"><span class="pre">.finished</span></code>
+method to wait until it closes.  In the meantime the scheduler will be active
+managing the cluster..</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Scheduler</span><span class="p">,</span> <span class="n">Worker</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">f</span><span class="p">():</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">Scheduler</span><span class="p">()</span>        <span class="c1"># scheduler created, but not yet running</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="k">await</span> <span class="n">s</span>            <span class="c1"># the scheduler is running</span>
+    <span class="k">await</span> <span class="n">s</span><span class="o">.</span><span class="n">finished</span><span class="p">()</span>     <span class="c1"># wait until the scheduler closes</span>
+
+<span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">f</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>This program will run forever, or until some external process connects to the
+scheduler and tells it to stop.  If you want to close things yourself you can
+close any <code class="docutils literal notranslate"><span class="pre">Scheduler</span></code>, <code class="docutils literal notranslate"><span class="pre">Worker</span></code>, <code class="docutils literal notranslate"><span class="pre">Nanny</span></code>, or <code class="docutils literal notranslate"><span class="pre">Client</span></code> class by awaiting
+the <code class="docutils literal notranslate"><span class="pre">.close</span></code> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">await</span> <span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="worker">
+<h2>Worker<a class="headerlink" href="#worker" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#distributed.Worker" title="distributed.Worker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Worker</span></code></a>([scheduler_ip, scheduler_port, …])</p></td>
+<td><p>Worker node in a Dask distributed cluster</p></td>
+</tr>
+</tbody>
+</table>
+<p>The worker follows the same API.
+The only difference is that the worker needs to know the address of the
+scheduler.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Scheduler</span><span class="p">,</span> <span class="n">Worker</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">scheduler_address</span><span class="p">):</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Worker</span><span class="p">(</span><span class="n">scheduler_address</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">w</span><span class="o">.</span><span class="n">finished</span><span class="p">()</span>
+
+<span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="s2">&quot;tcp://127.0.0.1:8786&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="start-many-in-one-event-loop">
+<h2>Start many in one event loop<a class="headerlink" href="#start-many-in-one-event-loop" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#distributed.Scheduler" title="distributed.Scheduler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Scheduler</span></code></a>([loop, delete_interval, …])</p></td>
+<td><p>Dynamic distributed task scheduler</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#distributed.Worker" title="distributed.Worker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Worker</span></code></a>([scheduler_ip, scheduler_port, …])</p></td>
+<td><p>Worker node in a Dask distributed cluster</p></td>
+</tr>
+</tbody>
+</table>
+<p>We can run as many of these objects as we like in the same event loop.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Scheduler</span><span class="p">,</span> <span class="n">Worker</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">f</span><span class="p">():</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Scheduler</span><span class="p">()</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Worker</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">w</span><span class="o">.</span><span class="n">finished</span><span class="p">()</span>
+    <span class="k">await</span> <span class="n">s</span><span class="o">.</span><span class="n">finished</span><span class="p">()</span>
+
+<span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">f</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="use-context-managers">
+<h2>Use Context Managers<a class="headerlink" href="#use-context-managers" title="Permalink to this headline">¶</a></h2>
+<p>We can also use <code class="docutils literal notranslate"><span class="pre">async</span> <span class="pre">with</span></code> context managers to make sure that we clean up
+properly.  Here is the same example as from above:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Scheduler</span><span class="p">,</span> <span class="n">Worker</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">f</span><span class="p">():</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">Scheduler</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">Worker</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">address</span><span class="p">)</span> <span class="k">as</span> <span class="n">w</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">w</span><span class="o">.</span><span class="n">finished</span><span class="p">()</span>
+            <span class="k">await</span> <span class="n">s</span><span class="o">.</span><span class="n">finished</span><span class="p">()</span>
+
+<span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">f</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>Alternatively, in the example below we also include a <code class="docutils literal notranslate"><span class="pre">Client</span></code>, run a small
+computation, and then allow things to clean up after that computation..</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Scheduler</span><span class="p">,</span> <span class="n">Worker</span><span class="p">,</span> <span class="n">Client</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">f</span><span class="p">():</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">Scheduler</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">Worker</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">address</span><span class="p">)</span> <span class="k">as</span> <span class="n">w1</span><span class="p">,</span> <span class="n">Worker</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">address</span><span class="p">)</span> <span class="k">as</span> <span class="n">w2</span><span class="p">:</span>
+            <span class="k">async</span> <span class="k">with</span> <span class="n">Client</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">asynchronous</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+                <span class="n">future</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">future</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+<span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">f</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>This is equivalent to creating and <code class="docutils literal notranslate"><span class="pre">awaiting</span></code> each server, and then calling
+<code class="docutils literal notranslate"><span class="pre">.close</span></code> on each as we leave the context.
+In this example we don’t wait on <code class="docutils literal notranslate"><span class="pre">s.finished()</span></code>, so this will terminate
+relatively quickly.  You could have called <code class="docutils literal notranslate"><span class="pre">await</span> <span class="pre">s.finished()</span></code> though if you
+wanted this to run forever.</p>
+</div>
+<div class="section" id="nanny">
+<h2>Nanny<a class="headerlink" href="#nanny" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#distributed.Nanny" title="distributed.Nanny"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Nanny</span></code></a>([scheduler_ip, scheduler_port, …])</p></td>
+<td><p>A process to manage worker processes</p></td>
+</tr>
+</tbody>
+</table>
+<p>Alternatively, we can replace <code class="docutils literal notranslate"><span class="pre">Worker</span></code> with <code class="docutils literal notranslate"><span class="pre">Nanny</span></code> if we want your workers
+to be managed in a separate process.  The <code class="docutils literal notranslate"><span class="pre">Nanny</span></code> constructor follows the
+same API. This allows workers to restart themselves in case of failure. Also,
+it provides some additional monitoring, and is useful when coordinating many
+workers that should live in different processes in order to avoid the <a class="reference external" href="https://docs.python.org/3/glossary.html#term-gil">GIL</a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># w = await Worker(s.address)</span>
+<span class="n">w</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Nanny</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="api">
+<h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<p>These classes have a variety of keyword arguments that you can use to control
+their behavior.  See the API documentation below for more information.</p>
+<div class="section" id="id1">
+<h3>Scheduler<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="distributed.Scheduler">
+<em class="property">class </em><code class="sig-prename descclassname">distributed.</code><code class="sig-name descname">Scheduler</code><span class="sig-paren">(</span><em class="sig-param">loop=None</em>, <em class="sig-param">delete_interval='500ms'</em>, <em class="sig-param">synchronize_worker_interval='60s'</em>, <em class="sig-param">services=None</em>, <em class="sig-param">service_kwargs=None</em>, <em class="sig-param">allowed_failures=None</em>, <em class="sig-param">extensions=None</em>, <em class="sig-param">validate=None</em>, <em class="sig-param">scheduler_file=None</em>, <em class="sig-param">security=None</em>, <em class="sig-param">worker_ttl=None</em>, <em class="sig-param">idle_timeout=None</em>, <em class="sig-param">interface=None</em>, <em class="sig-param">host=None</em>, <em class="sig-param">port=0</em>, <em class="sig-param">protocol=None</em>, <em class="sig-param">dashboard_address=None</em>, <em class="sig-param">preload=None</em>, <em class="sig-param">preload_argv=()</em>, <em class="sig-param">plugins=()</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dynamic distributed task scheduler</p>
+<p>The scheduler tracks the current state of workers, data, and computations.
+The scheduler listens for events and responds by controlling workers
+appropriately.  It continuously tries to use the workers to execute an ever
+growing dask graph.</p>
+<p>All events are handled quickly, in linear time with respect to their input
+(which is often of constant size) and generally within a millisecond.  To
+accomplish this the scheduler tracks a lot of state.  Every operation
+maintains the consistency of this state.</p>
+<p>The scheduler communicates with the outside world through Comm objects.
+It maintains a consistent and valid view of the world even when listening
+to several clients at once.</p>
+<p>A Scheduler is typically started either with the <code class="docutils literal notranslate"><span class="pre">dask-scheduler</span></code>
+executable:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dask-scheduler
+Scheduler started at 127.0.0.1:8786
+</pre></div>
+</div>
+<p>Or within a LocalCluster a Client starts up without connection
+information:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">cluster</span><span class="o">.</span><span class="n">scheduler</span>  
+<span class="go">Scheduler(...)</span>
+</pre></div>
+</div>
+<p>Users typically do not interact with the scheduler directly but rather with
+the client object <code class="docutils literal notranslate"><span class="pre">Client</span></code>.</p>
+<p><strong>State</strong></p>
+<p>The scheduler contains the following state variables.  Each variable is
+listed along with what it stores and a brief description.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><strong>tasks:</strong> <code class="docutils literal notranslate"><span class="pre">{task</span> <span class="pre">key:</span> <span class="pre">TaskState}</span></code></dt><dd><p>Tasks currently known to the scheduler</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>unrunnable:</strong> <code class="docutils literal notranslate"><span class="pre">{TaskState}</span></code></dt><dd><p>Tasks in the “no-worker” state</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>workers:</strong> <code class="docutils literal notranslate"><span class="pre">{worker</span> <span class="pre">key:</span> <span class="pre">WorkerState}</span></code></dt><dd><p>Workers currently connected to the scheduler</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>idle:</strong> <code class="docutils literal notranslate"><span class="pre">{WorkerState}</span></code>:</dt><dd><p>Set of workers that are not fully utilized</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>saturated:</strong> <code class="docutils literal notranslate"><span class="pre">{WorkerState}</span></code>:</dt><dd><p>Set of workers that are not over-utilized</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>host_info:</strong> <code class="docutils literal notranslate"><span class="pre">{hostname:</span> <span class="pre">dict}</span></code>:</dt><dd><p>Information about each worker host</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>clients:</strong> <code class="docutils literal notranslate"><span class="pre">{client</span> <span class="pre">key:</span> <span class="pre">ClientState}</span></code></dt><dd><p>Clients currently connected to the scheduler</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>services:</strong> <code class="docutils literal notranslate"><span class="pre">{str:</span> <span class="pre">port}</span></code>:</dt><dd><p>Other services running on this scheduler, like Bokeh</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>loop:</strong> <code class="docutils literal notranslate"><span class="pre">IOLoop</span></code>:</dt><dd><p>The running Tornado IOLoop</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>client_comms:</strong> <code class="docutils literal notranslate"><span class="pre">{client</span> <span class="pre">key:</span> <span class="pre">Comm}</span></code></dt><dd><p>For each client, a Comm object used to receive task requests and
+report task status updates.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>stream_comms:</strong> <code class="docutils literal notranslate"><span class="pre">{worker</span> <span class="pre">key:</span> <span class="pre">Comm}</span></code></dt><dd><p>For each worker, a Comm object from which we both accept stimuli and
+report results</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>task_duration:</strong> <code class="docutils literal notranslate"><span class="pre">{key-prefix:</span> <span class="pre">time}</span></code></dt><dd><p>Time we expect certain functions to take, e.g. <code class="docutils literal notranslate"><span class="pre">{'sum':</span> <span class="pre">0.25}</span></code></p>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="method">
+<dt id="distributed.Scheduler.adaptive_target">
+<code class="sig-name descname">adaptive_target</code><span class="sig-paren">(</span><em class="sig-param">comm=None</em>, <em class="sig-param">target_duration=None</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.adaptive_target" title="Permalink to this definition">¶</a></dt>
+<dd><p>Desired number of workers based on the current workload</p>
+<p>This looks at the current running tasks and memory use, and returns a
+number of desired workers.  This is often used by adaptive scheduling.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>target_duration: str</strong></dt><dd><p>A desired duration of time for computations to take.  This affects
+how rapidly the scheduler will ask to scale.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="adaptive.html#distributed.deploy.Adaptive" title="distributed.deploy.Adaptive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">distributed.deploy.Adaptive</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.add_client">
+<em class="property">async </em><code class="sig-name descname">add_client</code><span class="sig-paren">(</span><em class="sig-param">comm</em>, <em class="sig-param">client=None</em>, <em class="sig-param">versions=None</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.add_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add client to network</p>
+<p>We listen to all future messages from this Comm.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.add_keys">
+<code class="sig-name descname">add_keys</code><span class="sig-paren">(</span><em class="sig-param">comm=None</em>, <em class="sig-param">worker=None</em>, <em class="sig-param">keys=()</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.add_keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Learn that a worker has certain keys</p>
+<p>This should not be used in practice and is mostly here for legacy
+reasons.  However, it is sent by workers from time to time.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.add_plugin">
+<code class="sig-name descname">add_plugin</code><span class="sig-paren">(</span><em class="sig-param">plugin=None</em>, <em class="sig-param">idempotent=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.add_plugin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add external plugin to scheduler</p>
+<p>See <a class="reference external" href="https://distributed.readthedocs.io/en/latest/plugins.html">https://distributed.readthedocs.io/en/latest/plugins.html</a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.add_worker">
+<em class="property">async </em><code class="sig-name descname">add_worker</code><span class="sig-paren">(</span><em class="sig-param">comm=None</em>, <em class="sig-param">address=None</em>, <em class="sig-param">keys=()</em>, <em class="sig-param">nthreads=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">resolve_address=True</em>, <em class="sig-param">nbytes=None</em>, <em class="sig-param">types=None</em>, <em class="sig-param">now=None</em>, <em class="sig-param">resources=None</em>, <em class="sig-param">host_info=None</em>, <em class="sig-param">memory_limit=None</em>, <em class="sig-param">metrics=None</em>, <em class="sig-param">pid=0</em>, <em class="sig-param">services=None</em>, <em class="sig-param">local_directory=None</em>, <em class="sig-param">versions=None</em>, <em class="sig-param">nanny=None</em>, <em class="sig-param">extra=None</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.add_worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new worker to the cluster</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.broadcast">
+<em class="property">async </em><code class="sig-name descname">broadcast</code><span class="sig-paren">(</span><em class="sig-param">comm=None</em>, <em class="sig-param">msg=None</em>, <em class="sig-param">workers=None</em>, <em class="sig-param">hosts=None</em>, <em class="sig-param">nanny=False</em>, <em class="sig-param">serializers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.broadcast" title="Permalink to this definition">¶</a></dt>
+<dd><p>Broadcast message to workers, return all results</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.cancel_key">
+<code class="sig-name descname">cancel_key</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">client</em>, <em class="sig-param">retries=5</em>, <em class="sig-param">force=False</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.cancel_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cancel a particular key and all dependents</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.check_idle_saturated">
+<code class="sig-name descname">check_idle_saturated</code><span class="sig-paren">(</span><em class="sig-param">ws</em>, <em class="sig-param">occ=None</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.check_idle_saturated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the status of the idle and saturated state</p>
+<p>The scheduler keeps track of workers that are ..</p>
+<ul class="simple">
+<li><p>Saturated: have enough work to stay busy</p></li>
+<li><p>Idle: do not have enough work to stay busy</p></li>
+</ul>
+<p>They are considered saturated if they both have enough tasks to occupy
+all of their threads, and if the expected runtime of those tasks is
+large enough.</p>
+<p>This is useful for load balancing and adaptivity.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.client_heartbeat">
+<code class="sig-name descname">client_heartbeat</code><span class="sig-paren">(</span><em class="sig-param">client=None</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.client_heartbeat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle heartbeats from Client</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.client_releases_keys">
+<code class="sig-name descname">client_releases_keys</code><span class="sig-paren">(</span><em class="sig-param">keys=None</em>, <em class="sig-param">client=None</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.client_releases_keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove keys from client desired list</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.close">
+<em class="property">async </em><code class="sig-name descname">close</code><span class="sig-paren">(</span><em class="sig-param">comm=None</em>, <em class="sig-param">fast=False</em>, <em class="sig-param">close_workers=False</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send cleanup signal to all coroutines then wait until finished</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Scheduler.cleanup</span></code></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.close_worker">
+<em class="property">async </em><code class="sig-name descname">close_worker</code><span class="sig-paren">(</span><em class="sig-param">stream=None</em>, <em class="sig-param">worker=None</em>, <em class="sig-param">safe=None</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.close_worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a worker from the cluster</p>
+<p>This both removes the worker from our local state and also sends a
+signal to the worker to shut down.  This works regardless of whether or
+not the worker has a nanny process restarting it</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.coerce_address">
+<code class="sig-name descname">coerce_address</code><span class="sig-paren">(</span><em class="sig-param">addr</em>, <em class="sig-param">resolve=True</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.coerce_address" title="Permalink to this definition">¶</a></dt>
+<dd><p>Coerce possible input addresses to canonical form.
+<em>resolve</em> can be disabled for testing with fake hostnames.</p>
+<p>Handles strings, tuples, or aliases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.coerce_hostname">
+<code class="sig-name descname">coerce_hostname</code><span class="sig-paren">(</span><em class="sig-param">host</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.coerce_hostname" title="Permalink to this definition">¶</a></dt>
+<dd><p>Coerce the hostname of a worker.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.decide_worker">
+<code class="sig-name descname">decide_worker</code><span class="sig-paren">(</span><em class="sig-param">ts</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.decide_worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decide on a worker for task <em>ts</em>.  Return a WorkerState.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.feed">
+<em class="property">async </em><code class="sig-name descname">feed</code><span class="sig-paren">(</span><em class="sig-param">comm</em>, <em class="sig-param">function=None</em>, <em class="sig-param">setup=None</em>, <em class="sig-param">teardown=None</em>, <em class="sig-param">interval='1s'</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.feed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a data Comm to external requester</p>
+<p>Caution: this runs arbitrary Python code on the scheduler.  This should
+eventually be phased out.  It is mostly used by diagnostics.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.gather">
+<em class="property">async </em><code class="sig-name descname">gather</code><span class="sig-paren">(</span><em class="sig-param">comm=None</em>, <em class="sig-param">keys=None</em>, <em class="sig-param">serializers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.gather" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collect data in from workers</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.get_comm_cost">
+<code class="sig-name descname">get_comm_cost</code><span class="sig-paren">(</span><em class="sig-param">ts</em>, <em class="sig-param">ws</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.get_comm_cost" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the estimated communication cost (in s.) to compute the task
+on the given worker.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.get_task_duration">
+<code class="sig-name descname">get_task_duration</code><span class="sig-paren">(</span><em class="sig-param">ts</em>, <em class="sig-param">default=0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.get_task_duration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the estimated computation cost of the given task
+(not including any communication cost).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.get_worker_service_addr">
+<code class="sig-name descname">get_worker_service_addr</code><span class="sig-paren">(</span><em class="sig-param">worker</em>, <em class="sig-param">service_name</em>, <em class="sig-param">protocol=False</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.get_worker_service_addr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the (host, port) address of the named service on the <em>worker</em>.
+Returns None if the service doesn’t exist.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>worker</strong><span class="classifier">address</span></dt><dd></dd>
+<dt><strong>service_name</strong><span class="classifier">str</span></dt><dd><p>Common services include ‘bokeh’ and ‘nanny’</p>
+</dd>
+<dt><strong>protocol</strong><span class="classifier">boolean</span></dt><dd><p>Whether or not to include a full address with protocol (True)
+or just a (host, port) pair</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.handle_long_running">
+<code class="sig-name descname">handle_long_running</code><span class="sig-paren">(</span><em class="sig-param">key=None</em>, <em class="sig-param">worker=None</em>, <em class="sig-param">compute_duration=None</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.handle_long_running" title="Permalink to this definition">¶</a></dt>
+<dd><p>A task has seceded from the thread pool</p>
+<p>We stop the task from being stolen in the future, and change task
+duration accounting as if the task has stopped.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.handle_worker">
+<em class="property">async </em><code class="sig-name descname">handle_worker</code><span class="sig-paren">(</span><em class="sig-param">comm=None</em>, <em class="sig-param">worker=None</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.handle_worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Listen to responses from a single worker</p>
+<p>This is the main loop for scheduler-worker interaction</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Scheduler.handle_client</span></code></dt><dd><p>Equivalent coroutine for clients</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.identity">
+<code class="sig-name descname">identity</code><span class="sig-paren">(</span><em class="sig-param">comm=None</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.identity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Basic information about ourselves and our cluster</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.new_task">
+<code class="sig-name descname">new_task</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">spec</em>, <em class="sig-param">state</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.new_task" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new task, and associated states</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.proxy">
+<em class="property">async </em><code class="sig-name descname">proxy</code><span class="sig-paren">(</span><em class="sig-param">comm=None</em>, <em class="sig-param">msg=None</em>, <em class="sig-param">worker=None</em>, <em class="sig-param">serializers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.proxy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Proxy a communication through the scheduler to some other worker</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.rebalance">
+<em class="property">async </em><code class="sig-name descname">rebalance</code><span class="sig-paren">(</span><em class="sig-param">comm=None</em>, <em class="sig-param">keys=None</em>, <em class="sig-param">workers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.rebalance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rebalance keys so that each worker stores roughly equal bytes</p>
+<p><strong>Policy</strong></p>
+<p>This orders the workers by what fraction of bytes of the existing keys
+they have.  It walks down this list from most-to-least.  At each worker
+it sends the largest results it can find and sends them to the least
+occupied worker until either the sender or the recipient are at the
+average expected load.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.reevaluate_occupancy">
+<code class="sig-name descname">reevaluate_occupancy</code><span class="sig-paren">(</span><em class="sig-param">worker_index=0</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.reevaluate_occupancy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Periodically reassess task duration time</p>
+<p>The expected duration of a task can change over time.  Unfortunately we
+don’t have a good constant-time way to propagate the effects of these
+changes out to the summaries that they affect, like the total expected
+runtime of each of the workers, or what tasks are stealable.</p>
+<p>In this coroutine we walk through all of the workers and re-align their
+estimates with the current state of tasks.  We do this periodically
+rather than at every transition, and we only do it if the scheduler
+process isn’t under load (using psutil.Process.cpu_percent()).  This
+lets us avoid this fringe optimization when we have better things to
+think about.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.register_worker_plugin">
+<em class="property">async </em><code class="sig-name descname">register_worker_plugin</code><span class="sig-paren">(</span><em class="sig-param">comm</em>, <em class="sig-param">plugin</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.register_worker_plugin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers a setup function, and call it on every worker</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.remove_client">
+<code class="sig-name descname">remove_client</code><span class="sig-paren">(</span><em class="sig-param">client=None</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.remove_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove client from network</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.remove_plugin">
+<code class="sig-name descname">remove_plugin</code><span class="sig-paren">(</span><em class="sig-param">plugin</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.remove_plugin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove external plugin from scheduler</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.remove_worker">
+<code class="sig-name descname">remove_worker</code><span class="sig-paren">(</span><em class="sig-param">comm=None</em>, <em class="sig-param">address=None</em>, <em class="sig-param">safe=False</em>, <em class="sig-param">close=True</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.remove_worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove worker from cluster</p>
+<p>We do this when a worker reports that it plans to leave or when it
+appears to be unresponsive.  This may send its tasks back to a released
+state.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.replicate">
+<em class="property">async </em><code class="sig-name descname">replicate</code><span class="sig-paren">(</span><em class="sig-param">comm=None</em>, <em class="sig-param">keys=None</em>, <em class="sig-param">n=None</em>, <em class="sig-param">workers=None</em>, <em class="sig-param">branching_factor=2</em>, <em class="sig-param">delete=True</em>, <em class="sig-param">lock=True</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.replicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replicate data throughout cluster</p>
+<p>This performs a tree copy of the data throughout the network
+individually on each piece of data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>keys: Iterable</strong></dt><dd><p>list of keys to replicate</p>
+</dd>
+<dt><strong>n: int</strong></dt><dd><p>Number of replications we expect to see within the cluster</p>
+</dd>
+<dt><strong>branching_factor: int, optional</strong></dt><dd><p>The number of workers that can copy data in each generation.
+The larger the branching factor, the more data we copy in
+a single step, but the more a given worker risks being
+swamped by data requests.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#distributed.Scheduler.rebalance" title="distributed.Scheduler.rebalance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Scheduler.rebalance</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.report">
+<code class="sig-name descname">report</code><span class="sig-paren">(</span><em class="sig-param">msg</em>, <em class="sig-param">ts=None</em>, <em class="sig-param">client=None</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.report" title="Permalink to this definition">¶</a></dt>
+<dd><p>Publish updates to all listening Queues and Comms</p>
+<p>If the message contains a key then we only send the message to those
+comms that care about the key.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.reschedule">
+<code class="sig-name descname">reschedule</code><span class="sig-paren">(</span><em class="sig-param">key=None</em>, <em class="sig-param">worker=None</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.reschedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reschedule a task</p>
+<p>Things may have shifted and this task may now be better suited to run
+elsewhere</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.restart">
+<em class="property">async </em><code class="sig-name descname">restart</code><span class="sig-paren">(</span><em class="sig-param">client=None</em>, <em class="sig-param">timeout=3</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.restart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Restart all workers.  Reset local state.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.retire_workers">
+<em class="property">async </em><code class="sig-name descname">retire_workers</code><span class="sig-paren">(</span><em class="sig-param">comm=None</em>, <em class="sig-param">workers=None</em>, <em class="sig-param">remove=True</em>, <em class="sig-param">close_workers=False</em>, <em class="sig-param">names=None</em>, <em class="sig-param">lock=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.retire_workers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gracefully retire workers from cluster</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>workers: list (optional)</strong></dt><dd><p>List of worker addresses to retire.
+If not provided we call <code class="docutils literal notranslate"><span class="pre">workers_to_close</span></code> which finds a good set</p>
+</dd>
+<dt><strong>workers_names: list (optional)</strong></dt><dd><p>List of worker names to retire.</p>
+</dd>
+<dt><strong>remove: bool (defaults to True)</strong></dt><dd><p>Whether or not to remove the worker metadata immediately or else
+wait for the worker to contact us</p>
+</dd>
+<dt><strong>close_workers: bool (defaults to False)</strong></dt><dd><p>Whether or not to actually close the worker explicitly from here.
+Otherwise we expect some external job scheduler to finish off the
+worker.</p>
+</dd>
+<dt><strong>**kwargs: dict</strong></dt><dd><p>Extra options to pass to workers_to_close to determine which
+workers we should drop</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>Dictionary mapping worker ID/address to dictionary of information about</strong></dt><dd></dd>
+<dt><strong>that worker for each retired worker.</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#distributed.Scheduler.workers_to_close" title="distributed.Scheduler.workers_to_close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Scheduler.workers_to_close</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.run_function">
+<code class="sig-name descname">run_function</code><span class="sig-paren">(</span><em class="sig-param">stream</em>, <em class="sig-param">function</em>, <em class="sig-param">args=()</em>, <em class="sig-param">kwargs={}</em>, <em class="sig-param">wait=True</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.run_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run a function within this process</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../futures.html#distributed.Client.run_on_scheduler" title="distributed.Client.run_on_scheduler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Client.run_on_scheduler</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.scatter">
+<em class="property">async </em><code class="sig-name descname">scatter</code><span class="sig-paren">(</span><em class="sig-param">comm=None</em>, <em class="sig-param">data=None</em>, <em class="sig-param">workers=None</em>, <em class="sig-param">client=None</em>, <em class="sig-param">broadcast=False</em>, <em class="sig-param">timeout=2</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.scatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send data out to workers</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#distributed.Scheduler.broadcast" title="distributed.Scheduler.broadcast"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Scheduler.broadcast</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.send_task_to_worker">
+<code class="sig-name descname">send_task_to_worker</code><span class="sig-paren">(</span><em class="sig-param">worker</em>, <em class="sig-param">key</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.send_task_to_worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a single computational task to a worker</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.start">
+<em class="property">async </em><code class="sig-name descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear out old state and restart all running coroutines</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.start_ipython">
+<code class="sig-name descname">start_ipython</code><span class="sig-paren">(</span><em class="sig-param">comm=None</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.start_ipython" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start an IPython kernel</p>
+<p>Returns Jupyter connection info dictionary.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.stimulus_cancel">
+<code class="sig-name descname">stimulus_cancel</code><span class="sig-paren">(</span><em class="sig-param">comm</em>, <em class="sig-param">keys=None</em>, <em class="sig-param">client=None</em>, <em class="sig-param">force=False</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.stimulus_cancel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop execution on a list of keys</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.stimulus_missing_data">
+<code class="sig-name descname">stimulus_missing_data</code><span class="sig-paren">(</span><em class="sig-param">cause=None</em>, <em class="sig-param">key=None</em>, <em class="sig-param">worker=None</em>, <em class="sig-param">ensure=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.stimulus_missing_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mark that certain keys have gone missing.  Recover.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.stimulus_task_erred">
+<code class="sig-name descname">stimulus_task_erred</code><span class="sig-paren">(</span><em class="sig-param">key=None</em>, <em class="sig-param">worker=None</em>, <em class="sig-param">exception=None</em>, <em class="sig-param">traceback=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.stimulus_task_erred" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mark that a task has erred on a particular worker</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.stimulus_task_finished">
+<code class="sig-name descname">stimulus_task_finished</code><span class="sig-paren">(</span><em class="sig-param">key=None</em>, <em class="sig-param">worker=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.stimulus_task_finished" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mark that a task has finished execution on a particular worker</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.story">
+<code class="sig-name descname">story</code><span class="sig-paren">(</span><em class="sig-param">*keys</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.story" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all transitions that touch one of the input keys</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.transition">
+<code class="sig-name descname">transition</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">finish</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.transition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transition a key from its current state to the finish state</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>Dictionary of recommendations for future transitions</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#distributed.Scheduler.transitions" title="distributed.Scheduler.transitions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Scheduler.transitions</span></code></a></dt><dd><p>transitive version of this function</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">transition</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;waiting&#39;</span><span class="p">)</span>
+<span class="go">{&#39;x&#39;: &#39;processing&#39;}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.transition_story">
+<code class="sig-name descname">transition_story</code><span class="sig-paren">(</span><em class="sig-param">*keys</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.transition_story" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all transitions that touch one of the input keys</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.transitions">
+<code class="sig-name descname">transitions</code><span class="sig-paren">(</span><em class="sig-param">recommendations</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.transitions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process transitions until none are left</p>
+<p>This includes feedback from previous transitions and continues until we
+reach a steady state</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.update_data">
+<code class="sig-name descname">update_data</code><span class="sig-paren">(</span><em class="sig-param">comm=None</em>, <em class="sig-param">who_has=None</em>, <em class="sig-param">nbytes=None</em>, <em class="sig-param">client=None</em>, <em class="sig-param">serializers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.update_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Learn that new data has entered the network from an external source</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Scheduler.mark_key_in_memory</span></code></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.update_graph">
+<code class="sig-name descname">update_graph</code><span class="sig-paren">(</span><em class="sig-param">client=None</em>, <em class="sig-param">tasks=None</em>, <em class="sig-param">keys=None</em>, <em class="sig-param">dependencies=None</em>, <em class="sig-param">restrictions=None</em>, <em class="sig-param">priority=None</em>, <em class="sig-param">loose_restrictions=None</em>, <em class="sig-param">resources=None</em>, <em class="sig-param">submitting_task=None</em>, <em class="sig-param">retries=None</em>, <em class="sig-param">user_priority=0</em>, <em class="sig-param">actors=None</em>, <em class="sig-param">fifo_timeout=0</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.update_graph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add new computations to the internal dask graph</p>
+<p>This happens whenever the Client calls submit, map, get, or compute.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.valid_workers">
+<code class="sig-name descname">valid_workers</code><span class="sig-paren">(</span><em class="sig-param">ts</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.valid_workers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return set of currently valid workers for key</p>
+<p>If all workers are valid then this returns <code class="docutils literal notranslate"><span class="pre">True</span></code>.
+This checks tracks the following state:</p>
+<ul class="simple">
+<li><p>worker_restrictions</p></li>
+<li><p>host_restrictions</p></li>
+<li><p>resource_restrictions</p></li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.worker_objective">
+<code class="sig-name descname">worker_objective</code><span class="sig-paren">(</span><em class="sig-param">ts</em>, <em class="sig-param">ws</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.worker_objective" title="Permalink to this definition">¶</a></dt>
+<dd><p>Objective function to determine which worker should get the task</p>
+<p>Minimize expected start time.  If a tie then break with data storage.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.worker_send">
+<code class="sig-name descname">worker_send</code><span class="sig-paren">(</span><em class="sig-param">worker</em>, <em class="sig-param">msg</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.worker_send" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send message to worker</p>
+<p>This also handles connection failures by adding a callback to remove
+the worker on the next cycle.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.workers_list">
+<code class="sig-name descname">workers_list</code><span class="sig-paren">(</span><em class="sig-param">workers</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.workers_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of qualifying workers</p>
+<p>Takes a list of worker addresses or hostnames.
+Returns a list of all worker addresses that match</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Scheduler.workers_to_close">
+<code class="sig-name descname">workers_to_close</code><span class="sig-paren">(</span><em class="sig-param">comm=None</em>, <em class="sig-param">memory_ratio=None</em>, <em class="sig-param">n=None</em>, <em class="sig-param">key=None</em>, <em class="sig-param">minimum=None</em>, <em class="sig-param">target=None</em>, <em class="sig-param">attribute='address'</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Scheduler.workers_to_close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find workers that we can close with low cost</p>
+<p>This returns a list of workers that are good candidates to retire.
+These workers are not running anything and are storing
+relatively little data relative to their peers.  If all workers are
+idle then we still maintain enough workers to have enough RAM to store
+our data, with a comfortable buffer.</p>
+<p>This is for use with systems like <code class="docutils literal notranslate"><span class="pre">distributed.deploy.adaptive</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>memory_factor: Number</strong></dt><dd><p>Amount of extra space we want to have for our stored data.
+Defaults two 2, or that we want to have twice as much memory as we
+currently have data.</p>
+</dd>
+<dt><strong>n: int</strong></dt><dd><p>Number of workers to close</p>
+</dd>
+<dt><strong>minimum: int</strong></dt><dd><p>Minimum number of workers to keep around</p>
+</dd>
+<dt><strong>key: Callable(WorkerState)</strong></dt><dd><p>An optional callable mapping a WorkerState object to a group
+affiliation.  Groups will be closed together.  This is useful when
+closing workers must be done collectively, such as by hostname.</p>
+</dd>
+<dt><strong>target: int</strong></dt><dd><p>Target number of workers to have after we close</p>
+</dd>
+<dt><strong>attribute</strong><span class="classifier">str</span></dt><dd><p>The attribute of the WorkerState object to return, like “address”
+or “name”.  Defaults to “address”.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>to_close: list of worker addresses that are OK to close</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#distributed.Scheduler.retire_workers" title="distributed.Scheduler.retire_workers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Scheduler.retire_workers</span></code></a></p>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">scheduler</span><span class="o">.</span><span class="n">workers_to_close</span><span class="p">()</span>
+<span class="go">[&#39;tcp://192.168.0.1:1234&#39;, &#39;tcp://192.168.0.2:1234&#39;]</span>
+</pre></div>
+</div>
+<p>Group workers by hostname prior to closing</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">scheduler</span><span class="o">.</span><span class="n">workers_to_close</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">ws</span><span class="p">:</span> <span class="n">ws</span><span class="o">.</span><span class="n">host</span><span class="p">)</span>
+<span class="go">[&#39;tcp://192.168.0.1:1234&#39;, &#39;tcp://192.168.0.1:4567&#39;]</span>
+</pre></div>
+</div>
+<p>Remove two workers</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">scheduler</span><span class="o">.</span><span class="n">workers_to_close</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Keep enough workers to have twice as much memory as we we need.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">scheduler</span><span class="o">.</span><span class="n">workers_to_close</span><span class="p">(</span><span class="n">memory_ratio</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h3>Worker<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="distributed.Worker">
+<em class="property">class </em><code class="sig-prename descclassname">distributed.</code><code class="sig-name descname">Worker</code><span class="sig-paren">(</span><em class="sig-param">scheduler_ip=None</em>, <em class="sig-param">scheduler_port=None</em>, <em class="sig-param">scheduler_file=None</em>, <em class="sig-param">ncores=None</em>, <em class="sig-param">nthreads=None</em>, <em class="sig-param">loop=None</em>, <em class="sig-param">local_dir=None</em>, <em class="sig-param">local_directory=None</em>, <em class="sig-param">services=None</em>, <em class="sig-param">service_ports=None</em>, <em class="sig-param">service_kwargs=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">reconnect=True</em>, <em class="sig-param">memory_limit='auto'</em>, <em class="sig-param">executor=None</em>, <em class="sig-param">resources=None</em>, <em class="sig-param">silence_logs=None</em>, <em class="sig-param">death_timeout=None</em>, <em class="sig-param">preload=None</em>, <em class="sig-param">preload_argv=None</em>, <em class="sig-param">security=None</em>, <em class="sig-param">contact_address=None</em>, <em class="sig-param">memory_monitor_interval='200ms'</em>, <em class="sig-param">extensions=None</em>, <em class="sig-param">metrics={}</em>, <em class="sig-param">startup_information={}</em>, <em class="sig-param">data=None</em>, <em class="sig-param">interface=None</em>, <em class="sig-param">host=None</em>, <em class="sig-param">port=None</em>, <em class="sig-param">protocol=None</em>, <em class="sig-param">dashboard_address=None</em>, <em class="sig-param">nanny=None</em>, <em class="sig-param">plugins=()</em>, <em class="sig-param">low_level_profiler=False</em>, <em class="sig-param">validate=None</em>, <em class="sig-param">profile_cycle_interval=None</em>, <em class="sig-param">lifetime=None</em>, <em class="sig-param">lifetime_stagger=None</em>, <em class="sig-param">lifetime_restart=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Worker node in a Dask distributed cluster</p>
+<p>Workers perform two functions:</p>
+<ol class="arabic simple">
+<li><p><strong>Serve data</strong> from a local dictionary</p></li>
+<li><p><strong>Perform computation</strong> on that data and on data from peers</p></li>
+</ol>
+<p>Workers keep the scheduler informed of their data and use that scheduler to
+gather data from other workers when necessary to perform a computation.</p>
+<p>You can start a worker with the <code class="docutils literal notranslate"><span class="pre">dask-worker</span></code> command line application:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dask-worker scheduler-ip:port
+</pre></div>
+</div>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">--help</span></code> flag to see more options:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dask-worker --help
+</pre></div>
+</div>
+<p>The rest of this docstring is about the internal state the the worker uses
+to manage and track internal computations.</p>
+<p><strong>State</strong></p>
+<p><strong>Informational State</strong></p>
+<p>These attributes don’t change significantly during execution.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><strong>nthreads:</strong> <code class="docutils literal notranslate"><span class="pre">int</span></code>:</dt><dd><p>Number of nthreads used by this worker process</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>executor:</strong> <code class="docutils literal notranslate"><span class="pre">concurrent.futures.ThreadPoolExecutor</span></code>:</dt><dd><p>Executor used to perform computation</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>local_directory:</strong> <code class="docutils literal notranslate"><span class="pre">path</span></code>:</dt><dd><p>Path on local machine to store temporary files</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>scheduler:</strong> <code class="docutils literal notranslate"><span class="pre">rpc</span></code>:</dt><dd><p>Location of scheduler.  See <code class="docutils literal notranslate"><span class="pre">.ip/.port</span></code> attributes.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>name:</strong> <code class="docutils literal notranslate"><span class="pre">string</span></code>:</dt><dd><p>Alias</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>services:</strong> <code class="docutils literal notranslate"><span class="pre">{str:</span> <span class="pre">Server}</span></code>:</dt><dd><p>Auxiliary web servers running on this worker</p>
+</dd>
+</dl>
+</li>
+<li><p><strong>service_ports:</strong> <code class="docutils literal notranslate"><span class="pre">{str:</span> <span class="pre">port}</span></code>:</p></li>
+<li><dl class="simple">
+<dt><strong>total_out_connections</strong>: <code class="docutils literal notranslate"><span class="pre">int</span></code></dt><dd><p>The maximum number of concurrent outgoing requests for data</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>total_in_connections</strong>: <code class="docutils literal notranslate"><span class="pre">int</span></code></dt><dd><p>The maximum number of concurrent incoming requests for data</p>
+</dd>
+</dl>
+</li>
+<li><p><strong>total_comm_nbytes</strong>: <code class="docutils literal notranslate"><span class="pre">int</span></code></p></li>
+<li><dl class="simple">
+<dt><strong>batched_stream</strong>: <code class="docutils literal notranslate"><span class="pre">BatchedSend</span></code></dt><dd><p>A batched stream along which we communicate to the scheduler</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>log</strong>: <code class="docutils literal notranslate"><span class="pre">[(message)]</span></code></dt><dd><p>A structured and queryable log.  See <code class="docutils literal notranslate"><span class="pre">Worker.story</span></code></p>
+</dd>
+</dl>
+</li>
+</ul>
+<p><strong>Volatile State</strong></p>
+<p>This attributes track the progress of tasks that this worker is trying to
+complete.  In the descriptions below a <code class="docutils literal notranslate"><span class="pre">key</span></code> is the name of a task that
+we want to compute and <code class="docutils literal notranslate"><span class="pre">dep</span></code> is the name of a piece of dependent data
+that we want to collect from others.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><strong>data:</strong> <code class="docutils literal notranslate"><span class="pre">{key:</span> <span class="pre">object}</span></code>:</dt><dd><p>Prefer using the <strong>host</strong> attribute instead of this, unless
+memory_limit and at least one of memory_target_fraction or
+memory_spill_fraction values are defined, in that case, this attribute
+is a zict.Buffer, from which information on LRU cache can be queried.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>data.memory:</strong> <code class="docutils literal notranslate"><span class="pre">{key:</span> <span class="pre">object}</span></code>:</dt><dd><p>Dictionary mapping keys to actual values stored in memory. Only
+available if condition for <strong>data</strong> being a zict.Buffer is met.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>data.disk:</strong> <code class="docutils literal notranslate"><span class="pre">{key:</span> <span class="pre">object}</span></code>:</dt><dd><p>Dictionary mapping keys to actual values stored on disk. Only
+available if condition for <strong>data</strong> being a zict.Buffer is met.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>task_state</strong>: <code class="docutils literal notranslate"><span class="pre">{key:</span> <span class="pre">string}</span></code>:</dt><dd><p>The state of all tasks that the scheduler has asked us to compute.
+Valid states include waiting, constrained, executing, memory, erred</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>tasks</strong>: <code class="docutils literal notranslate"><span class="pre">{key:</span> <span class="pre">dict}</span></code></dt><dd><p>The function, args, kwargs of a task.  We run this when appropriate</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>dependencies</strong>: <code class="docutils literal notranslate"><span class="pre">{key:</span> <span class="pre">{deps}}</span></code></dt><dd><p>The data needed by this key to run</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>dependents</strong>: <code class="docutils literal notranslate"><span class="pre">{dep:</span> <span class="pre">{keys}}</span></code></dt><dd><p>The keys that use this dependency</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>data_needed</strong>: deque(keys)</dt><dd><p>The keys whose data we still lack, arranged in a deque</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>waiting_for_data</strong>: <code class="docutils literal notranslate"><span class="pre">{kep:</span> <span class="pre">{deps}}</span></code></dt><dd><p>A dynamic verion of dependencies.  All dependencies that we still don’t
+have for a particular key.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>ready</strong>: [keys]</dt><dd><p>Keys that are ready to run.  Stored in a LIFO stack</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>constrained</strong>: [keys]</dt><dd><p>Keys for which we have the data to run, but are waiting on abstract
+resources like GPUs.  Stored in a FIFO deque</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>executing</strong>: {keys}</dt><dd><p>Keys that are currently executing</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>executed_count</strong>: int</dt><dd><p>A number of tasks that this worker has run in its lifetime</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>long_running</strong>: {keys}</dt><dd><p>A set of keys of tasks that are running and have started their own
+long-running clients.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>dep_state</strong>: <code class="docutils literal notranslate"><span class="pre">{dep:</span> <span class="pre">string}</span></code>:</dt><dd><p>The state of all dependencies required by our tasks
+Valid states include waiting, flight, and memory</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>who_has</strong>: <code class="docutils literal notranslate"><span class="pre">{dep:</span> <span class="pre">{worker}}</span></code></dt><dd><p>Workers that we believe have this data</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>has_what</strong>: <code class="docutils literal notranslate"><span class="pre">{worker:</span> <span class="pre">{deps}}</span></code></dt><dd><p>The data that we care about that we think a worker has</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>pending_data_per_worker</strong>: <code class="docutils literal notranslate"><span class="pre">{worker:</span> <span class="pre">[dep]}</span></code></dt><dd><p>The data on each worker that we still want, prioritized as a deque</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>in_flight_tasks</strong>: <code class="docutils literal notranslate"><span class="pre">{task:</span> <span class="pre">worker}</span></code></dt><dd><p>All dependencies that are coming to us in current peer-to-peer
+connections and the workers from which they are coming.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>in_flight_workers</strong>: <code class="docutils literal notranslate"><span class="pre">{worker:</span> <span class="pre">{task}}</span></code></dt><dd><p>The workers from which we are currently gathering data and the
+dependencies we expect from those connections</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>comm_bytes</strong>: <code class="docutils literal notranslate"><span class="pre">int</span></code></dt><dd><p>The total number of bytes in flight</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>suspicious_deps</strong>: <code class="docutils literal notranslate"><span class="pre">{dep:</span> <span class="pre">int}</span></code></dt><dd><p>The number of times a dependency has not been where we expected it</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>nbytes</strong>: <code class="docutils literal notranslate"><span class="pre">{key:</span> <span class="pre">int}</span></code></dt><dd><p>The size of a particular piece of data</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>types</strong>: <code class="docutils literal notranslate"><span class="pre">{key:</span> <span class="pre">type}</span></code></dt><dd><p>The type of a particular piece of data</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>threads</strong>: <code class="docutils literal notranslate"><span class="pre">{key:</span> <span class="pre">int}</span></code></dt><dd><p>The ID of the thread on which the task ran</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>active_threads</strong>: <code class="docutils literal notranslate"><span class="pre">{int:</span> <span class="pre">key}</span></code></dt><dd><p>The keys currently running on active threads</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>exceptions</strong>: <code class="docutils literal notranslate"><span class="pre">{key:</span> <span class="pre">exception}</span></code></dt><dd><p>The exception caused by running a task if it erred</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>tracebacks</strong>: <code class="docutils literal notranslate"><span class="pre">{key:</span> <span class="pre">traceback}</span></code></dt><dd><p>The exception caused by running a task if it erred</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>startstops</strong>: <code class="docutils literal notranslate"><span class="pre">{key:</span> <span class="pre">[{startstop}]}</span></code></dt><dd><p>Log of transfer, load, and compute times for a task</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>priorities</strong>: <code class="docutils literal notranslate"><span class="pre">{key:</span> <span class="pre">tuple}</span></code></dt><dd><p>The priority of a key given by the scheduler.  Determines run order.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>durations</strong>: <code class="docutils literal notranslate"><span class="pre">{key:</span> <span class="pre">float}</span></code></dt><dd><p>Expected duration of a task</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>resource_restrictions</strong>: <code class="docutils literal notranslate"><span class="pre">{key:</span> <span class="pre">{str:</span> <span class="pre">number}}</span></code></dt><dd><p>Abstract resources required to run a task</p>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>scheduler_ip: str</strong></dt><dd></dd>
+<dt><strong>scheduler_port: int</strong></dt><dd></dd>
+<dt><strong>ip: str, optional</strong></dt><dd></dd>
+<dt><strong>data: MutableMapping, type, None</strong></dt><dd><p>The object to use for storage, builds a disk-backed LRU dict by default</p>
+</dd>
+<dt><strong>nthreads: int, optional</strong></dt><dd></dd>
+<dt><strong>loop: tornado.ioloop.IOLoop</strong></dt><dd></dd>
+<dt><strong>local_directory: str, optional</strong></dt><dd><p>Directory where we place local resources</p>
+</dd>
+<dt><strong>name: str, optional</strong></dt><dd></dd>
+<dt><strong>memory_limit: int, float, string</strong></dt><dd><p>Number of bytes of memory that this worker should use.
+Set to zero for no limit.  Set to ‘auto’ to calculate
+as system.MEMORY_LIMIT * min(1, nthreads / total_cores)
+Use strings or numbers like 5GB or 5e9</p>
+</dd>
+<dt><strong>memory_target_fraction: float</strong></dt><dd><p>Fraction of memory to try to stay beneath</p>
+</dd>
+<dt><strong>memory_spill_fraction: float</strong></dt><dd><p>Fraction of memory at which we start spilling to disk</p>
+</dd>
+<dt><strong>memory_pause_fraction: float</strong></dt><dd><p>Fraction of memory at which we stop running new tasks</p>
+</dd>
+<dt><strong>executor: concurrent.futures.Executor</strong></dt><dd></dd>
+<dt><strong>resources: dict</strong></dt><dd><p>Resources that this worker has like <code class="docutils literal notranslate"><span class="pre">{'GPU':</span> <span class="pre">2}</span></code></p>
+</dd>
+<dt><strong>nanny: str</strong></dt><dd><p>Address on which to contact nanny, if it exists</p>
+</dd>
+<dt><strong>lifetime: str</strong></dt><dd><p>Amount of time like “1 hour” after which we gracefully shut down the worker.
+This defaults to None, meaning no explicit shutdown time.</p>
+</dd>
+<dt><strong>lifetime_stagger: str</strong></dt><dd><p>Amount of time like “5 minutes” to stagger the lifetime value
+The actual lifetime will be selected uniformly at random between
+lifetime +/- lifetime_stagger</p>
+</dd>
+<dt><strong>lifetime_restart: bool</strong></dt><dd><p>Whether or not to restart a worker after it has reached its lifetime
+Default False</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-obj docutils literal notranslate"><span class="pre">distributed.scheduler.Scheduler</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">distributed.nanny.Nanny</span></code></p>
+</div>
+<p class="rubric">Examples</p>
+<p>Use the command line to start a worker:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dask-scheduler
+Start scheduler at 127.0.0.1:8786
+
+$ dask-worker 127.0.0.1:8786
+Start worker at:               127.0.0.1:1234
+Registered with scheduler at:  127.0.0.1:8786
+</pre></div>
+</div>
+<dl class="method">
+<dt id="distributed.Worker.close_gracefully">
+<em class="property">async </em><code class="sig-name descname">close_gracefully</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Worker.close_gracefully" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gracefully shut down a worker</p>
+<p>This first informs the scheduler that we’re shutting down, and asks it
+to move our data elsewhere.  Afterwards, we close as normal</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Worker.executor_submit">
+<code class="sig-name descname">executor_submit</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">function</em>, <em class="sig-param">args=()</em>, <em class="sig-param">kwargs=None</em>, <em class="sig-param">executor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Worker.executor_submit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Safely run function in thread pool executor</p>
+<p>We’ve run into issues running concurrent.future futures within
+tornado.  Apparently it’s advantageous to use timeouts and periodic
+callbacks to ensure things run smoothly.  This can get tricky, so we
+pull it off into an separate method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Worker.get_current_task">
+<code class="sig-name descname">get_current_task</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Worker.get_current_task" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the key of the task we are currently running</p>
+<p>This only makes sense to run within a task</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_worker</span></code></p>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">get_worker</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">get_worker</span><span class="p">()</span><span class="o">.</span><span class="n">get_current_task</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">future</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  
+<span class="go">&#39;f-1234&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Worker.local_dir">
+<em class="property">property </em><code class="sig-name descname">local_dir</code><a class="headerlink" href="#distributed.Worker.local_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>For API compatibility with Nanny</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Worker.memory_monitor">
+<em class="property">async </em><code class="sig-name descname">memory_monitor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Worker.memory_monitor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Track this process’s memory usage and act accordingly</p>
+<p>If we rise above 70% memory use, start dumping data to disk.</p>
+<p>If we rise above 80% memory use, stop execution of new tasks</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Worker.start_ipython">
+<code class="sig-name descname">start_ipython</code><span class="sig-paren">(</span><em class="sig-param">comm</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Worker.start_ipython" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start an IPython kernel</p>
+<p>Returns Jupyter connection info dictionary.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Worker.trigger_profile">
+<code class="sig-name descname">trigger_profile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Worker.trigger_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a frame from all actively computing threads</p>
+<p>Merge these frames into existing profile counts</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Worker.worker_address">
+<em class="property">property </em><code class="sig-name descname">worker_address</code><a class="headerlink" href="#distributed.Worker.worker_address" title="Permalink to this definition">¶</a></dt>
+<dd><p>For API compatibility with Nanny</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="id3">
+<h3>Nanny<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="distributed.Nanny">
+<em class="property">class </em><code class="sig-prename descclassname">distributed.</code><code class="sig-name descname">Nanny</code><span class="sig-paren">(</span><em class="sig-param">scheduler_ip=None</em>, <em class="sig-param">scheduler_port=None</em>, <em class="sig-param">scheduler_file=None</em>, <em class="sig-param">worker_port=0</em>, <em class="sig-param">nthreads=None</em>, <em class="sig-param">ncores=None</em>, <em class="sig-param">loop=None</em>, <em class="sig-param">local_dir=None</em>, <em class="sig-param">local_directory=None</em>, <em class="sig-param">services=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">memory_limit='auto'</em>, <em class="sig-param">reconnect=True</em>, <em class="sig-param">validate=False</em>, <em class="sig-param">quiet=False</em>, <em class="sig-param">resources=None</em>, <em class="sig-param">silence_logs=None</em>, <em class="sig-param">death_timeout=None</em>, <em class="sig-param">preload=None</em>, <em class="sig-param">preload_argv=None</em>, <em class="sig-param">security=None</em>, <em class="sig-param">contact_address=None</em>, <em class="sig-param">listen_address=None</em>, <em class="sig-param">worker_class=None</em>, <em class="sig-param">env=None</em>, <em class="sig-param">interface=None</em>, <em class="sig-param">host=None</em>, <em class="sig-param">port=None</em>, <em class="sig-param">protocol=None</em>, <em class="sig-param">config=None</em>, <em class="sig-param">**worker_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Nanny" title="Permalink to this definition">¶</a></dt>
+<dd><p>A process to manage worker processes</p>
+<p>The nanny spins up Worker processes, watches then, and kills or restarts
+them as necessary. It is necessary if you want to use the
+<code class="docutils literal notranslate"><span class="pre">Client.restart</span></code> method, or to restart the worker automatically if
+it gets to the terminate fractiom of its memory limit.</p>
+<p>The parameters for the Nanny are mostly the same as those for the Worker.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#distributed.Worker" title="distributed.Worker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Worker</span></code></a></p>
+</div>
+<dl class="method">
+<dt id="distributed.Nanny.close">
+<em class="property">async </em><code class="sig-name descname">close</code><span class="sig-paren">(</span><em class="sig-param">comm=None</em>, <em class="sig-param">timeout=5</em>, <em class="sig-param">report=None</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Nanny.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close the worker process, stop all comms.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Nanny.close_gracefully">
+<code class="sig-name descname">close_gracefully</code><span class="sig-paren">(</span><em class="sig-param">comm=None</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Nanny.close_gracefully" title="Permalink to this definition">¶</a></dt>
+<dd><p>A signal that we shouldn’t try to restart workers if they go away</p>
+<p>This is used as part of the cluster shutdown process.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Nanny.instantiate">
+<em class="property">async </em><code class="sig-name descname">instantiate</code><span class="sig-paren">(</span><em class="sig-param">comm=None</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Nanny.instantiate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start a local worker process</p>
+<p>Blocks until the process is up and the scheduler is properly informed</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Nanny.kill">
+<em class="property">async </em><code class="sig-name descname">kill</code><span class="sig-paren">(</span><em class="sig-param">comm=None</em>, <em class="sig-param">timeout=2</em><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Nanny.kill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Kill the local worker process</p>
+<p>Blocks until both the process is down and the scheduler is properly
+informed</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Nanny.local_dir">
+<em class="property">property </em><code class="sig-name descname">local_dir</code><a class="headerlink" href="#distributed.Nanny.local_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>For API compatibility with Nanny</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Nanny.memory_monitor">
+<code class="sig-name descname">memory_monitor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Nanny.memory_monitor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Track worker’s memory.  Restart if it goes above terminate fraction</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="distributed.Nanny.start">
+<em class="property">async </em><code class="sig-name descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#distributed.Nanny.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start nanny, start local process, start watching</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="cloud.html" class="btn btn-neutral float-right" title="Cloud Deployments" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="kubernetes-native.html" class="btn btn-neutral float-left" title="Kubernetes Native" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014-2018, Anaconda, Inc. and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
